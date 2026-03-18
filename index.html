@@ -1,321 +1,297 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Consysencia Rosa 3.0</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
-    <style>
-        :root { 
-            --bg-grafite: #121212; --card-slate: #1E293B; --texto-marfim: #F8F9FA; 
-            --rosa-nair: #D81B60; --btn-proximo: #2ECC71; --gold-accent: #F1C40F;
-            --android-blue: #8AB4F8; --android-dark: #303134;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; font-family: 'Open Sans', Arial, sans-serif; }
-        body { background-color: var(--bg-grafite); color: var(--texto-marfim); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador UAU</title>
 
-        /* SPA E ANIMAÇÕES */
-        .tela { display: none; flex-direction: column; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: var(--bg-grafite); }
-        .tela.ativa { display: flex; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
-        /* SPLASH SCREEN (REALISMO) */
-        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; justify-content: center; align-items: center; flex-direction: column; }
-        .splash-icon { font-size: 80px; color: white; animation: zoomIn 0.5s ease; }
-        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+<style>
+:root{
+--bg:#121212;
+--rosa:#D81B60;
+--verde:#2ECC71;
+}
 
-        /* COMPONENTES FIXOS */
-        .cabecalho { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; z-index: 100; }
-        .avatar-rosa { 
-            width: 60px; height: 60px; background: var(--rosa-nair); border-radius: 50%; border: 2px solid white;
-            box-shadow: 0 0 15px var(--rosa-nair); animation: pulsar 3s infinite; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 24px;
-        }
-        @keyframes pulsar { 0%, 100% { transform: scale(1); box-shadow: 0 0 15px var(--rosa-nair); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--rosa-nair); } }
-        .btn-ouvir { background: transparent; border: 2px solid var(--rosa-nair); color: var(--rosa-nair); border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; }
+body{
+margin:0;
+background:var(--bg);
+color:white;
+font-family:Arial;
+overflow:hidden;
+}
 
-        /* TRILHA ROSA (GUIA) */
-        .foco-rosa { border: 4px solid var(--rosa-nair) !important; box-shadow: 0 0 25px var(--rosa-nair) !important; animation: focusPulse 1s infinite; position: relative; z-index: 100; border-radius: inherit; }
-        @keyframes focusPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
+/* TELAS */
+.tela{
+display:none;
+height:100vh;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+.tela.ativa{display:flex;}
 
-        /* CELULAR E CORTINA */
-        .tela-celular { flex: 1; background: #111; position: relative; border-radius: 30px 30px 0 0; overflow: hidden; margin-top: 5px; }
-        .status-bar { height: 35px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: rgba(0,0,0,0.5); font-size: 13px; color: white; position: relative; z-index: 110; }
-        
-        #cortina { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: #000; z-index: 105; transition: top 0.3s ease-out; display: flex; flex-direction: column; padding-top: 40px; }
-        #cortina.meia { top: 0; height: 55%; background: #1F2C34; border-bottom: 2px solid #444; }
-        #cortina.total { top: 0; height: 100%; background: #000; }
+/* BOTÃO */
+button{
+padding:15px 25px;
+border:none;
+border-radius:30px;
+background:var(--verde);
+font-weight:bold;
+font-size:18px;
+}
 
-        .notificacao { background: #2A3942; margin: 8px 15px; padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s; position: relative; }
-        .toggles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px; text-align: center; font-size: 11px; color: #aaa; }
-        .toggle-icon { width: 50px; height: 50px; border-radius: 50%; background: var(--android-dark); display: flex; justify-content: center; align-items: center; color: white; margin: 0 auto 5px; }
-        .toggle-icon.ativo { background: var(--android-blue); color: #000; }
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:20px;
+}
 
-        /* CÂMERA */
-        .visor { flex: 1; background: url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600&auto=format&fit=crop') center/cover; position: relative; display: flex; align-items: center; justify-content: center; transition: filter 0.6s; }
-        .em-desfoque { filter: blur(15px); }
-        .anel-foco { width: 70px; height: 70px; border: 2px solid var(--rosa-nair); border-radius: 50%; position: absolute; opacity: 0; pointer-events: none; transition: all 0.2s; box-shadow: 0 0 15px var(--rosa-nair); }
-        .controles-camera { height: 130px; background: #000; display: flex; justify-content: space-around; align-items: center; padding: 0 20px; }
-        .btn-disparo { width: 75px; height: 75px; border-radius: 50%; background: white; border: 6px solid #333; }
+.app{
+display:flex;
+flex-direction:column;
+align-items:center;
+}
 
-        /* GRID APPS */
-        .grid-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 30px 15px; }
-        .app-box { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: bold; color: white; }
-        .app-icon { width: 60px; height: 60px; border-radius: 20%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
-        .bg-tel { background: #4285F4; }
-        .bg-cam { background: #2ECC71; }
-        .bg-zap { background: #25D366; }
+.icon{
+width:65px;
+height:65px;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#444;
+position:relative;
+overflow:hidden;
+}
 
-        .btn-limpar { color: var(--android-blue); background: none; border: none; font-weight: bold; padding: 15px; align-self: flex-end; margin-right: 15px; font-size: 16px; }
-    </style>
+/* RIPPLE */
+.ripple{
+position:absolute;
+border-radius:50%;
+background:rgba(255,255,255,0.5);
+transform:scale(0);
+animation:ripple 0.5s linear;
+}
+
+@keyframes ripple{
+to{transform:scale(4);opacity:0;}
+}
+
+/* PULSO */
+.pulso{
+position:absolute;
+width:80px;
+height:80px;
+border-radius:50%;
+border:3px solid var(--rosa);
+animation:pulse 1.5s infinite;
+pointer-events:none;
+}
+
+@keyframes pulse{
+0%{transform:scale(0.8);opacity:1;}
+70%{transform:scale(1.5);opacity:0;}
+100%{opacity:0;}
+}
+
+/* CORTINA */
+#cortina{
+position:absolute;
+top:-100%;
+left:0;
+width:100%;
+height:100%;
+background:#222;
+transition:top .2s;
+}
+
+.status{
+background:#000;
+padding:10px;
+text-align:center;
+}
+
+/* CÂMERA */
+.camera{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+background:url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600') center/cover;
+filter:blur(8px);
+transition:.3s;
+}
+
+.foco{filter:blur(0);}
+
+.disparo{
+width:70px;
+height:70px;
+background:white;
+border-radius:50%;
+margin:20px;
+}
+
+</style>
 </head>
+
 <body>
-    <div id="splash-screen">
-        <span class="material-symbols-outlined splash-icon" id="splash-img"></span>
-        <p id="splash-txt" style="margin-top: 20px; font-weight: bold;"></p>
-    </div>
 
-    <div id="tela-inicio" class="tela ativa">
-        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding: 30px;">
-            <div class="avatar-rosa" style="width: 100px; height: 100px; font-size: 40px;">R</div>
-            <div style="background: var(--card-slate); margin-top: 40px; padding: 30px; border-radius: 20px; border-left: 8px solid var(--rosa-nair); text-align: center;">
-                <h1 style="color: var(--rosa-nair); margin-bottom: 15px;">Consysencia</h1>
-                <p>Olá, João e Dona Nair! Vamos dominar o celular no seu ritmo. Siga a luz rosa.</p>
-            </div>
-        </div>
-        <div style="padding: 20px;"><button class="btn-destaque" onclick="iniciarM0()">COMEÇAR SISTEMA</button></div>
-    </div>
+<div id="inicio" class="tela ativa">
+<h1>Vamos aprender juntas</h1>
+<button onclick="start()">COMEÇAR</button>
+</div>
 
-    <div id="tela-aula" class="tela">
-        <div class="cabecalho"><div class="avatar-rosa">R</div><button class="btn-ouvir" onclick="repetir()">🔊</button></div>
-        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding: 20px;">
-            <div style="background: var(--card-slate); padding: 30px; border-radius: 20px; border-left: 8px solid var(--rosa-nair);">
-                <p id="texto-aula" style="font-size: 22px; font-weight: bold;"></p>
-            </div>
-        </div>
-        <div style="padding: 20px;"><button class="btn-destaque" onclick="proximoAula()">ENTENDI ➔</button></div>
-    </div>
+<div id="home" class="tela">
+<div class="status" id="status">Arraste para baixo</div>
 
-    <div id="tela-simulador" class="tela">
-        <div class="cabecalho" style="padding-bottom: 5px;"><div class="avatar-rosa" style="width: 45px; height: 45px; font-size: 18px;">R</div><p id="guia-txt" style="font-weight: bold; margin-left: 10px; flex:1; color: var(--rosa-nair);"></p></div>
-        <div class="tela-celular">
-            <div class="status-bar" id="barra-topo">
-                <span id="relogio">11:18</span>
-                <div style="display:flex; gap: 5px;">
-                    <span class="material-symbols-outlined" id="stat-wifi" style="font-size:16px">wifi</span>
-                    <span class="material-symbols-outlined" style="font-size:16px">battery_full</span>
-                </div>
-            </div>
+<div id="cortina"></div>
 
-            <div id="cortina">
-                <div class="toggles" id="toggles" style="display:none">
-                    <div><div class="toggle-icon ativo" id="tog-wifi"><span class="material-symbols-outlined">wifi</span></div>Wi-Fi</div>
-                    <div><div class="toggle-icon" id="tog-lanterna" onclick="clickLanterna()"><span class="material-symbols-outlined">flashlight_on</span></div>Luz</div>
-                    <div><div class="toggle-icon" id="tog-aviao" onclick="clickAviao()"><span class="material-symbols-outlined">flight</span></div>Avião</div>
-                </div>
-                <div id="notifs-area" style="flex:1">
-                    <div class="notificacao" id="n1" ontouchstart="startS(event)" ontouchend="endS(event, 'n1')">
-                        <div style="width:40px; height:40px; background:#25D366; border-radius:50%; display:flex; justify-content:center; align-items:center;"><span class="material-symbols-outlined" style="color:white">chat</span></div>
-                        <div style="text-align:left; color:white;"><b>Filho ❤️</b><br><span style="color:#aaa; font-size:14px;">Manda aquela foto?</span></div>
-                    </div>
-                    <div class="notificacao" id="n2">
-                        <div style="width:40px; height:40px; background:#4285F4; border-radius:50%; display:flex; justify-content:center; align-items:center;"><span class="material-symbols-outlined" style="color:white">update</span></div>
-                        <div style="text-align:left; color:white;"><b>Sistema</b><br><span style="color:#aaa; font-size:14px;">Celular atualizado com sucesso.</span></div>
-                    </div>
-                </div>
-                <button class="btn-limpar" id="btn-limpar" style="display:none" onclick="limparTudo()">Limpar tudo</button>
-                <div id="empty-notif" style="display:none; text-align:center; color:#666; padding: 20px;">Sem notificações</div>
-            </div>
+<div class="grid">
 
-            <div class="grid-apps" id="desktop">
-                <div class="app-box" id="foco-tel" onclick="clickApp('Telefone', 'bg-tel', 'call')"><div class="app-icon bg-tel"><span class="material-symbols-outlined" style="color:white; font-size:30px">call</span></div>Telefone</div>
-                <div class="app-box" id="foco-cam" onclick="clickApp('Câmera', 'bg-cam', 'camera_alt')"><div class="app-icon bg-cam"><span class="material-symbols-outlined" style="color:white; font-size:30px">camera_alt</span></div>Câmera</div>
-                <div class="app-box"><div class="app-icon bg-zap"><span class="material-symbols-outlined" style="color:white; font-size:30px">chat</span></div>WhatsApp</div>
-            </div>
-        </div>
-    </div>
+<div class="app" onclick="tap(event,'telefone')">
+<div class="icon" id="telefone" style="background:#4285F4;">
+<span class="material-symbols-outlined">call</span>
+</div>
+<span>Telefone</span>
+</div>
 
-    <div id="tela-camera" class="tela">
-        <div class="cabecalho" style="padding-bottom: 5px;"><div class="avatar-rosa" style="width: 45px; height: 45px; font-size: 18px;">R</div><p id="cam-txt" style="font-weight: bold; margin-left: 10px; flex:1; color: var(--rosa-nair);"></p></div>
-        <div class="tela-celular" style="margin-top:0; border-radius:0;">
-            <div class="visor em-desfoque" id="visor" onclick="focar(event)">
-                <div class="anel-foco" id="anel"></div>
-                <div style="position:absolute; top:10px; right:10px;"><span class="material-symbols-outlined" style="color:white">flash_off</span></div>
-            </div>
-            <div class="controles-camera">
-                <div id="galeria-preview" style="width:50px; height:50px; border-radius:8px; background:#222; background-size:cover;"></div>
-                <div class="btn-disparo" id="btn-shot" onclick="disparar()"></div>
-                <span class="material-symbols-outlined" style="color:white; font-size:30px">cameraswitch</span>
-            </div>
-        </div>
-    </div>
+<div class="app" onclick="tap(event,'camera')">
+<div class="icon" id="camera" style="background:#2ECC71;">
+<span class="material-symbols-outlined">photo_camera</span>
+</div>
+<span>Câmera</span>
+</div>
 
-    <script>
-        const state = { step: 0, touches: 0, airplane: false };
-        function mostrar(id) { document.querySelectorAll('.tela').forEach(t=>t.classList.remove('ativa')); document.getElementById(id).classList.add('ativa'); }
-        
-        function falar(t) { 
-            window.speechSynthesis.cancel(); 
-            const u = new SpeechSynthesisUtterance(t); u.lang='pt-BR'; u.rate=0.85; 
-            window.speechSynthesis.speak(u);
-            const guia = document.getElementById('guia-txt');
-            if(guia) guia.innerText = t.split('.')[0] + ".";
-        }
+</div>
+</div>
 
-        function splash(icon, name, callback) {
-            const s = document.getElementById('splash-screen');
-            document.getElementById('splash-img').innerText = icon;
-            document.getElementById('splash-txt').innerText = name;
-            s.style.display = 'flex';
-            setTimeout(() => { s.style.display = 'none'; callback(); }, 1200);
-        }
+<div id="cam" class="tela">
+<div class="camera" id="camview" onclick="focar()"></div>
+<div class="disparo" onclick="foto()"></div>
+</div>
 
-        // M0: HARDWARE
-        const m0_aulas = ["O vidro da frente é a janela do celular. Trate com carinho.", "Atrás estão as câmeras, os olhos dele. Cuidado com o dedo na lente.", "O cabo é a comidinha. Conecte com cuidado para não machucar."];
-        function iniciarM0() { mostrar('tela-aula'); nextM0(); }
-        function nextM0() { 
-            if(state.step < m0_aulas.length) {
-                document.getElementById('texto-aula').innerText = m0_aulas[state.step];
-                falar(m0_aulas[state.step]);
-                state.step++;
-            } else { iniciarSimulador(); }
-        }
-        function proximoAula() { nextM0(); }
+<div id="final" class="tela">
+<h1>🎓 Você conseguiu!</h1>
+<button onclick="location.reload()">REINICIAR</button>
+</div>
 
-        // M1: DESKTOP & CORTINA
-        function iniciarSimulador() {
-            mostrar('tela-simulador');
-            state.step = "TEL";
-            document.getElementById('foco-tel').classList.add('foco-rosa');
-            falar("Toque rápido no Telefone azul. Vamos treinar o toque firme e curto.");
-        }
+<script>
 
-        function clickApp(name, color, icon) {
-            if(state.step === "TEL" && name === "Telefone") {
-                state.touches++;
-                if(state.touches < 3) {
-                    falar(`Acertou ${state.touches} vezes! Repita para gravar na memória.`);
-                    if(navigator.vibrate) navigator.vibrate(50);
-                } else {
-                    document.getElementById('foco-tel').classList.remove('foco-rosa');
-                    document.getElementById('relogio').classList.add('foco-rosa');
-                    state.step = "CORTINA_DOWN";
-                    falar("Perfeito! Agora coloque o dedo no relógio lá em cima e puxe para baixo.");
-                }
-            } else if(state.step === "GO_CAM" && name === "Câmera") {
-                splash(icon, name, () => {
-                    mostrar('tela-camera');
-                    falar("A imagem está embaçada. Toque no meio da tela para a câmera focar.");
-                    state.step = "CAM_FOCUS";
-                });
-            }
-        }
+let estado = "inicio";
 
-        // SWIPE CORTINA
-        let startY = 0;
-        document.getElementById('barra-topo').ontouchstart = e => startY = e.touches[0].clientY;
-        document.getElementById('barra-topo').ontouchend = e => {
-            if(state.step === "CORTINA_DOWN" && e.changedTouches[0].clientY - startY > 50) {
-                document.getElementById('relogio').classList.remove('foco-rosa');
-                document.getElementById('cortina').classList.add('meia');
-                document.getElementById('n1').classList.add('foco-rosa');
-                state.step = "SWIPE_LEFT";
-                falar("Apareceram os avisos. No Android, para apagar, arraste o aviso do Filho para a esquerda.");
-            }
-        };
+/* VOZ */
+function falar(t){
+let u = new SpeechSynthesisUtterance(t);
+u.lang="pt-BR";
+speechSynthesis.speak(u);
+}
 
-        // SWIPE NOTIF (LEFT)
-        let startX = 0;
-        function startS(e) { startX = e.touches[0].clientX; }
-        function endS(e, id) {
-            const move = startX - e.changedTouches[0].clientX;
-            if(state.step === "SWIPE_LEFT" && move > 60) {
-                document.getElementById(id).style.transform = "translateX(-150%)";
-                setTimeout(() => {
-                    document.getElementById(id).style.display = 'none';
-                    document.getElementById('cortina').classList.replace('meia', 'total');
-                    document.getElementById('toggles').style.display = 'grid';
-                    document.getElementById('tog-aviao').classList.add('foco-rosa');
-                    state.step = "AVIAO";
-                    falar("Apagado! Agora toque no desenho do Avião. Cuidado, ele desliga sua internet.");
-                }, 300);
-            }
-        }
+/* PULSO */
+function pulso(el){
+removePulso();
+let r = el.getBoundingClientRect();
 
-        function clickAviao() {
-            if(state.step === "AVIAO") {
-                state.airplane = true;
-                document.getElementById('tog-aviao').classList.add('ativo');
-                document.getElementById('stat-wifi').style.opacity = "0.2";
-                falar("Opa! Você desligou a internet. Toque no Avião de novo para ligar o sinal.");
-                state.step = "AVIAO_OFF";
-            } else if(state.step === "AVIAO_OFF") {
-                state.airplane = false;
-                document.getElementById('tog-aviao').classList.remove('ativo');
-                document.getElementById('stat-wifi').style.opacity = "1";
-                document.getElementById('tog-aviao').classList.remove('foco-rosa');
-                document.getElementById('tog-lanterna').classList.add('foco-rosa');
-                state.step = "LUZ";
-                falar("Sinal de volta! Agora toque no desenho da Lanterna.");
-            }
-        }
+let p = document.createElement("div");
+p.className="pulso";
+p.style.left = (r.left + r.width/2 - 40)+"px";
+p.style.top = (r.top + r.height/2 - 40)+"px";
 
-        function clickLanterna() {
-            if(state.step === "LUZ") {
-                document.getElementById('tog-lanterna').classList.add('ativo');
-                document.getElementById('tog-lanterna').classList.remove('foco-rosa');
-                document.getElementById('btn-limpar').style.display = 'block';
-                document.getElementById('btn-limpar').classList.add('foco-rosa');
-                state.step = "LIMPAR";
-                falar("Luz acesa. Para deixar tudo organizado, toque em Limpar Tudo lá embaixo.");
-            }
-        }
+document.body.appendChild(p);
+}
 
-        function limparTudo() {
-            if(state.step === "LIMPAR") {
-                document.getElementById('notifs-area').style.display = 'none';
-                document.getElementById('btn-limpar').style.display = 'none';
-                document.getElementById('empty-notif').style.display = 'block';
-                falar("Casa limpa! Agora coloque o dedo no meio e empurre de baixo para cima para fechar.");
-                state.step = "CLOSE_CORTINA";
-            }
-        }
+function removePulso(){
+let p=document.querySelector(".pulso");
+if(p)p.remove();
+}
 
-        document.getElementById('cortina').ontouchend = e => {
-            if(state.step === "CLOSE_CORTINA") {
-                document.getElementById('cortina').classList.remove('total');
-                setTimeout(() => {
-                    document.getElementById('foco-cam').classList.add('foco-rosa');
-                    state.step = "GO_CAM";
-                    falar("Muito bem. Agora vamos aprender a tirar fotos. Toque na Câmera verde.");
-                }, 500);
-            }
-        };
+/* RIPPLE */
+function ripple(e){
+let c = document.createElement("span");
+c.className="ripple";
+let d = Math.max(e.target.clientWidth,e.target.clientHeight);
+c.style.width=c.style.height=d+"px";
+c.style.left=e.offsetX-d/2+"px";
+c.style.top=e.offsetY-d/2+"px";
+e.target.appendChild(c);
+setTimeout(()=>c.remove(),500);
+}
 
-        // MÓDULO CÂMERA
-        function focar(e) {
-            if(state.step === "CAM_FOCUS") {
-                const anel = document.getElementById('anel');
-                anel.style.left = (e.offsetX - 35) + "px";
-                anel.style.top = (e.offsetY - 35) + "px";
-                anel.style.opacity = "1";
-                setTimeout(() => {
-                    document.getElementById('visor').classList.remove('em-desfoque');
-                    document.getElementById('btn-shot').classList.add('foco-rosa');
-                    state.step = "SHOT";
-                    falar("Ficou nítido! Toque no botão branco grande para tirar a foto.");
-                }, 800);
-            }
-        }
+/* START */
+function start(){
+go("home");
+setTimeout(()=>{
+pulso(document.getElementById("telefone"));
+falar("Toque no telefone azul");
+estado="telefone";
+},800);
+}
 
-        function disparar() {
-            if(state.step === "SHOT") {
-                if(navigator.vibrate) navigator.vibrate(100);
-                document.getElementById('btn-shot').classList.remove('foco-rosa');
-                document.getElementById('galeria-preview').style.backgroundImage = "url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=100')";
-                falar("Foto tirada! Você dominou o foco e o disparo. Evolução completa por hoje.");
-                setTimeout(() => mostrar('tela-inicio'), 3000);
-            }
-        }
-    </script>
+/* TAP */
+function tap(e,app){
+ripple(e);
+
+if(estado==="telefone"){
+if(app==="telefone"){
+removePulso();
+falar("Muito bem!");
+estado="camera";
+setTimeout(()=>{
+pulso(document.getElementById("camera"));
+falar("Agora toque na câmera");
+},1000);
+}else{
+erro();
+}
+}
+
+else if(estado==="camera"){
+if(app==="camera"){
+removePulso();
+go("cam");
+setTimeout(()=>{
+falar("Toque na imagem para focar");
+},500);
+estado="foco";
+}else erro();
+}
+
+}
+
+/* ERRO */
+function erro(){
+falar("Esse não é o botão certo");
+navigator.vibrate && navigator.vibrate([100,50,100]);
+}
+
+/* TROCAR TELA */
+function go(id){
+document.querySelectorAll(".tela").forEach(t=>t.classList.remove("ativa"));
+document.getElementById(id).classList.add("ativa");
+}
+
+/* CAMERA */
+function focar(){
+if(estado!=="foco")return;
+document.getElementById("camview").classList.add("foco");
+falar("Agora tire a foto");
+estado="foto";
+}
+
+function foto(){
+if(estado!=="foto")return;
+falar("Foto tirada!");
+setTimeout(()=>{
+go("final");
+falar("Parabéns!");
+},1000);
+}
+
+</script>
+
 </body>
 </html>
