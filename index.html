@@ -5,165 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ConSySenci.a Rosa - A Caixa Mágica</title>
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://rosa.consysencia.com/">
-    <meta property="og:title" content="Ganhei a Medalha da Caixa Mágica! 🥇">
-    <meta property="og:description" content="Perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. Vem aprender você também!">
-    <meta property="og:image" content="https://rosa.consysencia.com/1-medalha.jpg">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
     <style>
-        :root {
-            --rosa-forte: #D81B60;
-            --rosa-fundo: #FCE4EC;
-            --texto-escuro: #1C2833;
-            --botao-verde: #2ECC71;
-            --botao-vermelho: #E74C3C;
-            --whatsapp-cor: #25D366;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--rosa-fundo);
-            color: var(--texto-escuro);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden; 
-        }
-
-        .cabecalho {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 90%;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .rosa-guia {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #FF80AB, var(--rosa-forte));
-            border-radius: 50% 50% 10% 50%;
-            box-shadow: 0 4px 10px rgba(216, 27, 96, 0.4);
-            animation: respirar 3.5s infinite ease-in-out;
-        }
-
-        @keyframes respirar {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .indicador-progresso {
-            font-size: 20px;
-            color: #666;
-            font-weight: bold;
-        }
-
-        .btn-repetir {
-            background: white;
-            border: 2px solid var(--rosa-forte);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .piscar-alerta {
-            animation: pulsar-vermelho 1.5s infinite;
-        }
-
-        @keyframes pulsar-vermelho {
-            0% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(216, 27, 96, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0); }
-        }
-
-        .area-central {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 90%;
-            max-width: 600px;
-            padding-bottom: 80px; 
-        }
-
-        .caixa-texto {
-            background-color: white;
-            padding: 30px 20px;
-            border-radius: 24px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            border-left: 12px solid var(--rosa-forte);
-            text-align: center;
-        }
-
-        p { font-size: 26px; line-height: 1.4; color: #333; }
-        h1 { font-size: 32px; color: var(--rosa-forte); margin-bottom: 20px; }
+        :root { --rosa-forte: #D81B60; --rosa-fundo: #FCE4EC; --botao-verde: #2ECC71; --botao-vermelho: #E74C3C; }
         
-        .rodape-fixo {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            padding: 15px 20px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            display: none;
-        }
+        /* BLINDAGEM 2: Impede seleção de texto e toque duplo azul no Android */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
 
-        button.btn-principal {
-            background-color: var(--botao-verde);
-            color: white;
-            border: none;
-            padding: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            border-radius: 50px;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            display: block;
-            cursor: pointer;
-        }
+        body { background-color: var(--rosa-fundo); display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
 
+        .cabecalho { display: flex; align-items: center; justify-content: space-between; width: 90%; margin-top: 20px; display: none; }
+        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, #FF80AB, var(--rosa-forte)); border-radius: 50% 50% 10% 50%; animation: respirar 3.5s infinite ease-in-out; }
+        @keyframes respirar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        .btn-repetir { background: white; border: 2px solid var(--rosa-forte); border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; }
+        
+        .area-central { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 90%; max-width: 600px; padding-bottom: 80px; }
+        .caixa-texto { background-color: white; padding: 30px 20px; border-radius: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-left: 12px solid var(--rosa-forte); text-align: center; }
+
+        p { font-size: 24px; line-height: 1.4; color: #333; }
+        h1 { font-size: 30px; color: var(--rosa-forte); margin-bottom: 20px; }
+        
+        .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px 20px; display: none; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
+
+        button.btn-principal { background-color: var(--botao-verde); color: white; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; cursor: pointer; transition: transform 0.1s; }
         button.btn-principal:active { transform: scale(0.96); }
 
-        .btn-whatsapp {
-            background-color: var(--whatsapp-cor) !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .area-botoes-quiz {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .btn-sim { background-color: var(--botao-verde); flex: 1; padding: 25px; border-radius: 20px; color: white; font-size: 30px; font-weight: bold; border: none; }
-        .btn-nao { background-color: var(--botao-vermelho); flex: 1; padding: 25px; border-radius: 20px; color: white; font-size: 30px; font-weight: bold; border: none; }
-
-        .medalha { font-size: 100px; text-align: center; margin: 20px 0; animation: pulo 1s ease-out; }
-        @keyframes pulo { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .area-botoes-quiz { display: flex; gap: 15px; margin-top: 20px; }
+        .btn-sim, .btn-nao { flex: 1; padding: 20px; border-radius: 20px; color: white; font-size: 24px; font-weight: bold; border: none; }
+        .btn-sim { background-color: var(--botao-verde); }
+        .btn-nao { background-color: var(--botao-vermelho); }
 
         .escondido { display: none !important; }
-        .bloqueado { pointer-events: none; opacity: 0.7; }
+        .bloqueado { pointer-events: none; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -173,35 +46,32 @@
             <h1 id="titulo-inicio">Bem-vindo(a)!</h1>
             <p id="msg-inicio">Toque no botão verde abaixo para ligar a minha voz e começarmos.</p>
             <br>
-            <button id="btn-start" class="btn-principal" onclick="iniciarAula()">COMEÇAR</button>
+            <button id="btn-start" class="btn-principal" onclick="iniciarAula()">COMEÇAR AULA</button>
         </div>
     </div>
 
     <div id="cabecalho" class="cabecalho">
         <div class="rosa-guia"></div>
-        <div id="indicador" class="indicador-progresso">Passo 1/5</div>
+        <div id="indicador" style="font-weight: bold; color: #666;">Passo 1/5</div>
         <button id="btn-audio" class="btn-repetir" onclick="repetirAudio()">🔊</button>
     </div>
 
     <div id="area-aula" class="area-central escondido">
-        <div class="caixa-texto">
-            <p id="texto-aula">Carregando...</p>
-        </div>
+        <div class="caixa-texto"><p id="texto-aula">Carregando...</p></div>
     </div>
 
     <div id="area-quiz" class="area-central escondido">
         <div class="caixa-texto" style="border-left-color: #3498DB;">
-            <h2 style="font-size: 28px; color: #D81B60; margin-bottom: 20px;">Jogo da Memória</h2>
-            <p id="texto-pergunta">Pergunta vai aqui...</p>
+            <h2 style="font-size: 26px; color: #D81B60; margin-bottom: 20px;">Jogo da Memória</h2>
+            <p id="texto-pergunta">Pergunta...</p>
             <div id="botoes-sim-nao" class="area-botoes-quiz">
                 <button class="btn-sim" onclick="responder(true)">SIM</button>
                 <button class="btn-nao" onclick="responder(false)">NÃO</button>
             </div>
             <div id="area-medalha" class="escondido">
-                <div class="medalha">🥇</div>
-                <p><b>Você é um(a) Campeão(ã)!</b><br>Ganhou a Medalha da Caixa Mágica!</p>
-                <br>
-                <button class="btn-principal btn-whatsapp" onclick="compartilharVitoriaWhatsApp()">Enviar pelo WhatsApp</button>
+                <div style="font-size: 80px; margin: 10px 0;">🥇</div>
+                <p><b>Você é Campeão(ã)!</b><br>Ganhou a Medalha da Caixa Mágica!</p><br>
+                <button class="btn-principal" style="background-color: #25D366;" onclick="irParaGestos()">IR PARA ESCOLA DE GESTOS</button>
             </div>
         </div>
     </div>
@@ -212,58 +82,36 @@
 
     <script>
         const roteiro = [
-            "Olá! Eu sou a Rosa. Não tenha medo, nada do que você apertar aqui vai quebrar o aparelho. Se você não ouvir direito, aperte no alto-falante que está piscando lá em cima para eu repetir.",
+            "Olá! Eu sou a Rosa. Não tenha medo, nada do que você apertar aqui vai quebrar o aparelho.",
             "O seu aparelho é de vidro e plástico. O vidro que acende é a janela por onde vemos o mundo.",
             "A parte de trás tem as câmeras, que são os olhos dele. Evite colocar o dedo lá para não sujar a visão.",
             "É normal ele esquentar um pouquinho quando trabalha. Igual a gente! Só não abafe ele na coberta.",
-            "O cabo de carregar é a comida dele. Use sempre o cabo original para a bateria não viciar."
+            "O cabo de carregar é a comida dele. Use sempre o original para a bateria não viciar."
         ];
-
         const perguntas = [
             { texto: "O vidro da frente é como se fosse a janela do celular?", correta: true },
-            { texto: "É perigoso o celular esquentar um pouquinho enquanto trabalha?", correta: false },
-            { texto: "Podemos usar qualquer cabo baratinho para dar energia para ele?", correta: false }
+            { texto: "É perigoso o celular esquentar um pouquinho?", correta: false },
+            { texto: "Podemos usar qualquer cabo baratinho para dar energia?", correta: false }
         ];
 
-        let passoAtual = 0;
-        let perguntaAtual = 0;
-        let vozEscolhida = null;
-        let modoQuiz = false;
+        let passoAtual = 0; let perguntaAtual = 0; let modoQuiz = false;
 
-        // VERIFICA MEMÓRIA AO CARREGAR
         window.onload = function() {
-            const progresso = localStorage.getItem('progressoRosa');
-            if (progresso === '1') {
-                document.getElementById('titulo-inicio').innerText = "Que bom ver você de novo!";
-                document.getElementById('msg-inicio').innerText = "Você já conhece a Caixa Mágica. Vamos continuar para a Escola de Gestos?";
-                document.getElementById('btn-start').innerText = "CONTINUAR PARA OS GESTOS";
-                document.getElementById('btn-start').onclick = function() {
-                    window.location.href = '/gestos/';
-                };
+            // BLINDAGEM 3: Memória de progresso. Se já fez, pula para a Escola de Gestos.
+            if (localStorage.getItem('progressoRosa') === '1') {
+                document.getElementById('titulo-inicio').innerText = "Você voltou!";
+                document.getElementById('msg-inicio').innerText = "Você já ganhou a primeira medalha. Vamos continuar os treinos?";
+                document.getElementById('btn-start').innerText = "IR PARA OS GESTOS";
+                document.getElementById('btn-start').onclick = irParaGestos;
             }
-            carregarVozes();
         };
 
-        function carregarVozes() {
-            const vozes = window.speechSynthesis.getVoices();
-            vozEscolhida = vozes.find(voz => voz.lang === 'pt-BR' && voz.name.includes('Google')) 
-                      || vozes.find(voz => voz.lang === 'pt-BR' && (voz.name.includes('Luciana') || voz.name.includes('Francisca')))
-                      || vozes.find(voz => voz.lang.includes('pt-BR')) || vozes[0];
-        }
-
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = carregarVozes;
-        }
-
-        function falar(texto, aoTerminar) {
+        function falar(texto, callback) {
             window.speechSynthesis.cancel(); 
-            const utterThis = new SpeechSynthesisUtterance(texto);
-            if (vozEscolhida) { utterThis.voice = vozEscolhida; }
-            utterThis.lang = 'pt-BR';
-            utterThis.rate = 0.95; 
-            utterThis.pitch = 1.15; 
-            utterThis.onend = function() { if(aoTerminar) aoTerminar(); };
-            window.speechSynthesis.speak(utterThis);
+            const u = new SpeechSynthesisUtterance(texto);
+            u.lang = 'pt-BR'; u.rate = 0.95; 
+            u.onend = () => { if(callback) callback(); };
+            window.speechSynthesis.speak(u);
         }
 
         function iniciarAula() {
@@ -271,27 +119,20 @@
             document.getElementById('cabecalho').style.display = 'flex';
             document.getElementById('area-aula').classList.remove('escondido');
             document.getElementById('rodape').style.display = 'block';
-            document.getElementById('btn-audio').classList.add('piscar-alerta');
             atualizarTela();
         }
 
-        function repetirAudio() {
-            if (modoQuiz) { falar(perguntas[perguntaAtual].texto); }
-            else { falar(roteiro[passoAtual]); }
-        }
+        function repetirAudio() { modoQuiz ? falar(perguntas[perguntaAtual].texto) : falar(roteiro[passoAtual]); }
 
         function proximoPasso() {
-            if(passoAtual === 0) { document.getElementById('btn-audio').classList.remove('piscar-alerta'); }
             passoAtual++;
-            if (passoAtual < roteiro.length) { atualizarTela(); }
-            else { iniciarQuiz(); }
+            if (passoAtual < roteiro.length) atualizarTela(); else iniciarQuiz();
         }
 
         function atualizarTela() {
-            const texto = roteiro[passoAtual];
-            document.getElementById('texto-aula').innerText = texto;
+            document.getElementById('texto-aula').innerText = roteiro[passoAtual];
             document.getElementById('indicador').innerText = `Passo ${passoAtual + 1}/${roteiro.length}`;
-            falar(texto);
+            falar(roteiro[passoAtual]);
         }
 
         function iniciarQuiz() {
@@ -304,52 +145,32 @@
 
         function mostrarPergunta() {
             document.getElementById('indicador').innerText = `Jogo ${perguntaAtual + 1}/3`;
-            const perg = perguntas[perguntaAtual].texto;
-            document.getElementById('texto-pergunta').innerText = perg;
+            document.getElementById('texto-pergunta').innerText = perguntas[perguntaAtual].texto;
             document.getElementById('botoes-sim-nao').classList.remove('bloqueado');
-            falar("Pergunta: " + perg);
+            falar(perguntas[perguntaAtual].texto);
         }
 
         function responder(respostaUsuario) {
             document.getElementById('botoes-sim-nao').classList.add('bloqueado');
-            const correta = perguntas[perguntaAtual].correta;
-            if (respostaUsuario === correta) {
+            if (respostaUsuario === perguntas[perguntaAtual].correta) {
                 perguntaAtual++;
-                if (perguntaAtual < perguntas.length) {
-                    falar("Muito bem, você acertou! Vamos para a próxima.", mostrarPergunta);
-                } else { mostrarMedalha(); }
+                if (perguntaAtual < perguntas.length) falar("Muito bem! Vamos para a próxima.", mostrarPergunta);
+                else mostrarMedalha();
             } else {
-                falar("Ops! Não é bem assim. Vamos ouvir de novo?", function() {
-                    document.getElementById('botoes-sim-nao').classList.remove('bloqueado');
-                });
+                falar("Ops! Não é bem assim. Vamos tentar de novo?", () => document.getElementById('botoes-sim-nao').classList.remove('bloqueado'));
             }
         }
 
         function mostrarMedalha() {
-            // SALVA PROGRESSO NA MEMÓRIA DO CELULAR
-            localStorage.setItem('progressoRosa', '1');
-            
+            localStorage.setItem('progressoRosa', '1'); // Salva o progresso
             document.getElementById('indicador').innerText = "Vitória!";
             document.getElementById('botoes-sim-nao').classList.add('escondido');
             document.getElementById('texto-pergunta').classList.add('escondido');
             document.getElementById('area-medalha').classList.remove('escondido');
-            
-            const msgFinal = "Parabéns! Você ganhou a medalha da caixa mágica. Agora, envie para sua família no WhatsApp e depois clique no link da mensagem para voltarmos e aprendermos a Escola de Gestos!";
-            falar(msgFinal);
+            falar("Parabéns! Você ganhou a medalha da caixa mágica. Agora, aperte o botão verde para irmos para a Escola de Gestos.");
         }
 
-        function compartilharVitoriaWhatsApp() {
-            const linkSite = 'https://rosa.consysencia.com'; 
-            const texto = `Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. \n\nMeu próximo passo é a Escola de Gestos! \n\nClique no link abaixo para continuar aprendendo comigo: \n${linkSite}`;
-            
-            const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-            window.open(urlWhatsApp, '_blank');
-            
-            // Pequeno atraso para dar tempo de enviar e depois trocar de página
-            setTimeout(() => {
-                window.location.href = '/gestos/';
-            }, 3000);
-        }
+        function irParaGestos() { window.location.href = '/gestos/'; }
     </script>
 </body>
 </html>
