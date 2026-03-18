@@ -9,8 +9,8 @@
     <meta property="og:url" content="https://rosa.consysencia.com/">
     <meta property="og:title" content="Ganhei a Medalha da Caixa Mágica! 🥇">
     <meta property="og:description" content="Perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. Vem aprender você também!">
-    <meta property="og:image" content="https://rosa.consysencia.com/1-medalha.png">
-    <meta property="og:image:type" content="image/png">
+    <meta property="og:image" content="https://rosa.consysencia.com/1-medalha.jpg">
+    <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -80,10 +80,8 @@
             font-size: 24px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s;
         }
 
-        /* Animação para chamar atenção para o botão de áudio */
         .piscar-alerta {
             animation: pulsar-vermelho 1.5s infinite;
         }
@@ -166,8 +164,6 @@
         @keyframes pulo { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
         .escondido { display: none !important; }
-        
-        /* Classe para impedir cliques duplos/rápidos que cortam o áudio */
         .bloqueado { pointer-events: none; opacity: 0.7; }
     </style>
 </head>
@@ -246,7 +242,6 @@
             speechSynthesis.onvoiceschanged = carregarVozes;
         } else { carregarVozes(); }
 
-        // Função Falar Ajustada para aceitar um "callback" (esperar terminar)
         function falar(texto, aoTerminar) {
             window.speechSynthesis.cancel(); 
             const utterThis = new SpeechSynthesisUtterance(texto);
@@ -254,11 +249,7 @@
             utterThis.lang = 'pt-BR';
             utterThis.rate = 0.95; 
             utterThis.pitch = 1.15; 
-            
-            utterThis.onend = function(event) {
-                if(aoTerminar) aoTerminar();
-            };
-
+            utterThis.onend = function(event) { if(aoTerminar) aoTerminar(); };
             window.speechSynthesis.speak(utterThis);
         }
 
@@ -267,33 +258,20 @@
             document.getElementById('cabecalho').style.display = 'flex';
             document.getElementById('area-aula').classList.remove('escondido');
             document.getElementById('rodape').style.display = 'block';
-            
-            // Faz o botão piscar no primeiro passo
             document.getElementById('btn-audio').classList.add('piscar-alerta');
-            
             atualizarTela();
         }
 
         function repetirAudio() {
-            if (modoQuiz) {
-                falar(perguntas[perguntaAtual].texto);
-            } else {
-                falar(roteiro[passoAtual]);
-            }
+            if (modoQuiz) { falar(perguntas[perguntaAtual].texto); }
+            else { falar(roteiro[passoAtual]); }
         }
 
         function proximoPasso() {
-            // Remove o piscar do botão de áudio depois do primeiro clique
-            if(passoAtual === 0) {
-                document.getElementById('btn-audio').classList.remove('piscar-alerta');
-            }
-
+            if(passoAtual === 0) { document.getElementById('btn-audio').classList.remove('piscar-alerta'); }
             passoAtual++;
-            if (passoAtual < roteiro.length) {
-                atualizarTela();
-            } else {
-                iniciarQuiz();
-            }
+            if (passoAtual < roteiro.length) { atualizarTela(); }
+            else { iniciarQuiz(); }
         }
 
         function atualizarTela() {
@@ -315,25 +293,19 @@
             document.getElementById('indicador').innerText = `Jogo ${perguntaAtual + 1}/3`;
             const perg = perguntas[perguntaAtual].texto;
             document.getElementById('texto-pergunta').innerText = perg;
-            document.getElementById('botoes-sim-nao').classList.remove('bloqueado'); // Libera os botões
+            document.getElementById('botoes-sim-nao').classList.remove('bloqueado');
             falar("Pergunta: " + perg);
         }
 
         function responder(respostaUsuario) {
-            // Bloqueia os botões para não clicar de novo enquanto a Rosa fala
             document.getElementById('botoes-sim-nao').classList.add('bloqueado');
-            
             const correta = perguntas[perguntaAtual].correta;
             if (respostaUsuario === correta) {
                 perguntaAtual++;
                 if (perguntaAtual < perguntas.length) {
-                    // Fala, e só depois de terminar de falar, mostra a próxima pergunta
                     falar("Muito bem, você acertou! Vamos para a próxima.", mostrarPergunta);
-                } else {
-                    mostrarMedalha();
-                }
+                } else { mostrarMedalha(); }
             } else {
-                // Fala, e só depois de terminar de falar, libera os botões de novo
                 falar("Ops! Não é bem assim. Vamos ouvir de novo?", function() {
                     document.getElementById('botoes-sim-nao').classList.remove('bloqueado');
                 });
@@ -348,13 +320,10 @@
             falar("Parabéns! Você é um campeão. Acabou de ganhar a medalha da caixa mágica. Compartilhe com sua família!");
         }
 
-        // Compartilha o link "novo" pro WhatsApp baixar a imagem
         function compartilharVitoriaWhatsApp() {
-            const texto = 'Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa. Vem aprender você também: ';
-            const linkSite = 'https://rosa.consysencia.com/?v=1'; 
-            
+            const texto = 'Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. Vem aprender você também: ';
+            const linkSite = 'https://rosa.consysencia.com/?v=5'; 
             const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(texto + linkSite)}`;
-            
             window.open(urlWhatsApp, '_blank');
         }
     </script>
