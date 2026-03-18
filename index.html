@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ConSySenci.a Rosa - Módulo 0</title>
+    <style>
+        :root {
+            --rosa-forte: #D81B60;
+            --rosa-fundo: #FCE4EC;
+            --texto-escuro: #1C2833;
+            --botao-verde: #2ECC71;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--rosa-fundo);
+            color: var(--texto-escuro);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* O Personagem "Rosa" */
+        .rosa-guia {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #FF80AB, var(--rosa-forte));
+            border-radius: 50% 50% 10% 50%;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4);
+            animation: respirar 3s infinite ease-in-out;
+            display: none; /* Escondido até o usuário iniciar */
+        }
+
+        @keyframes respirar {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.05) translateY(-10px); }
+        }
+
+        .caixa-texto {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 40px;
+            border-left: 10px solid var(--rosa-forte);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--rosa-forte);
+        }
+
+        p {
+            font-size: 26px; /* Letra gigante para acessibilidade */
+            line-height: 1.5;
+        }
+
+        button {
+            background-color: var(--botao-verde);
+            color: white;
+            border: none;
+            padding: 25px 40px;
+            font-size: 28px;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Esconde elementos para criar a transição de telas */
+        .escondido {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tela-inicio" class="caixa-texto">
+        <h1>Bem-vindo(a)!</h1>
+        <p>Para começarmos, por favor, toque no botão verde abaixo. Ele vai ligar a minha voz.</p>
+        <br>
+        <button onclick="iniciarAula()">COMEÇAR</button>
+    </div>
+
+    <div id="rosa-icone" class="rosa-guia"></div>
+    
+    <div id="tela-aula" class="caixa-texto escondido">
+        <p id="texto-aula">Carregando...</p>
+    </div>
+
+    <button id="botao-proximo" class="escondido" onclick="proximoPasso()">ENTENDI, PRÓXIMO</button>
+
+    <script>
+        // Array com os passos do Módulo 0
+        const roteiro = [
+            "Olá! Eu sou a Rosa. Eu moro aqui dentro para ajudar você. Não tenha medo, nada do que você apertar aqui vai quebrar o seu aparelho. Eu protejo você.",
+            "Primeiro, vamos olhar para o aparelho que está na sua mão. Ele é feito de plástico e vidro. Essa parte de vidro que acende é como se fosse a janela da sua casa. É por aqui que vamos ver o mundo.",
+            "A parte de trás, onde tem as bolinhas, são as câmeras. Elas são os olhos do aparelho. Evite colocar o dedo nelas para não embaçar a visão dele.",
+            "Você percebeu que às vezes ele esquenta um pouquinho? Isso é normal! Igual a gente quando faz uma caminhada, ele trabalha e gera calor. Só não deixe ele abafado embaixo do travesseiro.",
+            "Para ele ter energia, ele precisa comer. O cabo de carregar é a comidinha dele. Use sempre o cabo que veio na caixa, é a comida mais saudável para a bateria não viciar."
+        ];
+
+        let passoAtual = 0;
+
+        function falar(texto) {
+            // Cancela falas anteriores para não encavalar
+            window.speechSynthesis.cancel(); 
+            
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(texto);
+            utterThis.lang = 'pt-BR';
+            utterThis.rate = 0.85; // Voz um pouco mais lenta
+            utterThis.pitch = 1.1; // Tom levemente mais agudo/acolhedor
+            synth.speak(utterThis);
+        }
+
+        function iniciarAula() {
+            // Esconde a tela inicial e mostra a interface da aula
+            document.getElementById('tela-inicio').classList.add('escondido');
+            document.getElementById('rosa-icone').style.display = 'block';
+            document.getElementById('tela-aula').classList.remove('escondido');
+            document.getElementById('botao-proximo').classList.remove('escondido');
+            
+            // Inicia o primeiro passo
+            atualizarTela();
+        }
+
+        function proximoPasso() {
+            passoAtual++;
+            if (passoAtual < roteiro.length) {
+                atualizarTela();
+            } else {
+                document.getElementById('texto-aula').innerHTML = "<b>Parabéns!</b> Você completou o primeiro passo. Você já conhece a Caixa Mágica!";
+                document.getElementById('botao-proximo').classList.add('escondido');
+                falar("Parabéns! Você completou o primeiro passo. Você já conhece a Caixa Mágica!");
+            }
+        }
+
+        function atualizarTela() {
+            const texto = roteiro[passoAtual];
+            document.getElementById('texto-aula').innerText = texto;
+            falar(texto);
+        }
+    </script>
+</body>
+</html>
