@@ -4,64 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ConSySenci.a - Evolução Digital</title>
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
     <style>
         :root { 
-            /* NOVA PALETA UNISSEX PREMIUM */
-            --charcoal-bg: #1C2833; 
-            --gold-accent: #F1C40F;
-            --slate-blue: #34495E;
-            --ivory-white: #FDFEFE;
-            --charcoal-text: #2C3E50;
+            --gold-accent: #F1C40F; --charcoal-bg: #1C2833; 
+            --slate-blue: #34495E; --ivory-white: #FDFEFE; --success-green: #2ECC71; 
         }
-
-        /* Blindagem 2: Impede seleção de texto */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Open Sans', Arial, sans-serif; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-
-        body { background-color: var(--charcoal-bg); color: var(--ivory-white); display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
-
-        .cabecalho { display: flex; align-items: center; justify-content: space-between; width: 90%; margin-top: 20px; display: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Open Sans', Arial, sans-serif; user-select: none; -webkit-user-select: none; }
+        body { background-color: var(--charcoal-bg); color: var(--ivory-white); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; padding: 20px; }
         
-        /* O "Mentor" agora é mais sóbrio */
-        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, var(--gold-accent), var(--slate-blue)); border-radius: 50% 50% 0 50%; }
+        .cabeçalho { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 600px; position: fixed; top: 20px; display: none; }
+        /* O "Mentor" agora é mais sóbrio, inspirado em Solo Leveling/image_0.png */
+        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, var(--gold-accent), var(--slate-blue)); border-radius: 50% 50% 0 50%; box-shadow: 0 0 15px rgba(241, 196, 15, 0.5); }
+        .btn-repetir { background: rgba(255,255,255,0.1); border: 2px solid var(--gold-accent); border-radius: 50%; width: 55px; height: 55px; font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gold-accent); }
         
-        .btn-repetir { 
-            background: rgba(255,255,255,0.1); 
-            border: 2px solid var(--gold-accent); 
-            border-radius: 50%; 
-            width: 55px; 
-            height: 55px; 
-            font-size: 26px; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            color: var(--gold-accent);
-        }
-        
-        .area-central { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 90%; max-width: 600px; padding-bottom: 80px; }
-        
-        /* Caixa de Texto Sóbria e Profissional */
-        .caixa-texto { background-color: var(--slate-blue); padding: 30px 20px; border-radius: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); text-align: center; }
+        .area-central { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 600px; padding-bottom: 80px; text-align: center; }
+        .caixa-texto { background-color: var(--slate-blue); padding: 30px 20px; border-radius: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border-left: 12px solid var(--gold-accent); }
 
+        h1 { font-size: 32px; color: var(--gold-accent); margin-bottom: 20px; }
         p { font-size: 24px; line-height: 1.4; color: var(--ivory-white); }
-        h1 { font-size: 32px; color: var(--gold-accent); margin-bottom: 20px; font-weight: 700; }
         
         .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 15px 20px; display: none; box-shadow: 0 -4px 10px rgba(0,0,0,0.2); }
 
-        /* Botão Principal com Efeito de Emoção ao Clicar */
-        button.btn-principal { background-color: var(--slate-blue); color: var(--gold-accent); border: 2px solid var(--gold-accent); padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        button.btn-principal { background-color: var(--slate-blue); color: var(--gold-accent); border: 2px solid var(--gold-accent); padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         button.btn-principal:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
-        .btn-sim { background-color: var(--slate-blue); border-color: var(--gold-accent); color: var(--gold-accent); }
-        .btn-nao { background-color: #333; border: 2px solid #555; color: #999; }
+        /* CORREÇÃO DO QUIZ: Centralização Absoluta */
+        .area-botoes-quiz { display: flex; gap: 15px; margin-top: 20px; width: 100%; justify-content: center; align-items: center; }
+        .btn-sim, .btn-nao { flex: 1; padding: 25px; border-radius: 20px; color: white; font-size: 28px; font-weight: bold; border: none; max-width: 200px; }
+        .btn-sim { background-color: var(--success-green); }
+        .btn-nao { background-color: #E74C3C; }
 
         .medalha { font-size: 100px; text-align: center; margin: 20px 0; color: var(--gold-accent); filter: drop-shadow(0 0 10px var(--gold-accent)); }
         .escondido { display: none !important; }
-        .bloqueado { pointer-events: none; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -69,12 +43,12 @@
     <div id="tela-inicio" class="area-central">
         <div class="caixa-texto">
             <h1 id="titulo-inicio">Bem-vindo(a)!</h1>
-            <p id="msg-inicio">Toque no botão abaixo para ligar a minha voz e iniciarmos sua evolução digital.</p><br>
+            <p id="msg-inicio">Toque no botão dourado abaixo para ligar a minha voz e iniciarmos sua evolução digital.</p><br>
             <button id="btn-start" class="btn-principal" onclick="iniciarAula()">COMEÇAR SISTEMA</button>
         </div>
     </div>
 
-    <div id="cabecalho" class="cabecalho">
+    <div id="cabecalho" class="cabeçalho">
         <div class="rosa-guia"></div>
         <div id="indicador" style="font-weight:700; font-size: 18px; color: var(--gold-accent);">Passo 1/5</div>
         <button class="btn-repetir" onclick="repetirAudio()">🔊</button>
@@ -87,6 +61,7 @@
     <div id="area-quiz" class="area-central escondido">
         <div class="caixa-texto" style="border-left-color: #3498DB;">
             <p id="texto-pergunta">Pergunta...</p>
+            
             <div id="botoes-sim-nao" class="area-botoes-quiz">
                 <button class="btn-sim" onclick="responder(true)">SIM</button>
                 <button class="btn-nao" onclick="responder(false)">NÃO</button>
@@ -94,8 +69,8 @@
             
             <div id="area-medalha" class="escondido">
                 <div class="medalha">🥇</div>
-                <p><b>Você evoluiu!</b><br>Ganhou a Medalha da Caixa Mágica!</p>
-                <button class="btn-principal" onclick="compartilharVitoriaWhatsApp()">Enviar família no WhatsApp</button>
+                <p><b>Você evoluiu!</b><br>Ganhou a Medalha da Caixa Mágica!</p><br>
+                <button class="btn-principal" onclick="compartilharVitoriaWhatsApp()" style="background-color: #25D366; color: white;">Enviar família no WhatsApp</button>
                 <br><br>
                 <button class="btn-principal" style="background-color: var(--gold-accent); color: #000;" onclick="irParaGestos()">IR PARA ESCOLA DE GESTOS ➔</button>
             </div>
@@ -112,14 +87,13 @@
         let passoAtual = 0; let voz = null;
 
         function falar(t, c) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'pt-BR'; u.rate = 0.95; u.onend = () => { if(c) c(); }; window.speechSynthesis.speak(u); }
-        function iniciarAula() { document.getElementById('tela-inicio').classList.add('escondido'); document.getElementById('cabecalho').style.display = 'flex'; document.getElementById('area-aula').classList.remove('escondido'); document.getElementById('rodape').style.display = 'block'; atualizarTela(); }
+        function iniciarAula() { document.getElementById('tela-inicio').classList.add('escondido'); document.getElementById('cabeçalho').style.display = 'flex'; document.getElementById('area-aula').classList.remove('escondido'); document.getElementById('rodape').style.display = 'block'; atualizarTela(); }
         function repetirAudio() { falar(document.getElementById('texto-aula').innerText || document.getElementById('texto-pergunta').innerText); }
         function proximoPasso() { passoAtual++; if(passoAtual < roteiro.length) atualizarTela(); else iniciarQuiz(); }
         function atualizarTela() { const t = roteiro[passoAtual]; document.getElementById('texto-aula').innerText = t; document.getElementById('indicador').innerText = `Passo ${passoAtual+1}/${roteiro.length}`; falar(t); }
         function iniciarQuiz() { document.getElementById('area-aula').classList.add('escondido'); document.getElementById('rodape').style.display = 'none'; document.getElementById('area-quiz').classList.remove('escondido'); falar(perguntas[0].texto); }
         
         function responder(r) { 
-            // BLINDAGEM 3: Microinteração de emoção no quiz
             if(r === perguntas[0].correta) { 
                 document.getElementById('botoes-sim-nao').classList.add('escondido'); 
                 document.getElementById('area-medalha').classList.remove('escondido'); 
@@ -131,17 +105,8 @@
             } 
         }
         
-        function compartilharVitoriaWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent('Acabei de evoluir! 🥇 Ganhei a Medalha da Caixa Mágica no ConSySenci.a.')}`, '_blank'); }
+        function compartilharVitoriaWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent('Acabei de evoluir! 🥇 Ganhei a Medalha da Caixa Mágica no ConSySenci.a Rosa.')}`, '_blank'); setTimeout(() => irParaGestos(), 3000); }
         function irParaGestos() { window.location.href='/gestos/'; }
-
-        window.onload = function() {
-            if (localStorage.getItem('progressoRosa') === '1') {
-                document.querySelector('#tela-inicio h1').innerText = "Você voltou!";
-                document.querySelector('#tela-inicio p').innerText = "Você já ganhou a primeira medalha de evolução. Vamos continuar?";
-                document.querySelector('#tela-inicio button').innerText = "IR PARA OS GESTOS";
-                document.querySelector('#tela-inicio button').onclick = irParaGestos;
-            }
-        };
     </script>
 </body>
 </html>
