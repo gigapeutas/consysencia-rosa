@@ -239,7 +239,22 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
 .btn-mapa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:320px;min-height:56px;background:var(--neon);color:var(--void);font-family:var(--fn);font-size:20px;font-weight:900;border:none;border-radius:14px;cursor:pointer;box-shadow:0 5px 18px rgba(57,255,20,.35);transition:transform .2s;touch-action:manipulation;}
 .btn-mapa:active{transform:scale(.95);}
 
-@media(max-height:800px){.sim-wrap{transform:scale(.87)}}
+/* MÓDULO 3 */
+.m3-step-dot{width:28px;height:28px;border-radius:50%;background:#2A3942;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:background .3s,box-shadow .3s;}
+.m3-step-dot.active{background:var(--wgreen);box-shadow:0 0 0 3px rgba(0,168,132,.3);}
+.m3-step-dot.done{background:#005C4B;}
+@keyframes recPulse{from{opacity:1;transform:scale(1);}to{opacity:.4;transform:scale(.7);}}
+.m3-audio-bar{width:3px;border-radius:2px;background:var(--wgreen);animation:audioWave 0.5s ease-in-out infinite alternate;}
+@keyframes audioWave{from{transform:scaleY(.3);}to{transform:scaleY(1);}}
+.m3-media-recv{background:var(--wbubble-in);border-radius:0 8px 8px 8px;align-self:flex-start;overflow:hidden;max-width:82%;cursor:pointer;transition:transform .1s;}
+.m3-media-recv:active{transform:scale(.96);}
+.m3-audio-bubble{display:flex;align-items:center;gap:8px;padding:10px 12px 20px;position:relative;min-width:160px;}
+.m3-audio-play{width:34px;height:34px;border-radius:50%;background:var(--wgreen);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:14px;flex-shrink:0;}
+.m3-audio-wave{flex:1;height:24px;display:flex;align-items:center;gap:2px;}
+.m3-audio-wave-bar{width:3px;border-radius:2px;background:rgba(255,255,255,.35);}
+.m3-audio-wave-bar.played{background:var(--wgreen);}
+
+
 @media(max-height:680px){.sim-wrap{transform:scale(.76)}}
 @media(max-height:580px){.sim-wrap{transform:scale(.66)}}
 @media(max-width:390px) {.sim-wrap{transform:scale(.93)}}
@@ -490,6 +505,118 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
   </div>
 </div>
 
+<!-- MÓDULO 3 — COMUNICAÇÃO -->
+<div id="pg-mod3" class="page pg-sim">
+  <div class="sim-wrap">
+    <div class="pf" id="pf3">
+      <div class="vb vb-u"></div><div class="vb vb-d"></div>
+      <div class="pbtn locked"></div>
+      <div class="ps" id="ps3" style="display:flex;flex-direction:column;">
+
+        <div class="sb">
+          <span id="m3-hora">10:30</span>
+          <div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div>
+        </div>
+
+        <!-- CHAT DO FILHO -->
+        <div id="m3-chat" style="display:flex;flex-direction:column;flex:1;overflow:hidden;background:var(--wbg);">
+
+          <!-- Header -->
+          <div class="wa-header">
+            <span class="wa-back" onclick="Router.go('pg-mapa')">←</span>
+            <div class="wa-avatar">👦</div>
+            <div class="wa-info">
+              <div class="wa-name">Filho 💙</div>
+              <div class="wa-status" id="m3-status">online</div>
+            </div>
+            <div class="wa-actions"><span>📞</span><span>⋮</span></div>
+          </div>
+
+          <!-- Progresso das etapas -->
+          <div id="m3-prog-bar" style="background:var(--wtoolbar);padding:8px 12px;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--wdivider);flex-shrink:0;">
+            <div class="m3-step-dot active" id="m3-dot-0" title="Áudio">🎤</div>
+            <div style="flex:1;height:2px;background:var(--wdivider);border-radius:2px;overflow:hidden;"><div id="m3-pbar" style="height:100%;width:0%;background:var(--wgreen);transition:width .4s;border-radius:2px;"></div></div>
+            <div class="m3-step-dot" id="m3-dot-1" title="Foto">📷</div>
+            <div style="flex:1;height:2px;background:var(--wdivider);border-radius:2px;overflow:hidden;"><div id="m3-pbar2" style="height:100%;width:0%;background:var(--wgreen);transition:width .4s;border-radius:2px;"></div></div>
+            <div class="m3-step-dot" id="m3-dot-2" title="Emoji">😊</div>
+            <div style="flex:1;height:2px;background:var(--wdivider);border-radius:2px;overflow:hidden;"><div id="m3-pbar3" style="height:100%;width:0%;background:var(--wgreen);transition:width .4s;border-radius:2px;"></div></div>
+            <div class="m3-step-dot" id="m3-dot-3" title="Mídia">🖼️</div>
+          </div>
+
+          <!-- Mensagens -->
+          <div class="wa-msgs" id="m3-msgs" style="flex:1;overflow-y:auto;">
+            <div class="wa-date-sep"><span>Hoje</span></div>
+            <div class="wa-bubble recv">Oi mãe! 🥰 Que saudade! Manda um áudio pra mim?<span class="wa-bubble-time">10:29</span></div>
+          </div>
+
+          <!-- Input area -->
+          <div id="m3-input-area" style="background:var(--wtoolbar);border-top:1px solid var(--wdivider);flex-shrink:0;">
+
+            <!-- Barra normal -->
+            <div id="m3-bar-normal" style="display:flex;align-items:center;gap:8px;padding:6px 10px;">
+              <button id="m3-btn-emoji" onclick="M3.abrirEmoji()" style="background:none;border:none;font-size:22px;cursor:pointer;padding:4px;color:#8696A0;transition:transform .15s;" title="Emoji">😊</button>
+              <div style="flex:1;background:#2A3942;border-radius:22px;padding:9px 14px;font-size:13px;color:#8696A0;font-family:var(--fn);">Mensagem</div>
+              <button id="m3-btn-clip" onclick="M3.abrirCamera()" style="background:none;border:none;font-size:22px;cursor:pointer;padding:4px;color:#8696A0;transition:transform .15s;" title="Câmera">📎</button>
+              <button id="m3-btn-mic" onclick="M3.iniciarAudio()" style="width:42px;height:42px;border-radius:50%;background:var(--wgreen);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(0,168,132,.4);transition:transform .1s;" title="Microfone">🎤</button>
+            </div>
+
+            <!-- Gravando áudio -->
+            <div id="m3-bar-audio" style="display:none;align-items:center;gap:10px;padding:10px 14px;background:rgba(0,168,132,.08);">
+              <button onclick="M3.cancelarAudio()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#FF5555;">🗑️</button>
+              <div style="flex:1;display:flex;align-items:center;gap:8px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#FF4444;animation:recPulse .8s ease-in-out infinite alternate;flex-shrink:0;"></div>
+                <div id="m3-onda" style="flex:1;height:28px;display:flex;align-items:center;gap:2px;overflow:hidden;"></div>
+                <span id="m3-timer" style="font-size:13px;font-weight:700;color:var(--wgreen);min-width:32px;">0:00</span>
+              </div>
+              <button id="m3-btn-enviar-audio" onclick="M3.enviarAudio()" style="width:42px;height:42px;border-radius:50%;background:var(--wgreen);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(0,168,132,.4);">
+                <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </div>
+
+            <!-- Painel de emoji -->
+            <div id="m3-panel-emoji" style="display:none;padding:10px 12px;background:#1C1C1E;border-top:1px solid #333;">
+              <div style="font-size:11px;color:#8696A0;font-weight:700;margin-bottom:8px;">Toque em um emoji para enviar!</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;" id="m3-emoji-grid"></div>
+            </div>
+
+            <!-- Painel de câmera simulada -->
+            <div id="m3-panel-camera" style="display:none;flex-direction:column;background:#000;height:220px;position:relative;overflow:hidden;">
+              <!-- Viewfinder simulado -->
+              <div style="flex:1;background:linear-gradient(135deg,#1a2a1a,#0d1f0d);display:flex;align-items:center;justify-content:center;position:relative;">
+                <div style="font-size:60px;opacity:.6;filter:blur(1px);">🌳</div>
+                <div style="position:absolute;inset:10px;border:1px solid rgba(255,255,255,.2);border-radius:4px;"></div>
+                <!-- mira central -->
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;">
+                  <div style="position:absolute;top:0;left:0;width:10px;height:10px;border-top:2px solid #fff;border-left:2px solid #fff;"></div>
+                  <div style="position:absolute;top:0;right:0;width:10px;height:10px;border-top:2px solid #fff;border-right:2px solid #fff;"></div>
+                  <div style="position:absolute;bottom:0;left:0;width:10px;height:10px;border-bottom:2px solid #fff;border-left:2px solid #fff;"></div>
+                  <div style="position:absolute;bottom:0;right:0;width:10px;height:10px;border-bottom:2px solid #fff;border-right:2px solid #fff;"></div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-around;padding:10px;background:#111;">
+                <button onclick="M3.fecharCamera()" style="background:none;border:2px solid #555;border-radius:50%;width:36px;height:36px;color:#aaa;font-size:16px;cursor:pointer;">✕</button>
+                <button id="m3-btn-tirar-foto" onclick="M3.tirarFoto()" style="width:56px;height:56px;border-radius:50%;background:#fff;border:3px solid #ccc;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 0 3px var(--neon),0 0 14px var(--neon-g);animation:pe 1s ease-in-out infinite alternate;">📷</button>
+                <div style="width:36px;"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nav-bar" style="position:absolute;bottom:0;left:0;right:0;">
+          <button class="nb-btn" onclick="Router.go('pg-mapa')">←</button>
+          <button class="nb-btn">⬤</button>
+          <button class="nb-btn">⬜</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="instructor" id="instr3">
+    <div class="iarrow" id="ia3"><span></span><span></span></div>
+    <p id="it3">Toque no <strong>microfone 🎤</strong> para gravar um áudio para o filho!</p>
+  </div>
+</div>
+
 <!-- CERTIFICADO -->
 <div id="pg-cert" class="page">
   <div class="cert-ico" id="cert-ico">🎓</div>
@@ -531,8 +658,9 @@ function irMod(n){
   if(n===0){Router.go('pg-mod0');M0.init();return;}
   if(n===1){Router.go('pg-mod1');M1.init();return;}
   if(n===2){Router.go('pg-mod2');M2.init();return;}
-  const nomes=['','','','Comunicação','Escudo de Prata'];
-  const icons=['','','','💬','🛡️'];
+  if(n===3){Router.go('pg-mod3');M3.init();return;}
+  const nomes=['','','','','Escudo de Prata'];
+  const icons=['','','','','🛡️'];
   document.getElementById('cert-ico').textContent=icons[n];
   document.getElementById('cert-tit').textContent='Módulo '+n+' — Em breve!';
   document.getElementById('cert-sub').innerHTML='O módulo <strong>'+nomes[n]+'</strong> está sendo preparado com muito carinho!';
@@ -899,10 +1027,300 @@ const M2=(()=>{
   return{init,abrirWhatsApp,abrirConversa,focarInput,voltarLista,voltar,enviarMsg};
 })();
 
+/* ══ MÓDULO 3 — COMUNICAÇÃO ══ */
+const M3=(()=>{
+  // Etapas: 0=áudio, 1=foto, 2=emoji, 3=abrir-midia, 4=done
+  let etapa=0, audioT=null, audioSeg=0, audioRaf=null, waveT=null;
+  let msgT=null, D=null;
+
+  const MSGS={
+    0:{arrow:true, html:'Toque no <strong>microfone 🎤</strong> para gravar um áudio para o filho!'},
+    '0b':{arrow:false,html:'🎤 Gravando! Toque no <strong>botão verde</strong> para enviar o áudio!'},
+    1:{arrow:false,html:'Ótimo! Agora toque no <strong>clipe 📎</strong> para enviar uma foto!'},
+    '1b':{arrow:false,html:'📷 Câmera aberta! Toque no <strong>botão de foto</strong> para tirar!'},
+    2:{arrow:false,html:'Incrível! Agora toque no <strong>rosto sorridente 😊</strong> para usar um emoji!'},
+    3:{arrow:false,html:'Seu filho mandou uma foto! Toque nela para <strong>abrir e ver!</strong>'},
+    4:{arrow:false,html:'🎉 Você aprendeu tudo! <strong>Módulo concluído!</strong>'},
+  };
+
+  const show=el=>el?.classList.add('vis');
+  const setMsg=(key,delay=0)=>{
+    clearTimeout(msgT);
+    const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};
+    delay>0?(msgT=setTimeout(apply,delay)):apply();
+  };
+
+  const getHM=()=>{const n=new Date();return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');};
+
+  // ── Progresso visual ──
+  const setEtapaVisual=(n)=>{
+    [0,1,2,3].forEach(i=>{
+      const dot=document.getElementById('m3-dot-'+i);
+      if(!dot)return;
+      if(i<n){dot.className='m3-step-dot done';}
+      else if(i===n){dot.className='m3-step-dot active';}
+      else{dot.className='m3-step-dot';}
+    });
+    const barIds=['m3-pbar','m3-pbar2','m3-pbar3'];
+    barIds.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.style.width=(i<n?'100%':'0%');});
+  };
+
+  // ── Adiciona balão na conversa ──
+  const addBubble=(html,tipo='sent',extra='')=>{
+    const msgs=document.getElementById('m3-msgs');
+    const div=document.createElement('div');
+    div.className='wa-bubble '+tipo;
+    div.innerHTML=html+`<span class="wa-bubble-time">${getHM()}${tipo==='sent'?' <span class="wa-tick">✓✓</span>':''}</span>`;
+    if(extra)div.setAttribute('data-action',extra);
+    msgs.appendChild(div);
+    setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,50);
+    return div;
+  };
+
+  const filhoDigitando=(cb,delay=1400)=>{
+    document.getElementById('m3-status').textContent='digitando...';
+    const msgs=document.getElementById('m3-msgs');
+    const tb=document.createElement('div');
+    tb.className='wa-bubble recv';
+    tb.innerHTML='<div class="wa-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tb);msgs.scrollTop=msgs.scrollHeight;
+    setTimeout(()=>{tb.remove();document.getElementById('m3-status').textContent='online';cb();},delay);
+  };
+
+  // ── Destaques nos botões ──
+  const highlight=(id)=>{
+    ['m3-btn-mic','m3-btn-clip','m3-btn-emoji'].forEach(bid=>{
+      const b=document.getElementById(bid);
+      if(!b)return;
+      b.style.boxShadow='';b.style.animation='';
+    });
+    const b=document.getElementById(id);
+    if(b){b.style.boxShadow='0 0 0 3px var(--neon),0 0 14px var(--neon-g)';b.style.animation='pe 1s ease-in-out infinite alternate';}
+  };
+  const clearHighlight=()=>{
+    ['m3-btn-mic','m3-btn-clip','m3-btn-emoji'].forEach(bid=>{
+      const b=document.getElementById(bid);if(b){b.style.boxShadow='';b.style.animation='';}
+    });
+  };
+
+  // ─────────────────────────────────────────
+  // ETAPA 0 — ÁUDIO
+  // ─────────────────────────────────────────
+  const iniciarAudio=()=>{
+    if(etapa!==0)return;
+    document.getElementById('m3-bar-normal').style.display='none';
+    document.getElementById('m3-bar-audio').style.display='flex';
+    document.getElementById('m3-panel-emoji').style.display='none';
+    document.getElementById('m3-panel-camera').style.display='none';
+    audioSeg=0;
+    clearHighlight();
+    // Gera barras da onda sonora
+    const onda=document.getElementById('m3-onda');
+    onda.innerHTML='';
+    for(let i=0;i<28;i++){
+      const b=document.createElement('div');
+      b.className='m3-audio-bar';
+      b.style.height=Math.floor(Math.random()*18+6)+'px';
+      b.style.animationDelay=(Math.random()*.5)+'s';
+      b.style.animationDuration=(.3+Math.random()*.4)+'s';
+      onda.appendChild(b);
+    }
+    // Timer
+    const tick=()=>{audioSeg++;document.getElementById('m3-timer').textContent=Math.floor(audioSeg/60)+':'+(audioSeg%60).toString().padStart(2,'0');audioT=setTimeout(tick,1000);};
+    audioT=setTimeout(tick,1000);
+    setMsg('0b');
+  };
+
+  const cancelarAudio=()=>{
+    clearTimeout(audioT);audioT=null;audioSeg=0;
+    document.getElementById('m3-bar-audio').style.display='none';
+    document.getElementById('m3-bar-normal').style.display='flex';
+    setMsg(0);highlight('m3-btn-mic');
+  };
+
+  const enviarAudio=()=>{
+    if(etapa!==0)return;
+    clearTimeout(audioT);audioT=null;
+    document.getElementById('m3-bar-audio').style.display='none';
+    document.getElementById('m3-bar-normal').style.display='flex';
+    // Cria balão de áudio enviado
+    const dur=Math.max(1,audioSeg);const durStr=Math.floor(dur/60)+':'+(dur%60).toString().padStart(2,'0');
+    const msgs=document.getElementById('m3-msgs');
+    const div=document.createElement('div');div.className='wa-bubble sent';
+    const bars=Array.from({length:20},(_,i)=>`<div class="m3-audio-wave-bar${i<12?' played':''}" style="height:${Math.floor(Math.random()*14+5)}px;"></div>`).join('');
+    div.innerHTML=`<div class="m3-audio-bubble"><button class="m3-audio-play">▶</button><div class="m3-audio-wave">${bars}</div><span style="font-size:10px;color:#8696A0;">${durStr}</span></div><span class="wa-bubble-time">${getHM()} <span class="wa-tick">✓✓</span></span>`;
+    msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+    etapa=1;setEtapaVisual(1);
+    // Filho responde
+    setTimeout(()=>{
+      filhoDigitando(()=>{
+        addBubble('Que voz boa, mãe! 😍 Agora manda uma foto sua pra mim!','recv');
+        highlight('m3-btn-clip');setMsg(1);
+      });
+    },800);
+  };
+
+  // ─────────────────────────────────────────
+  // ETAPA 1 — FOTO
+  // ─────────────────────────────────────────
+  const abrirCamera=()=>{
+    if(etapa!==1)return;
+    clearHighlight();
+    document.getElementById('m3-panel-camera').style.display='flex';
+    document.getElementById('m3-panel-emoji').style.display='none';
+    setMsg('1b');
+  };
+
+  const fecharCamera=()=>{
+    document.getElementById('m3-panel-camera').style.display='none';
+    if(etapa===1){highlight('m3-btn-clip');setMsg(1);}
+  };
+
+  const tirarFoto=()=>{
+    if(etapa!==1)return;
+    // Flash effect
+    const flash=document.createElement('div');
+    flash.style.cssText='position:absolute;inset:0;background:#fff;z-index:99;animation:flashOut .3s ease forwards;pointer-events:none;';
+    document.getElementById('m3-panel-camera').appendChild(flash);
+    // Add keyframe dynamically
+    if(!document.getElementById('flash-kf')){
+      const s=document.createElement('style');s.id='flash-kf';s.textContent='@keyframes flashOut{from{opacity:1}to{opacity:0}}';
+      document.head.appendChild(s);
+    }
+    setTimeout(()=>{
+      flash.remove();
+      document.getElementById('m3-panel-camera').style.display='none';
+      // Foto enviada como balão
+      const msgs=document.getElementById('m3-msgs');
+      const div=document.createElement('div');div.className='wa-bubble sent';
+      div.style.padding='4px 4px 18px';div.style.overflow='hidden';
+      div.innerHTML=`<div style="width:160px;height:110px;background:linear-gradient(135deg,#1a2a1a,#0d1f0d);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:44px;">🤳</div><span class="wa-bubble-time">${getHM()} <span class="wa-tick">✓✓</span></span>`;
+      msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+      etapa=2;setEtapaVisual(2);
+      setTimeout(()=>{
+        filhoDigitando(()=>{
+          addBubble('Lindíssima! 😍❤️ Agora manda um emoji de coração pra mim!','recv');
+          highlight('m3-btn-emoji');setMsg(2);
+        });
+      },800);
+    },350);
+  };
+
+  // ─────────────────────────────────────────
+  // ETAPA 2 — EMOJI
+  // ─────────────────────────────────────────
+  const EMOJIS=['❤️','😊','😂','🥰','👍','🙏','😘','🌹','🎉','😍','💙','🤗','😁','🌟','💪','👏','🥹','😢','😴','🤣'];
+
+  const abrirEmoji=()=>{
+    if(etapa!==2)return;
+    clearHighlight();
+    document.getElementById('m3-panel-camera').style.display='none';
+    const panel=document.getElementById('m3-panel-emoji');
+    panel.style.display='block';
+    const grid=document.getElementById('m3-emoji-grid');
+    grid.innerHTML='';
+    EMOJIS.forEach(em=>{
+      const btn=document.createElement('button');
+      btn.style.cssText='background:none;border:2px solid transparent;border-radius:8px;font-size:24px;cursor:pointer;padding:4px;transition:border-color .15s,transform .1s;';
+      btn.textContent=em;
+      btn.addEventListener('click',()=>enviarEmoji(em));
+      // Destaque nos corações
+      if(em==='❤️'||em==='💙'){btn.style.borderColor='var(--neon)';btn.style.animation='pe 1s ease-in-out infinite alternate';}
+      grid.appendChild(btn);
+    });
+  };
+
+  const enviarEmoji=(em)=>{
+    if(etapa!==2)return;
+    document.getElementById('m3-panel-emoji').style.display='none';
+    clearHighlight();
+    addBubble(em,'sent');
+    etapa=3;setEtapaVisual(3);
+    // Filho manda uma foto
+    setTimeout(()=>{
+      filhoDigitando(()=>{
+        // Foto recebida — clicável
+        const msgs=document.getElementById('m3-msgs');
+        const div=document.createElement('div');div.className='m3-media-recv';
+        div.innerHTML=`<div style="padding:4px 4px 0;"><div style="width:160px;height:110px;background:linear-gradient(135deg,#2a1a2a,#1a0d1a);display:flex;align-items:center;justify-content:center;font-size:44px;border-radius:4px;">👦🌳</div></div><div style="padding:4px 8px 18px;font-size:12px;color:#8696A0;position:relative;">Olha onde eu estou! 😄<span class="wa-bubble-time" style="bottom:4px;">${getHM()}</span></div>`;
+        div.addEventListener('click',()=>M3.abrirMidia(div));
+        msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+        setMsg(3);
+      },1800);
+    },600);
+  };
+
+  // ─────────────────────────────────────────
+  // ETAPA 3 — ABRIR MÍDIA
+  // ─────────────────────────────────────────
+  const abrirMidia=(el)=>{
+    if(etapa!==3)return;
+    // Full-screen overlay da foto
+    const overlay=document.createElement('div');
+    overlay.style.cssText='position:absolute;inset:0;background:#000;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;animation:pgIn .25s ease;';
+    overlay.innerHTML=`
+      <button onclick="this.parentElement.remove()" style="position:absolute;top:10px;right:14px;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;">✕</button>
+      <div style="font-size:80px;">👦🌳</div>
+      <div style="font-size:13px;color:#aaa;">Filho no parque 🌳</div>
+      <div style="font-size:11px;color:#555;">${getHM()}</div>
+    `;
+    document.getElementById('ps3').appendChild(overlay);
+    etapa=4;setEtapaVisual(4);
+    setMsg(4);
+    setTimeout(()=>{
+      overlay.remove();
+      filhoDigitando(()=>{
+        addBubble('Você arrasou, mãe! Já sabe de tudo! 🎉🥰','recv');
+        setTimeout(()=>{
+          Prog.concluir(3);
+          document.getElementById('cert-ico').textContent='💬';
+          document.getElementById('cert-tit').textContent='Módulo 3 Concluído!';
+          document.getElementById('cert-sub').innerHTML='Você aprendeu a <strong>enviar áudios, fotos e emojis</strong>! Comunicação total!';
+          Router.go('pg-cert');
+        },1800);
+      },1400);
+    },2200);
+  };
+
+  // ─────────────────────────────────────────
+  // INIT
+  // ─────────────────────────────────────────
+  const init=()=>{
+    etapa=0;audioSeg=0;
+    clearTimeout(audioT);clearTimeout(msgT);
+    audioT=null;
+
+    D={instr:document.getElementById('instr3'),iarr:document.getElementById('ia3'),itxt:document.getElementById('it3')};
+
+    const n=new Date();const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+    const el=document.getElementById('m3-hora');if(el)el.textContent=hm;
+
+    // Reset UI
+    document.getElementById('m3-bar-normal').style.display='flex';
+    document.getElementById('m3-bar-audio').style.display='none';
+    document.getElementById('m3-panel-emoji').style.display='none';
+    document.getElementById('m3-panel-camera').style.display='none';
+    document.getElementById('m3-status').textContent='online';
+
+    // Limpa mensagens extras
+    const msgs=document.getElementById('m3-msgs');
+    while(msgs.children.length>2)msgs.lastChild.remove();
+
+    setEtapaVisual(0);
+    // Remove overlays órfãos
+    const ps=document.getElementById('ps3');
+    ps.querySelectorAll('div[style*="z-index:100"]').forEach(e=>e.remove());
+
+    setTimeout(()=>{highlight('m3-btn-mic');setMsg(0);},400);
+  };
+
+  return{init,iniciarAudio,cancelarAudio,enviarAudio,abrirCamera,fecharCamera,tirarFoto,abrirEmoji,abrirMidia};
+})();
+
 /* Relógio */
 (function tick(){
   const n=new Date();const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
-  ['m1-relh','m1-hora','m2-hora'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=hm;});
+  ['m1-relh','m1-hora','m2-hora','m3-hora'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=hm;});
   setTimeout(tick,30000);
 })();
 
