@@ -1,655 +1,510 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ConSySenci.a</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,1,0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+<title>ConSySenci.a Rosa — Módulo 0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 <style>
+/* ── TOKENS ── */
 :root {
-  --bg:#0F0F0F; --surf:#1A1A1A; --surf2:#242424; --surf3:#2E2E2E;
-  --rosa:#D81B60; --rosa-v:#F06292; --rosa-glow:rgba(216,27,96,.3);
-  --verde:#00C875; --ouro:#F5C518;
-  --txt:#F2F2F2; --txt2:#9E9E9E;
-  --fn:'Nunito',sans-serif; --fn-t:'Oswald',sans-serif;
-  --ab:#000; --asb:#000; --anav:#1C1C1C; --acard:#1E1E1E;
-  --abl:#8AB4F8; --aon:rgba(138,180,248,.22); --aoff:#3C4043;
+  --void:#000;--surf:#0A0A0A;--neon:#39FF14;--neon-d:rgba(57,255,20,.15);
+  --neon-g:rgba(57,255,20,.45);--neon-m:rgba(57,255,20,.30);
+  --w:#FFF;--gh:#E0E0E0;--gm:#888;--gl:#2A2A2A;--danger:#FF4444;
+  --pw:360px;--ph:780px;--pr:48px;--pbl:#1A1A1E;--pb2:#0D0D0F;
+  --pbn:#222228;--pbh:#333340;
+  --fn:'Nunito','Segoe UI',sans-serif;--fnd:'Oswald','Impact',sans-serif;
+  --du:150ms;--df:300ms;--dn:600ms;--ds:900ms;--dvs:1500ms;
+  --eo:cubic-bezier(.16,1,.3,1);--eio:cubic-bezier(.4,0,.2,1);
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:var(--fn);-webkit-tap-highlight-color:transparent;user-select:none;}
-.material-symbols-outlined{font-family:'Material Symbols Outlined';font-style:normal;font-size:20px;line-height:1;display:inline-block;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;touch-action:manipulation;}
+body{height:100%;background:var(--void);font-family:var(--fn);color:var(--w);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;user-select:none;-webkit-user-select:none;}
 
-/* SPA */
-.tela{display:none;position:absolute;inset:0;flex-direction:column;background:var(--bg);}
-.tela.ativa{display:flex;animation:fadeUp .3s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* ── INSTRUCTOR LAYER ── */
+#instructor-layer{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:28px;z-index:100;pointer-events:none;}
+.instructor-bubble{background:rgba(10,10,10,.93);border:1.5px solid var(--neon-m);border-radius:20px;padding:16px 22px;max-width:340px;text-align:center;box-shadow:0 0 24px var(--neon-d),0 8px 32px rgba(0,0,0,.7);pointer-events:none;opacity:0;transform:translateY(12px);transition:opacity var(--dn) var(--eo),transform var(--dn) var(--eo);}
+.instructor-bubble.visible{opacity:1;transform:translateY(0);}
+.instructor-bubble p{font-size:22px;font-weight:700;line-height:1.55;color:var(--gh);}
+.instructor-bubble p strong{color:var(--neon);}
+.instructor-arrow{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:10px;animation:arrowB 1.2s var(--eio) infinite;}
+.instructor-arrow span{display:block;width:8px;height:8px;border-right:3px solid var(--neon);border-bottom:3px solid var(--neon);transform:rotate(45deg);opacity:.9;}
+.instructor-arrow span:nth-child(2){opacity:.5;margin-top:-4px;}
+@keyframes arrowB{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-/* App UI */
-.app-header{display:flex;align-items:center;gap:12px;padding:14px 18px 10px;flex-shrink:0;background:linear-gradient(var(--bg) 70%,transparent);z-index:20;}
-.logo-dot{width:42px;height:42px;border-radius:50%;background:conic-gradient(var(--rosa-v),var(--rosa),#8B0041,var(--rosa-v));display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;box-shadow:0 0 14px var(--rosa-glow);}
-.app-title{font-family:var(--fn-t);font-size:17px;letter-spacing:1px;color:var(--rosa-v);flex:1;}
-.btn-som{border:1.5px solid var(--rosa);background:transparent;color:var(--rosa);border-radius:50%;width:40px;height:40px;font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+/* ── SIMULATOR WRAPPER ── */
+#sim-wrap{position:relative;display:flex;align-items:center;justify-content:center;transform-origin:center center;}
 
-.conteudo{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 100px;overflow-y:auto;text-align:center;gap:18px;}
-.card-app{background:var(--surf);border-radius:18px;padding:26px 22px;width:100%;max-width:480px;border-left:5px solid var(--rosa);box-shadow:0 8px 32px rgba(0,0,0,.55);}
-.card-app h1{font-family:var(--fn-t);font-size:23px;color:var(--rosa-v);margin-bottom:12px;letter-spacing:.4px;}
-.card-app p{font-size:18px;line-height:1.75;color:var(--txt);font-weight:600;}
-.marca{color:var(--rosa-v);font-weight:800;}
-.rodape{position:fixed;bottom:0;left:0;width:100%;padding:14px 20px 18px;background:linear-gradient(transparent,var(--bg) 45%);display:flex;justify-content:center;z-index:100;}
-.btn-v{background:linear-gradient(135deg,#00C875,#009E5E);color:#fff;border:none;padding:18px;font-size:18px;font-weight:800;border-radius:50px;width:100%;max-width:480px;cursor:pointer;box-shadow:0 4px 18px rgba(0,200,117,.4);letter-spacing:.4px;transition:transform .1s;}
-.btn-v:active{transform:scale(.96);}
-.btn-r{background:linear-gradient(135deg,var(--rosa-v),var(--rosa));color:#fff;border:none;padding:18px;font-size:18px;font-weight:800;border-radius:50px;width:100%;max-width:480px;cursor:pointer;box-shadow:0 4px 18px var(--rosa-glow);transition:transform .1s;}
-.btn-r:active{transform:scale(.96);}
-.bpw{width:100%;max-width:480px;height:5px;background:var(--surf3);border-radius:10px;overflow:hidden;}
-.bpf{height:100%;background:var(--rosa);border-radius:10px;transition:width .4s ease;}
+/* ── PHONE FRAME ── */
+#phone-frame{position:relative;width:var(--pw);height:var(--ph);border-radius:var(--pr);background:linear-gradient(160deg,var(--pbl) 0%,#222228 40%,#151518 70%,var(--pb2) 100%);box-shadow:0 0 0 1px rgba(255,255,255,.07),0 0 0 2px rgba(0,0,0,.8),0 20px 60px rgba(0,0,0,.9),0 4px 12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);flex-shrink:0;}
+#phone-frame::before{content:'';position:absolute;top:18px;left:50%;transform:translateX(-50%);width:12px;height:12px;background:#0A0A0C;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.04),inset 0 0 4px rgba(0,0,0,.9);z-index:10;}
+#phone-frame::after{content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);width:48px;height:4px;margin-top:-2px;margin-left:12px;background:rgba(255,255,255,.04);border-radius:2px;}
 
-/* Tela início */
-#ti .conteudo{padding-bottom:110px;gap:20px;}
-.logo-g{width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--rosa-v),var(--rosa),#8B0041,var(--rosa-v));display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:0 0 32px var(--rosa-glow);}
-.nome-app{font-family:var(--fn-t);font-size:28px;letter-spacing:2px;color:var(--rosa-v);}
-.slogan{color:var(--txt2);font-size:14px;font-weight:600;}
+/* ── BOTÕES LATERAIS ── */
+.btn-vol{position:absolute;left:-4px;border-radius:3px 0 0 3px;background:linear-gradient(90deg,#111114,var(--pbn));box-shadow:-2px 0 4px rgba(0,0,0,.5);}
+.btn-vol-up{top:150px;width:4px;height:52px;}
+.btn-vol-dn{top:216px;width:4px;height:52px;}
 
-/* Mapa módulos */
-#tm .conteudo{justify-content:flex-start;padding-top:8px;padding-bottom:20px;gap:10px;}
-.mc{width:100%;max-width:480px;background:var(--surf2);border-radius:16px;padding:15px 17px;display:flex;align-items:center;gap:13px;cursor:pointer;border:2px solid var(--surf3);transition:border-color .2s,transform .1s;}
-.mc:active{transform:scale(.98);}
-.mc.livre{border-color:var(--rosa);}
-.mc.feito{border-color:var(--verde);}
-.me{font-size:32px;flex-shrink:0;}
-.mi h3{font-size:15px;font-weight:800;}
-.mi p{font-size:12px;color:var(--txt2);margin-top:2px;}
-.ms{margin-left:auto;flex-shrink:0;}
-.badge{border-radius:50px;padding:3px 9px;font-size:11px;font-weight:800;}
-.bn{background:var(--rosa);color:#fff;}
-.bf{background:var(--verde);color:#000;}
+/* ── BOTÃO POWER ── */
+#btn-power{position:absolute;right:-5px;top:160px;width:5px;height:72px;border-radius:0 4px 4px 0;background:linear-gradient(270deg,var(--pbh) 0%,var(--pbn) 60%,#111114 100%);box-shadow:3px 0 6px rgba(0,0,0,.6);cursor:pointer;padding:12px 22px 12px 8px;margin:-12px -22px -12px -8px;transition:background var(--df) var(--eo),box-shadow var(--df) var(--eo);z-index:50;touch-action:none;}
+#btn-power.idle{animation:pwrPulse 2s var(--eio) infinite;}
+@keyframes pwrPulse{0%,100%{box-shadow:3px 0 6px rgba(0,0,0,.6),4px 0 0 var(--neon-d)}50%{box-shadow:3px 0 10px rgba(0,0,0,.6),6px 0 14px var(--neon-g)}}
+#btn-power.pressing{background:linear-gradient(270deg,#55FF40 0%,#2A8A20 60%,#111114 100%);box-shadow:3px 0 8px rgba(0,0,0,.6),5px 0 18px var(--neon-g),8px 0 28px var(--neon-d);animation:none;}
+#btn-power.locked{pointer-events:none;animation:none;}
 
-/* Guia barra (baixo do simulador) */
-.guia{background:rgba(18,18,28,.97);padding:11px 15px;border-top:2.5px solid var(--rosa);display:flex;align-items:center;gap:11px;flex-shrink:0;z-index:30;}
-.guia-d{width:34px;height:34px;border-radius:50%;background:conic-gradient(var(--rosa-v),var(--rosa),#8B0041,var(--rosa-v));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.guia-t{flex:1;font-size:14px;font-weight:700;line-height:1.45;color:var(--txt);}
-.guia-s{background:none;border:1.5px solid var(--rosa);color:var(--rosa);border-radius:50%;width:30px;height:30px;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+/* ── TELA ── */
+#phone-screen{position:absolute;top:12px;left:12px;right:12px;bottom:12px;border-radius:calc(var(--pr) - 12px);background:var(--void);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);}
 
-/* Android Frame */
-.af{flex:1;display:flex;flex-direction:column;background:#101010;overflow:hidden;position:relative;}
-.sb{height:28px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:0 12px;flex-shrink:0;z-index:40;font-size:11px;font-weight:700;letter-spacing:.3px;touch-action:none;}
-.sb-r{display:flex;gap:4px;align-items:center;}
-.sb-r .material-symbols-outlined{font-size:14px;}
-.nb{height:40px;background:#000;display:flex;align-items:center;justify-content:space-around;flex-shrink:0;z-index:40;}
-.nb-btn{color:#9E9E9E;font-size:20px;padding:8px;cursor:pointer;transition:color .15s;}
-.nb-btn:active{color:#fff;}
+/* ── CAMADAS DE ESTADO ── */
+.slayer{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity var(--dn) var(--eo);}
+.slayer.active{opacity:1;pointer-events:auto;}
 
-/* Launcher */
-.launcher{flex:1;position:relative;overflow:hidden;background:#0A1628;background-image:radial-gradient(ellipse at 20% 50%,rgba(13,50,100,.8) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(80,10,50,.5) 0%,transparent 50%),linear-gradient(180deg,#0A1628 0%,#060D1F 100%);}
-.wid-rel{position:absolute;top:16px;left:0;width:100%;display:flex;flex-direction:column;align-items:center;z-index:2;}
-.rel-h{font-family:var(--fn-t);font-size:52px;font-weight:700;color:#fff;letter-spacing:2px;text-shadow:0 2px 10px rgba(0,0,0,.6);line-height:1;}
-.rel-d{font-size:13px;color:rgba(255,255,255,.65);margin-top:4px;}
-.lgrid{position:absolute;top:138px;left:0;width:100%;padding:0 16px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px 6px;z-index:2;}
-.ai{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:transform .1s;}
-.ai:active{transform:scale(.86);}
-.aii{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.45);position:relative;overflow:hidden;}
-.aii::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%);border-radius:inherit;}
-.aii .material-symbols-outlined{font-size:24px;}
-.al{font-size:11px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.9);text-align:center;line-height:1.2;}
-.dock{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.1);backdrop-filter:blur(12px);border-radius:22px;padding:9px 15px;display:flex;gap:16px;align-items:center;border:1px solid rgba(255,255,255,.12);}
-/* Icon colors */
-.itel{background:linear-gradient(135deg,#1A73E8,#0D47A1);}
-.icam{background:linear-gradient(135deg,#43A047,#1B5E20);}
-.izap{background:linear-gradient(135deg,#25D366,#128C7E);}
-.ichr{background:#fff;}
-.imap{background:linear-gradient(135deg,#EA4335,#C62828);}
-.igal{background:linear-gradient(135deg,#8E24AA,#4A148C);}
-.icfg{background:linear-gradient(135deg,#546E7A,#263238);}
-.iyt{background:linear-gradient(135deg,#FF0000,#B71C1C);}
+/* TELA OFF */
+#s-off{background:var(--void);}
+#s-off::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 30% 20%,rgba(255,255,255,.012) 0%,transparent 70%);pointer-events:none;}
 
-.ensinar{box-shadow:0 0 0 3px var(--rosa),0 0 14px var(--rosa-glow)!important;animation:pe 1s ease-in-out infinite alternate;}
-@keyframes pe{from{box-shadow:0 0 0 2px var(--rosa),0 0 10px var(--rosa-glow);}to{box-shadow:0 0 0 5px var(--rosa-v),0 0 22px rgba(240,98,146,.5);}}
+/* TELA BOOT */
+#s-boot{background:var(--void);gap:0;}
+.boot-logo{display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;transform:scale(.92);transition:opacity var(--dvs) var(--eo),transform var(--dvs) var(--eo);}
+.boot-logo.vis{opacity:1;transform:scale(1);}
+.boot-icon{font-size:64px;line-height:1;filter:drop-shadow(0 0 20px var(--neon-g));animation:iconF 3s var(--eio) infinite;}
+@keyframes iconF{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.boot-txt{font-family:var(--fnd);font-size:28px;letter-spacing:2px;color:var(--neon);text-shadow:0 0 10px var(--neon-g),0 0 30px var(--neon-d);}
+.boot-sub{font-size:13px;color:var(--gm);letter-spacing:4px;text-transform:uppercase;margin-top:-6px;}
+.boot-prog-wrap{position:absolute;bottom:80px;left:48px;right:48px;display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;transition:opacity var(--dn) var(--eo);}
+.boot-prog-wrap.vis{opacity:1;}
+.boot-track{width:100%;height:3px;background:var(--gl);border-radius:2px;overflow:hidden;}
+.boot-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--neon),#80FF60);border-radius:2px;box-shadow:0 0 8px var(--neon-g);transition:width var(--dn) linear;}
+.boot-lbl{font-size:13px;color:var(--gm);letter-spacing:1px;}
 
-/* Cortina */
-#cortina{position:absolute;top:-100%;left:0;width:100%;background:rgba(8,8,18,.96);backdrop-filter:blur(14px);z-index:60;transition:top .27s ease;display:flex;flex-direction:column;max-height:calc(100% - 28px);border-bottom:1px solid rgba(255,255,255,.08);}
-#cortina.meia{top:28px;}
-#cortina.total{top:28px;}
-.c-cab{padding:14px 14px 8px;flex-shrink:0;}
-.qs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px;}
-.qp{background:var(--aoff);border-radius:10px;padding:9px 11px;display:flex;align-items:center;gap:7px;cursor:pointer;border:none;color:#fff;font-family:var(--fn);font-size:12px;font-weight:700;transition:background .2s;text-align:left;width:100%;}
-.qp.on{background:var(--aon);}
-.qp .material-symbols-outlined{font-size:17px;color:#9E9E9E;flex-shrink:0;}
-.qp.on .material-symbols-outlined{color:var(--abl);}
-.qp.on .qn{color:var(--abl);}
-.qn{font-size:11px;line-height:1.2;}
-.br-row{display:flex;align-items:center;gap:9px;margin-bottom:4px;}
-.br-row .material-symbols-outlined{font-size:16px;color:#9E9E9E;}
-input[type=range].brilho{flex:1;-webkit-appearance:none;height:4px;background:#555;border-radius:4px;outline:none;}
-input[type=range].brilho::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;cursor:pointer;}
-.narea{flex:1;overflow-y:auto;padding:7px 11px 0;display:flex;flex-direction:column;gap:7px;}
-.nitem{background:var(--acard);border-radius:13px;padding:13px;display:flex;gap:11px;align-items:flex-start;transition:opacity .3s,transform .3s;}
-.nico{width:34px;height:34px;border-radius:50%;background:#128C7E;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.nbody strong{font-size:13px;display:block;}
-.nbody span{font-size:12px;color:var(--txt2);}
-.ntime{font-size:11px;color:var(--txt2);flex-shrink:0;}
-.c-rod{padding:7px 11px 11px;display:flex;justify-content:flex-end;}
-.btn-lim{background:none;border:none;color:var(--abl);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fn);}
-.dica-sub{text-align:center;color:#444;font-size:12px;padding:7px 0 11px;}
+/* TELA WELCOME */
+#s-welcome{background:var(--void);padding:40px 32px;gap:28px;text-align:center;}
+.wlc-icon{font-size:72px;line-height:1;filter:drop-shadow(0 0 16px var(--neon-g));animation:iconF 4s var(--eio) infinite;}
+.wlc-h{font-family:var(--fnd);font-size:40px;color:var(--neon);letter-spacing:1px;text-shadow:0 0 20px var(--neon-g);line-height:1.15;}
+.wlc-p{font-size:22px;font-weight:600;color:var(--gh);line-height:1.65;max-width:280px;}
+.wlc-p strong{color:var(--neon);}
+#btn-next{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:64px;background:var(--neon);color:var(--void);font-family:var(--fn);font-size:26px;font-weight:900;border:none;border-radius:18px;cursor:pointer;letter-spacing:.5px;box-shadow:0 6px 24px rgba(57,255,20,.4);transition:transform var(--df) var(--eo),box-shadow var(--df) var(--eo);touch-action:manipulation;animation:btnP 2.5s var(--eio) infinite;}
+@keyframes btnP{0%,100%{box-shadow:0 0 0 0 var(--neon-g),0 6px 24px rgba(57,255,20,.4)}50%{box-shadow:0 0 0 8px transparent,0 6px 32px rgba(57,255,20,.55)}}
+#btn-next:active{transform:scale(.96);box-shadow:0 2px 12px rgba(57,255,20,.3);animation:none;}
 
-/* Câmera */
-.cvf{flex:1;position:relative;overflow:hidden;cursor:crosshair;background:url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600&auto=format&fit=crop') center/cover no-repeat;transition:filter .5s ease;}
-.cvf.blur{filter:blur(7px) brightness(.75);}
-.ctop{position:absolute;top:0;width:100%;padding:10px 13px;background:linear-gradient(rgba(0,0,0,.65),transparent);display:flex;justify-content:space-between;align-items:center;z-index:5;}
-.cico{color:#fff;font-size:22px;cursor:pointer;padding:4px;}
-.cico.flon{color:var(--ouro);}
-.cring{position:absolute;width:66px;height:66px;border:2px solid rgba(255,220,0,.9);border-radius:4px;pointer-events:none;opacity:0;z-index:6;transition:opacity .3s;}
-.cflash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:10;}
-.cmodos{position:absolute;bottom:8px;width:100%;display:flex;justify-content:center;gap:22px;z-index:5;}
-.cmodo{color:rgba(255,255,255,.45);font-size:12px;font-weight:700;letter-spacing:1px;padding:4px 8px;cursor:pointer;}
-.cmodo.a{color:var(--ouro);border-bottom:2px solid var(--ouro);}
-.cctrl{height:108px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex-shrink:0;}
-.cthumb{width:44px;height:44px;border-radius:8px;border:2.5px solid rgba(255,255,255,.4);background:#222;background-size:cover;background-position:center;cursor:pointer;}
-.csh{width:66px;height:66px;border-radius:50%;border:4px solid rgba(255,255,255,.7);background:#fff;cursor:pointer;transition:transform .08s;box-shadow:0 0 0 3px rgba(255,255,255,.2);}
-.csh:active{transform:scale(.88);}
-.csh.blk{opacity:.3;pointer-events:none;}
+/* FEEDBACK OVERLAY */
+#feedback-ov{position:absolute;bottom:32px;left:16px;right:16px;background:rgba(255,68,68,.12);border:1.5px solid rgba(255,68,68,.4);border-radius:14px;padding:14px 18px;text-align:center;font-size:16px;font-weight:700;color:#FF8080;opacity:0;transform:translateY(8px);transition:opacity var(--df) var(--eo),transform var(--df) var(--eo);pointer-events:none;z-index:20;}
+#feedback-ov.vis{opacity:1;transform:translateY(0);}
 
-/* Galeria */
-.gcheia{flex:1;position:relative;overflow:hidden;background:url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600&auto=format&fit=crop') center/cover no-repeat;}
-.gtop{position:absolute;top:0;width:100%;padding:10px 13px;background:linear-gradient(rgba(0,0,0,.7),transparent);display:flex;justify-content:space-between;align-items:center;}
-.gbot{position:absolute;bottom:0;width:100%;background:linear-gradient(transparent,rgba(0,0,0,.85) 40%);padding:18px 15px 13px;display:flex;justify-content:space-around;}
-.gac{display:flex;flex-direction:column;align-items:center;color:#fff;font-size:11px;gap:5px;cursor:pointer;padding:4px;}
-.gac:active{opacity:.6;}
-.gac .material-symbols-outlined{font-size:23px;}
-.ssheet{position:absolute;bottom:-100%;left:0;width:100%;background:#1E1E2E;border-radius:18px 18px 0 0;padding:16px;transition:bottom .27s ease;z-index:20;}
-.ssheet.ab{bottom:0;}
-.ssheet h3{font-size:14px;margin-bottom:14px;color:var(--txt2);font-weight:700;}
-.sapps{display:flex;gap:16px;flex-wrap:wrap;}
-.sap{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
-.sap-i{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:21px;}
-.sap span{font-size:11px;font-weight:700;color:var(--txt);}
-.sap:active{opacity:.6;}
+/* LONG-PRESS INDICATOR */
+#lp-ind{position:absolute;right:18px;top:130px;width:24px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:0;opacity:0;transition:opacity var(--df);z-index:15;pointer-events:none;}
+#lp-ind.vis{opacity:1;}
+.lp-track{width:4px;height:72px;background:var(--gl);border-radius:2px;overflow:hidden;position:relative;}
+.lp-fill{position:absolute;bottom:0;left:0;right:0;height:0%;background:linear-gradient(0deg,var(--neon),#60FF40);border-radius:2px;box-shadow:0 0 6px var(--neon-g);}
+.lp-lbl{font-size:9px;color:var(--gm);letter-spacing:.5px;margin-top:5px;text-transform:uppercase;}
 
-/* WhatsApp */
-.zo{flex:1;display:flex;flex-direction:column;background:#111B21;}
-.zh{background:#1F2C34;padding:10px 13px;display:flex;align-items:center;gap:9px;flex-shrink:0;}
-.zha{width:34px;height:34px;border-radius:50%;background:#555;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.zhi{flex:1;}
-.zhi strong{display:block;font-size:14px;color:#fff;}
-.zhi span{font-size:11px;color:#8696A0;}
-.zh .material-symbols-outlined{color:#aaa;font-size:20px;cursor:pointer;}
-.zchat{flex:1;overflow-y:auto;padding:11px 9px;display:flex;flex-direction:column;gap:5px;background:#0B141A;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M0 0h40v40H0zm40 40h40v40H40z' fill='%23ffffff' fill-opacity='0.015'/%3E%3C/svg%3E");}
-.zm{max-width:78%;padding:7px 10px;border-radius:8px;font-size:14px;line-height:1.5;}
-.zmi{background:#1F2C34;align-self:flex-start;border-top-left-radius:2px;color:#fff;}
-.zmo{background:#005C4B;align-self:flex-end;border-top-right-radius:2px;color:#fff;}
-.zmimg{padding:4px;}
-.zmimg img{width:180px;border-radius:6px;display:block;}
-.zt{font-size:11px;color:rgba(255,255,255,.4);text-align:right;margin-top:2px;display:flex;justify-content:flex-end;align-items:center;gap:2px;}
-.zt .material-symbols-outlined{font-size:13px;color:var(--abl);}
-.zib{background:#1F2C34;padding:7px 9px;display:flex;gap:7px;align-items:center;flex-shrink:0;}
-.zif{flex:1;background:#2A3942;border-radius:22px;padding:9px 13px;color:#8696A0;font-size:14px;display:flex;align-items:center;gap:7px;}
-.zif .material-symbols-outlined{color:#8696A0;font-size:19px;}
-.zsend{width:40px;height:40px;border-radius:50%;background:#00A884;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:transform .1s;}
-.zsend:active{transform:scale(.88);}
-.zsend .material-symbols-outlined{color:#fff;font-size:19px;}
+/* HAPTIC */
+@keyframes hapticShake{0%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}100%{transform:translateX(0)}}
+.haptic{animation:hapticShake .35s var(--eo);}
 
-/* Teclado virtual */
-.tvwrap{background:#1C1C1C;padding:6px 4px 8px;flex-shrink:0;}
-.trow{display:flex;justify-content:center;gap:5px;margin-bottom:5px;}
-.key{background:#3B3B3B;color:#fff;border:none;border-radius:6px;height:43px;flex:1;max-width:34px;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--fn);transition:background .08s;box-shadow:0 2px 0 #111;}
-.key:active{background:#555;transform:scale(.93);}
-.kesp{background:#2A2A2A;font-size:12px;max-width:46px;color:var(--txt2);}
-.kesp2{background:#2A2A2A;font-size:12px;max-width:46px;color:var(--txt2);}
-.kesp3{flex:4;max-width:160px;font-size:13px;color:var(--txt2);background:#2A2A2A;}
-.kenter{background:#00A884;max-width:50px;}
-.kmon{background:var(--abl);color:#000;}
-
-/* Quiz Segurança */
-.qz-wrap{width:100%;max-width:480px;}
-.qz-card{background:var(--surf2);border-radius:16px;padding:19px;}
-.qz-card h3{font-size:16px;font-weight:800;line-height:1.5;margin-bottom:15px;}
-.qzops{display:flex;flex-direction:column;gap:9px;}
-.qzop{background:var(--surf3);border-radius:11px;padding:13px 15px;cursor:pointer;font-size:14px;font-weight:600;border:2px solid transparent;transition:all .17s;}
-.qzop:active{transform:scale(.97);}
-.qzop.certa{border-color:var(--verde);background:rgba(0,200,117,.12);color:var(--verde);}
-.qzop.errada{border-color:#EF5350;background:rgba(239,83,80,.12);color:#EF9A9A;}
-.qzfb{margin-top:11px;font-size:14px;font-weight:700;padding:11px 13px;border-radius:9px;display:none;line-height:1.55;}
-.qzfb.ok{background:rgba(0,200,117,.15);color:var(--verde);display:block;}
-.qzfb.err{background:rgba(239,83,80,.15);color:#EF9A9A;display:block;}
-.qzp{font-size:13px;color:var(--txt2);font-weight:700;margin-bottom:7px;}
-
-/* Certificado */
-#tcert .conteudo{padding-bottom:110px;gap:20px;}
-.medal{font-size:85px;animation:boing .6s cubic-bezier(.36,.07,.19,.97);}
-@keyframes boing{0%{transform:scale(0) rotate(-20deg)}65%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
-.card-ouro{border-color:var(--ouro)!important;}
-.card-ouro h1{color:var(--ouro)!important;}
+/* RESPONSIVE */
+@media(max-height:820px){#sim-wrap{transform:scale(.88)}}
+@media(max-height:700px){#sim-wrap{transform:scale(.75)}}
+@media(max-height:600px){#sim-wrap{transform:scale(.65)}}
+@media(max-width:400px){#sim-wrap{transform:scale(.94)}}
+@media(max-width:370px){#sim-wrap{transform:scale(.85)}}
+@media(max-height:480px) and (orientation:landscape){#sim-wrap{transform:scale(.55)}.instructor-bubble p{font-size:18px;}}
+#btn-power:focus-visible,#btn-next:focus-visible{outline:3px solid var(--neon);outline-offset:4px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:300ms!important;}}
 </style>
 </head>
 <body>
 
-<!-- INÍCIO -->
-<div id="ti" class="tela ativa">
-  <div class="conteudo" style="padding-bottom:110px;gap:20px;">
-    <div class="logo-g">📱</div>
-    <div><div class="nome-app">CONSYSENCI.A</div><div class="slogan">Aprenda o celular no seu ritmo · 100% gratuito · Sem anúncios</div></div>
-    <div class="card-app"><h1>Bem-vindo(a)!</h1><p>Vou te guiar pelo celular com calma, explicando tudo passo a passo. Não tem resposta errada aqui — <span class="marca">estamos juntos nessa jornada</span>.</p></div>
-  </div>
-  <div class="rodape"><button class="btn-v" onclick="ir('tm')">VAMOS COMEÇAR! ▶</button></div>
-</div>
-
-<!-- MAPA -->
-<div id="tm" class="tela">
-  <div class="app-header"><div class="logo-dot">📱</div><span class="app-title">SEUS MÓDULOS</span><div style="width:40px;"></div></div>
-  <div class="conteudo" style="justify-content:flex-start;padding-top:8px;padding-bottom:20px;gap:10px;">
-    <div class="mc livre" id="mc0" onclick="iniciarMod(0)"><span class="me">📦</span><div class="mi"><h3>Módulo 1 – A Caixa Mágica</h3><p>Botões, carregamento e básicos do aparelho</p></div><div class="ms"><span class="badge bn" id="bg0">NOVO</span></div></div>
-    <div class="mc livre" id="mc1" onclick="iniciarMod(1)"><span class="me">👆</span><div class="mi"><h3>Módulo 2 – Escola de Gestos</h3><p>Toques, rolagem e painel de notificações</p></div><div class="ms"><span class="badge bn" id="bg1">NOVO</span></div></div>
-    <div class="mc livre" id="mc2" onclick="iniciarMod(2)"><span class="me">📷</span><div class="mi"><h3>Módulo 3 – Câmera e Fotos</h3><p>Fotografar, ver na galeria e compartilhar</p></div><div class="ms"><span class="badge bn" id="bg2">NOVO</span></div></div>
-    <div class="mc livre" id="mc3" onclick="iniciarMod(3)"><span class="me">⌨️</span><div class="mi"><h3>Módulo 4 – O Teclado Fantasma</h3><p>Digitar e enviar mensagens no WhatsApp</p></div><div class="ms"><span class="badge bn" id="bg3">NOVO</span></div></div>
-    <div class="mc livre" id="mc4" onclick="iniciarMod(4)"><span class="me">🛡️</span><div class="mi"><h3>Módulo 5 – Escudo de Prata</h3><p>Como identificar e evitar golpes digitais</p></div><div class="ms"><span class="badge bn" id="bg4">NOVO</span></div></div>
-  </div>
-</div>
-
-<!-- AULA TEÓRICA -->
-<div id="taula" class="tela">
-  <div class="app-header"><div class="logo-dot">📱</div><span style="font-weight:800;color:var(--rosa-v);font-size:14px;" id="step-lbl">Passo 1/3</span><button class="btn-som" onclick="falarAtual()">🔊</button></div>
-  <div class="conteudo" style="gap:15px;padding-bottom:110px;">
-    <div class="bpw"><div class="bpf" id="bpf" style="width:33%"></div></div>
-    <div class="card-app"><p id="txt-aula">…</p></div>
-  </div>
-  <div class="rodape"><button class="btn-v" id="btn-pa" onclick="proxAula()">ENTENDI ▶</button></div>
-</div>
-
-<!-- SIMULADOR GESTOS -->
-<div id="tgestos" class="tela">
-  <div class="guia"><div class="guia-d">📱</div><p class="guia-t" id="gg">Coloque o dedo na barra preta do topo e arraste para baixo!</p><button class="guia-s" onclick="falarGuia('gg')">🔊</button></div>
-  <div class="af">
-    <div class="sb" id="sbg" onpointerdown="sbDown(event)" onpointermove="sbMove(event)" onpointerup="sbUp(event)">
-      <span id="sbh">10:30</span>
-      <div class="sb-r"><span class="material-symbols-outlined">signal_cellular_alt</span><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div>
+<aside id="instructor-layer" aria-live="polite" aria-atomic="true">
+  <div class="instructor-bubble" id="bubble" role="status">
+    <div class="instructor-arrow" id="arrow" aria-hidden="true">
+      <span></span><span></span>
     </div>
-    <div id="cortina">
-      <div class="c-cab">
-        <div class="qs">
-          <button class="qp on" id="qwifi" onclick="tqp('qwifi')"><span class="material-symbols-outlined">wifi</span><span class="qn">Wi-Fi<br>Ativo</span></button>
-          <button class="qp on" id="qdados" onclick="tqp('qdados')"><span class="material-symbols-outlined">network_cell</span><span class="qn">Dados<br>Ativos</span></button>
-          <button class="qp" id="qlan" onclick="tqp('qlan')"><span class="material-symbols-outlined">flashlight_on</span><span class="qn">Lanterna</span></button>
-          <button class="qp" id="qav" onclick="tqp('qav')"><span class="material-symbols-outlined">flight</span><span class="qn">Modo Avião</span></button>
-          <button class="qp on" id="qbt" onclick="tqp('qbt')"><span class="material-symbols-outlined">bluetooth</span><span class="qn">Bluetooth</span></button>
-          <button class="qp" id="qnp" onclick="tqp('qnp')"><span class="material-symbols-outlined">do_not_disturb_on</span><span class="qn">Não perturbe</span></button>
+    <p id="bubble-txt">
+      Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar
+    </p>
+  </div>
+</aside>
+
+<main id="sim-wrap" role="application" aria-label="Simulador de smartphone">
+  <div id="phone-frame" role="img" aria-label="Smartphone simulado">
+
+    <div class="btn-vol btn-vol-up" aria-hidden="true"></div>
+    <div class="btn-vol btn-vol-dn" aria-hidden="true"></div>
+
+    <div id="btn-power" class="idle"
+         role="button" tabindex="0"
+         aria-label="Botão Power — Toque e segure por 3 segundos para ligar"
+         aria-pressed="false">
+    </div>
+
+    <div id="lp-ind" aria-hidden="true">
+      <div class="lp-track"><div class="lp-fill" id="lp-fill"></div></div>
+      <span class="lp-lbl">3s</span>
+    </div>
+
+    <div id="phone-screen">
+
+      <section id="s-off" class="slayer active" aria-label="Tela apagada"></section>
+
+      <section id="s-boot" class="slayer" aria-label="Celular ligando">
+        <div class="boot-logo" id="boot-logo">
+          <div class="boot-icon">🌹</div>
+          <div class="boot-txt">ConSySenci.a</div>
+          <div class="boot-sub">Rosa</div>
         </div>
-        <div class="br-row"><span class="material-symbols-outlined" style="font-size:15px;">brightness_low</span><input type="range" class="brilho" min="5" max="100" value="80"><span class="material-symbols-outlined" style="font-size:19px;">brightness_high</span></div>
-      </div>
-      <div class="narea" id="narea">
-        <div class="nitem" id="n1"><div class="nico">💬</div><div class="nbody"><strong>WhatsApp · Filho</strong><span>Oi! Tudo bem por aí? 😊</span></div><span class="ntime">agora</span></div>
-        <div class="nitem" id="n2"><div class="nico" style="background:#1A73E8;">📧</div><div class="nbody"><strong>Gmail</strong><span>Sua fatura chegou.</span></div><span class="ntime">5 min</span></div>
-      </div>
-      <div class="c-rod"><button class="btn-lim" id="blim" style="display:none;" onclick="limNot()">Limpar tudo</button></div>
-      <p class="dica-sub" id="dsub" style="display:none;">▲ Deslize para cima para fechar</p>
-    </div>
-    <div class="launcher" id="lchg">
-      <div class="wid-rel"><div class="rel-h" id="rh">10:30</div><div class="rel-d" id="rd">Quarta, 18 de março</div></div>
-      <div class="lgrid">
-        <div class="ai" id="ictel" onclick="clkIcon('Telefone')"><div class="aii itel"><span class="material-symbols-outlined" style="color:#fff;">call</span></div><span class="al">Telefone</span></div>
-        <div class="ai" id="iccam" onclick="clkIcon('Camera')"><div class="aii icam"><span class="material-symbols-outlined" style="color:#fff;">camera_alt</span></div><span class="al">Câmera</span></div>
-        <div class="ai" id="iczap" onclick="clkIcon('WhatsApp')"><div class="aii izap"><span class="material-symbols-outlined" style="color:#fff;">chat</span></div><span class="al">WhatsApp</span></div>
-        <div class="ai"><div class="aii ichr"><span style="font-size:22px;">🌐</span></div><span class="al">Chrome</span></div>
-        <div class="ai"><div class="aii imap"><span class="material-symbols-outlined" style="color:#fff;">map</span></div><span class="al">Maps</span></div>
-        <div class="ai"><div class="aii igal"><span class="material-symbols-outlined" style="color:#fff;">photo_library</span></div><span class="al">Galeria</span></div>
-        <div class="ai"><div class="aii iyt"><span class="material-symbols-outlined" style="color:#fff;">play_circle</span></div><span class="al">YouTube</span></div>
-        <div class="ai"><div class="aii icfg"><span class="material-symbols-outlined" style="color:#fff;">settings</span></div><span class="al">Config.</span></div>
-      </div>
-      <div class="dock" id="dock">
-        <div class="ai" onclick="clkIcon('Telefone')" style="gap:0;"><div class="aii itel" style="width:44px;height:44px;"><span class="material-symbols-outlined" style="color:#fff;font-size:22px;">call</span></div></div>
-        <div class="ai" onclick="clkIcon('Camera')" style="gap:0;"><div class="aii icam" style="width:44px;height:44px;"><span class="material-symbols-outlined" style="color:#fff;font-size:22px;">camera_alt</span></div></div>
-        <div class="ai" onclick="clkIcon('WhatsApp')" style="gap:0;"><div class="aii izap" style="width:44px;height:44px;"><span class="material-symbols-outlined" style="color:#fff;font-size:22px;">chat</span></div></div>
-        <div class="ai" style="gap:0;"><div class="aii ichr" style="width:44px;height:44px;"><span style="font-size:20px;">🌐</span></div></div>
-      </div>
-    </div>
-    <div class="nb"><span class="nb-btn material-symbols-outlined">arrow_back</span><span class="nb-btn material-symbols-outlined">circle</span><span class="nb-btn material-symbols-outlined">crop_square</span></div>
-  </div>
-</div>
-
-<!-- CÂMERA -->
-<div id="tcam" class="tela">
-  <div class="guia"><div class="guia-d">📱</div><p class="guia-t" id="gc">Toque no centro da imagem para focar.</p><button class="guia-s" onclick="falarGuia('gc')">🔊</button></div>
-  <div class="af">
-    <div class="sb"><span>10:32</span><div class="sb-r"><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div></div>
-    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
-      <div class="cvf blur" id="cvf" onclick="focarCam(event)">
-        <div class="ctop"><span class="material-symbols-outlined cico" id="icfl" onclick="togFlash(event)">flash_off</span><span class="material-symbols-outlined cico">settings</span><span class="material-symbols-outlined cico">timer</span></div>
-        <div class="cring" id="cring"></div>
-        <div class="cflash" id="cflash"></div>
-        <div class="cmodos"><span class="cmodo">VÍDEO</span><span class="cmodo a">FOTO</span><span class="cmodo">RETRATO</span></div>
-      </div>
-      <div class="cctrl">
-        <div class="cthumb" id="cthumb" onclick="irGal()"></div>
-        <div class="csh blk" id="csh" onclick="disparo()"></div>
-        <span class="material-symbols-outlined" style="color:#fff;font-size:24px;cursor:pointer;">cameraswitch</span>
-      </div>
-    </div>
-    <div class="nb"><span class="nb-btn material-symbols-outlined" onclick="ir('tgestos')">arrow_back</span><span class="nb-btn material-symbols-outlined">circle</span><span class="nb-btn material-symbols-outlined">crop_square</span></div>
-  </div>
-</div>
-
-<!-- GALERIA -->
-<div id="tgal" class="tela">
-  <div class="guia"><div class="guia-d">📱</div><p class="guia-t" id="ggl">Foto salva! Toque em "Compartilhar" para enviar.</p><button class="guia-s" onclick="falarGuia('ggl')">🔊</button></div>
-  <div class="af">
-    <div class="sb"><span>10:33</span><div class="sb-r"><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div></div>
-    <div class="gcheia">
-      <div class="gtop"><span class="material-symbols-outlined" style="color:#fff;cursor:pointer;" onclick="ir('tcam')">arrow_back</span><span class="material-symbols-outlined" style="color:#fff;">more_vert</span></div>
-      <div class="gbot">
-        <div class="gac" onclick="abrirShare()"><span class="material-symbols-outlined">share</span><span>Compartilhar</span></div>
-        <div class="gac" style="opacity:.3;"><span class="material-symbols-outlined">edit</span><span>Editar</span></div>
-        <div class="gac" style="opacity:.3;"><span class="material-symbols-outlined">delete</span><span>Apagar</span></div>
-        <div class="gac" style="opacity:.3;"><span class="material-symbols-outlined">info</span><span>Detalhes</span></div>
-      </div>
-      <div class="ssheet" id="ssh">
-        <h3>Compartilhar com…</h3>
-        <div class="sapps">
-          <div class="sap" onclick="compZap()"><div class="sap-i" style="background:#128C7E;">💬</div><span>WhatsApp</span></div>
-          <div class="sap" style="opacity:.3;"><div class="sap-i" style="background:#1877F2;">📘</div><span>Facebook</span></div>
-          <div class="sap" style="opacity:.3;"><div class="sap-i" style="background:#E4405F;">📷</div><span>Instagram</span></div>
-          <div class="sap" style="opacity:.3;"><div class="sap-i" style="background:#555;">✉️</div><span>E-mail</span></div>
+        <div class="boot-prog-wrap" id="boot-prog">
+          <div class="boot-track">
+            <div class="boot-fill" id="boot-fill"></div>
+          </div>
+          <span class="boot-lbl" id="boot-lbl">Carregando... 0%</span>
         </div>
-      </div>
+      </section>
+
+      <section id="s-welcome" class="slayer" aria-label="Boas-vindas">
+        <div class="wlc-icon">🌟</div>
+        <h1 class="wlc-h">Celular<br>Ligado!</h1>
+        <p class="wlc-p">Você fez seu primeiro passo.<br><strong>Isso é aprender!</strong></p>
+        <button id="btn-next" type="button">
+          <span>Próximo</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </section>
+
+      <div id="feedback-ov" role="alert" aria-live="assertive"></div>
+
     </div>
-    <div class="nb"><span class="nb-btn material-symbols-outlined" onclick="ir('tcam')">arrow_back</span><span class="nb-btn material-symbols-outlined">circle</span><span class="nb-btn material-symbols-outlined">crop_square</span></div>
   </div>
-</div>
-
-<!-- WHATSAPP FOTO -->
-<div id="tzapf" class="tela">
-  <div class="guia"><div class="guia-d">📱</div><p class="guia-t" id="gzf">Toque no botão verde de enviar — o aviãozinho verde!</p><button class="guia-s" onclick="falarGuia('gzf')">🔊</button></div>
-  <div class="af">
-    <div class="sb" style="background:#1F2C34;"><span>10:34</span><div class="sb-r"><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div></div>
-    <div class="zo">
-      <div class="zh"><span class="material-symbols-outlined" onclick="ir('tgal')">arrow_back</span><div class="zha">👦</div><div class="zhi"><strong>Filho ❤️</strong><span>online</span></div><span class="material-symbols-outlined">videocam</span><span class="material-symbols-outlined">more_vert</span></div>
-      <div class="zchat" id="chatf">
-        <div class="zm zmi">Mandou a foto? 📸<div class="zt">10:30</div></div>
-        <div class="zm zmo zmimg"><img src="https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=400&auto=format&fit=crop" alt="foto"><div class="zt">10:34 <span class="material-symbols-outlined">done</span></div></div>
-      </div>
-      <div class="zib"><div class="zif"><span class="material-symbols-outlined">add</span><span style="flex:1;color:#8696A0;font-size:14px;">Mensagem…</span><span class="material-symbols-outlined">mic</span></div><div class="zsend" onclick="envFoto()"><span class="material-symbols-outlined">send</span></div></div>
-    </div>
-    <div class="nb"><span class="nb-btn material-symbols-outlined" onclick="ir('tgal')">arrow_back</span><span class="nb-btn material-symbols-outlined">circle</span><span class="nb-btn material-symbols-outlined">crop_square</span></div>
-  </div>
-</div>
-
-<!-- TECLADO -->
-<div id="ttecl" class="tela">
-  <div class="guia"><div class="guia-d">📱</div><p class="guia-t" id="gt">Toque nas letrinhas para escrever. Quando terminar, aperte o botão verde ↵</p><button class="guia-s" onclick="falarGuia('gt')">🔊</button></div>
-  <div class="af">
-    <div class="sb" style="background:#1F2C34;"><span>10:35</span><div class="sb-r"><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div></div>
-    <div class="zo" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
-      <div class="zh"><span class="material-symbols-outlined" style="color:#aaa;">arrow_back</span><div class="zha">👦</div><div class="zhi"><strong>Filho ❤️</strong><span>online</span></div></div>
-      <div class="zchat" id="chatt" style="flex:1;min-height:0;">
-        <div class="zm zmi">Mãe/pai, escreve "oi" pra mim! 🥰<div class="zt">10:30</div></div>
-      </div>
-      <div class="zib">
-        <div class="zif" style="background:#2A3942;"><span class="material-symbols-outlined">add</span><span style="flex:1;font-size:15px;color:#fff;" id="ctecl">​</span><span class="material-symbols-outlined">mic</span></div>
-        <div class="zsend" id="sendt" onclick="envTecl()" style="opacity:.3;pointer-events:none;"><span class="material-symbols-outlined">send</span></div>
-      </div>
-      <div class="tvwrap">
-        <div class="trow"><button class="key" onclick="k('q')">q</button><button class="key" onclick="k('w')">w</button><button class="key" onclick="k('e')">e</button><button class="key" onclick="k('r')">r</button><button class="key" onclick="k('t')">t</button><button class="key" onclick="k('y')">y</button><button class="key" onclick="k('u')">u</button><button class="key" onclick="k('i')">i</button><button class="key" onclick="k('o')">o</button><button class="key" onclick="k('p')">p</button></div>
-        <div class="trow"><button class="key" onclick="k('a')">a</button><button class="key" onclick="k('s')">s</button><button class="key" onclick="k('d')">d</button><button class="key" onclick="k('f')">f</button><button class="key" onclick="k('g')">g</button><button class="key" onclick="k('h')">h</button><button class="key" onclick="k('j')">j</button><button class="key" onclick="k('k')">k</button><button class="key" onclick="k('l')">l</button></div>
-        <div class="trow"><button class="key kesp2" id="kshift" onclick="togMaius()">⬆</button><button class="key" onclick="k('z')">z</button><button class="key" onclick="k('x')">x</button><button class="key" onclick="k('c')">c</button><button class="key" onclick="k('v')">v</button><button class="key" onclick="k('b')">b</button><button class="key" onclick="k('n')">n</button><button class="key" onclick="k('m')">m</button><button class="key kesp2" onclick="del()">⌫</button></div>
-        <div class="trow"><button class="key kesp" onclick="k('!')">!?#</button><button class="key kesp3" onclick="k(' ')">espaço</button><button class="key kenter" onclick="envTecl()">↵</button></div>
-      </div>
-    </div>
-    <div class="nb"><span class="nb-btn material-symbols-outlined">arrow_back</span><span class="nb-btn material-symbols-outlined">circle</span><span class="nb-btn material-symbols-outlined">crop_square</span></div>
-  </div>
-</div>
-
-<!-- SEGURANÇA -->
-<div id="tseg" class="tela">
-  <div class="app-header"><div class="logo-dot">🛡️</div><span class="app-title">ESCUDO DE PRATA</span><button class="btn-som" onclick="falarAtual()">🔊</button></div>
-  <div class="conteudo" id="qzarea" style="justify-content:flex-start;padding-top:8px;padding-bottom:100px;gap:12px;overflow-y:auto;">
-    <div class="card-app" id="segintro"><h1>🛡️ Cuidado com golpes!</h1><p>Vou mostrar situações reais. Você decide o que é <span class="marca">seguro</span> ou <span class="marca">golpe</span>. Ninguém nasce sabendo — e você vai aprender!</p></div>
-  </div>
-  <div class="rodape"><button class="btn-r" id="btnqz" onclick="acaoQz()">COMEÇAR O QUIZ ▶</button></div>
-</div>
-
-<!-- CERTIFICADO -->
-<div id="tcert" class="tela">
-  <div class="conteudo" style="padding-bottom:110px;gap:20px;">
-    <div class="medal" id="certEmoji">🎓</div>
-    <div class="card-app card-ouro"><h1>Módulo Concluído!</h1><p id="certTxt">Parabéns! Continue avançando na sua jornada digital!</p></div>
-    <p style="color:var(--txt2);font-size:13px;line-height:1.8;max-width:300px;text-align:center;">"A tecnologia só é grandiosa quando abraça a todos."</p>
-  </div>
-  <div class="rodape"><button class="btn-v" onclick="ir('tm')">VER OUTROS MÓDULOS ▶</button></div>
-</div>
+</main>
 
 <script>
-/* ─ Estado global ─ */
-let tID='ti', modI=-1, pasI=0, gEt='', cSt='f';
-let sbDY=null, camF=false, flashOn=false;
-let maius=false, buf='';
-let qI=0, qAc=0, qRes=false, qMod=false;
+/* ─────────────────────────────────────────────────────────────
+   ConSySenci.a Rosa — Módulo 0 (Single-File Build)
+   © 2026 ConSySenci.a — Todos os direitos reservados
+───────────────────────────────────────────────────────────────
+   ARQUITETURA MODULAR (inline por necessidade de single-file):
+   1. STATE  — Máquina de estados finitos
+   2. UI     — DOM, transições, boot sequence
+   3. INPUT  — Long-press detection via rAF
+   4. BOOT   — Bootstrap e wiring
+──────────────────────────────────────────────────────────────*/
+'use strict';
 
-/* ─ Voz ─ */
-function falar(txt){
-  if(!window.speechSynthesis)return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(txt.replace(/<[^>]+>/g,''));
-  u.lang='pt-BR';u.rate=0.82;u.pitch=1;u.volume=1;
-  const go=()=>{
-    const vs=speechSynthesis.getVoices();
-    const v=vs.find(x=>x.lang==='pt-BR')||vs.find(x=>x.lang.startsWith('pt'))||vs[0];
-    if(v)u.voice=v;
-    speechSynthesis.speak(u);
+/* ══════════════════════════════════════════════════════════
+   1. STATE MACHINE
+══════════════════════════════════════════════════════════ */
+const FSM = (() => {
+  const S = Object.freeze({ OFF:'OFF', PRESSING:'PRESSING', BOOTING:'BOOTING', WELCOME:'WELCOME' });
+  const T = { OFF:['PRESSING'], PRESSING:['OFF','BOOTING'], BOOTING:['WELCOME'], WELCOME:[] };
+  let cur = S.OFF, prev = null;
+  const listeners = new Map(), global = [];
+
+  const is    = s => cur === s;
+  const get   = ()  => cur;
+  const go    = (next) => {
+    if (!T[cur].includes(next)) return false;
+    prev = cur; cur = next;
+    (listeners.get(next)||[]).forEach(fn => fn({ from:prev, to:cur }));
+    global.forEach(fn => fn({ from:prev, to:cur }));
+    return true;
   };
-  const vs=speechSynthesis.getVoices();
-  if(vs.length)go();
-  else{speechSynthesis.onvoiceschanged=()=>{speechSynthesis.onvoiceschanged=null;go();};}
-}
-function falarGuia(id){falar(document.getElementById(id).textContent);}
-function falarAtual(){const e=document.getElementById('txt-aula');if(e&&tID==='taula')falar(e.textContent);}
-function sg(id,txt){const e=document.getElementById(id);if(e)e.textContent=txt;}
-
-/* ─ Relógio ─ */
-(function tick(){
-  const n=new Date(),hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
-  const dias=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-  const mes=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-  const ds=dias[n.getDay()]+', '+n.getDate()+' de '+mes[n.getMonth()];
-  ['sbh','rh'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=hm;});
-  const rd=document.getElementById('rd');if(rd)rd.textContent=ds;
-  setTimeout(tick,30000);
+  const onEnter  = (s,fn) => { if(!listeners.has(s)) listeners.set(s,[]); listeners.get(s).push(fn); };
+  const onChange = fn => global.push(fn);
+  return Object.freeze({ S, is, get, go, onEnter, onChange });
 })();
 
-/* ─ Navegação ─ */
-function ir(id){document.getElementById(tID).classList.remove('ativa');document.getElementById(id).classList.add('ativa');tID=id;}
+/* ══════════════════════════════════════════════════════════
+   2. UI CONTROLLER
+══════════════════════════════════════════════════════════ */
+const UI = (() => {
 
-/* ─ Módulos ─ */
-const MODS=[
-  {t:'A Caixa Mágica',e:'📦',passos:[
-    {txt:'Seu celular é como uma <b>caixa mágica</b> cheia de ferramentas. Não se preocupe em quebrar nada tocando — ele foi feito exatamente para ser tocado!',btn:'ENTENDI ▶'},
-    {txt:'O <b>botão lateral direito</b> liga e desliga a tela. Um toque rápido acende. Segurar 3 segundos mostra a opção de desligar o aparelho.',btn:'ENTENDI ▶'},
-    {txt:'Para carregar, encaixe o cabo na entrada <b>embaixo</b> do celular. Quando aparecer um raio ⚡ na tela, está carregando corretamente. Carregue até 100%!',btn:'ENTENDI ▶'},
-    {txt:'✅ Parabéns! Você aprendeu o básico da Caixa Mágica. Já é um grande começo!',btn:'CONCLUIR MÓDULO 🎓',fim:true}
-  ]},
-  {t:'Escola de Gestos',e:'👆',passos:[
-    {txt:'O toque deve ser suave — como dar um toque em uma bolha de sabão. <b>Não precisa apertar com força.</b> Um toque leve já funciona perfeitamente!',btn:'ENTENDI ▶'},
-    {txt:'Para rolar a tela (como folhear um jornal), deslize o dedo <b>para cima ou para baixo</b>. Para voltar, use o botão de seta no rodapé.',btn:'ENTENDI ▶'},
-    {txt:'Existe uma <b>cortina de notificações</b> escondida no topo da tela. Vamos praticar: arraste o dedo de cima para baixo na barra preta do topo!',btn:'PRATICAR AGORA 👆',acao:'gestos'}
-  ]},
-  {t:'Câmera e Fotos',e:'📷',passos:[
-    {txt:'A câmera do celular é melhor do que muitas máquinas fotográficas! Vamos aprender a <b>tirar, ver na galeria e compartilhar</b> fotos em 3 passos simples.',btn:'ENTENDI ▶'},
-    {txt:'Passo 1: <b>Focar.</b> Toque na pessoa ou objeto que quer fotografar. O celular ajusta a imagem automaticamente para ficar nítida.',btn:'PRATICAR AGORA 📷',acao:'camera'}
-  ]},
-  {t:'O Teclado Fantasma',e:'⌨️',passos:[
-    {txt:'O celular não tem teclado físico. Ele <b>aparece na tela</b> quando você precisa escrever, e some quando não precisa mais. É o Teclado Fantasma!',btn:'ENTENDI ▶'},
-    {txt:'Toque em cada letrinha com calma. Se errar, use a seta <b>⌫</b> para apagar. Quando terminar de escrever, aperte o botão verde para enviar.',btn:'PRATICAR AGORA ⌨️',acao:'teclado'}
-  ]},
-  {t:'Escudo de Prata',e:'🛡️',passos:[
-    {txt:'Este é o módulo mais importante! Golpistas usam o celular para enganar pessoas. Vou te mostrar como se proteger. <b>Você vai arrasar!</b>',btn:'IR PARA O QUIZ 🛡️',acao:'seguranca'}
-  ]}
-];
+  // DOM refs
+  const $ = id => document.getElementById(id);
+  const $$ = sel => document.querySelector(sel);
 
-function iniciarMod(i){modI=i;pasI=0;renderPasso();ir('taula');}
-function renderPasso(){
-  const mod=MODS[modI],p=mod.passos[pasI],tot=mod.passos.length;
-  sg('step-lbl',`Passo ${pasI+1}/${tot}`);
-  document.getElementById('txt-aula').innerHTML=p.txt;
-  document.getElementById('bpf').style.width=`${((pasI+1)/tot)*100}%`;
-  document.getElementById('btn-pa').textContent=p.btn||'ENTENDI ▶';
-  falar(p.txt);
-}
-function proxAula(){
-  const p=MODS[modI].passos[pasI];
-  if(p.fim){concluir();return;}
-  if(p.acao==='gestos'){ir('tgestos');initGestos();return;}
-  if(p.acao==='camera'){ir('tcam');initCam();return;}
-  if(p.acao==='teclado'){ir('ttecl');initTecl();return;}
-  if(p.acao==='seguranca'){ir('tseg');initSeg();return;}
-  if(pasI<MODS[modI].passos.length-1){pasI++;renderPasso();}
-}
-function concluir(){
-  const mod=MODS[modI];
-  const b=document.getElementById('bg'+modI);if(b){b.className='badge bf';b.textContent='✓';}
-  const mc=document.getElementById('mc'+modI);if(mc){mc.classList.remove('livre');mc.classList.add('feito');}
-  document.getElementById('certEmoji').textContent=mod.e;
-  document.getElementById('certTxt').textContent=`Parabéns! Você concluiu o módulo "${mod.t}"! Continue avançando na sua jornada digital.`;
-  ir('tcert');
-  falar(`Parabéns! Você concluiu o módulo ${mod.t}! Continue avançando na sua jornada digital.`);
-}
+  const D = {
+    frame:    $('phone-frame'),
+    btnPow:   $('btn-power'),
+    sOff:     $('s-off'),
+    sBoot:    $('s-boot'),
+    sWelc:    $('s-welcome'),
+    bootLogo: $('boot-logo'),
+    bootProg: $('boot-prog'),
+    bootFill: $('boot-fill'),
+    bootLbl:  $('boot-lbl'),
+    feedbk:   $('feedback-ov'),
+    lpInd:    $('lp-ind'),
+    lpFill:   $('lp-fill'),
+    bubble:   $('bubble'),
+    arrow:    $('arrow'),
+    bubbleTxt:$('bubble-txt'),
+    btnNext:  $('btn-next'),
+  };
 
-/* ─ Gestos Tutorial ─ */
-function initGestos(){gEt='abrir';sg('gg','Coloque o dedo na barra preta do topo e arraste para baixo!');falar('Coloque o dedo na barra preta do topo da tela e arraste para baixo!');}
+  // Mensagens do instrutor
+  const MSG = {
+    OFF:     { arrow:true,  html:'Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar' },
+    PRESS:   { arrow:false, html:'✅ Isso! Continue <strong>segurando</strong>...' },
+    BOOTING: { arrow:false, html:'✨ Perfeito! O celular está <strong>ligando</strong>...' },
+    WELCOME: { arrow:false, html:'🎉 Você <strong>ligou o celular!</strong> Primeiro passo concluído!' },
+    ERR_FAST:{ arrow:true,  html:'⚡ Muito rápido! Toque e <strong>segure firme</strong> por 3 segundos' },
+    ERR_MED: { arrow:true,  html:'⏱️ Quase! Segure um <strong>pouquinho mais</strong>...' },
+    ERR_LONG:{ arrow:true,  html:'👏 Faltou pouco! Segure até a tela <strong>acender</strong>' },
+  };
 
-function sbDown(e){sbDY=e.clientY;e.currentTarget.setPointerCapture(e.pointerId);}
-function sbMove(e){}
-function sbUp(e){
-  if(sbDY===null)return;
-  const dy=e.clientY-sbDY;sbDY=null;
-  if(dy>28&&cSt==='f')abrirC('meia');
-  else if(dy>16&&cSt==='meia')abrirC('total');
-  else if(dy<-28&&cSt!=='f')fecharC();
-}
+  let feedbackTimer = null;
+  let instrTimer    = null;
 
-function abrirC(s){
-  const c=document.getElementById('cortina');
-  c.classList.remove('meia','total');c.classList.add(s);cSt=s;
-  document.getElementById('blim').style.display='block';
-  if(s==='meia'&&gEt==='abrir'){gEt='total';sg('gg','Ótimo! Arraste mais para baixo para ver tudo!');falar('Ótimo! Arraste mais para baixo para ver tudo!');}
-  else if(s==='total'&&gEt==='total'){document.getElementById('dsub').style.display='block';gEt='fechar';sg('gg','Perfeito! Agora deslize para CIMA para fechar a cortina.');falar('Perfeito! Agora deslize para cima para fechar a cortina.');}
-}
-function fecharC(){
-  const c=document.getElementById('cortina');c.classList.remove('meia','total');cSt='f';
-  if(gEt==='fechar'){gEt='icone';sg('gg','Excelente! Toque no ícone do Telefone que está piscando!');falar('Excelente! Agora toque no ícone do Telefone que está piscando!');document.getElementById('ictel').querySelector('.aii').classList.add('ensinar');}
-}
-function tqp(id){document.getElementById(id).classList.toggle('on');}
-function limNot(){
-  ['n1','n2'].forEach(id=>{const e=document.getElementById(id);if(e){e.style.opacity='0';e.style.transform='translateX(110%)';setTimeout(()=>e.remove(),300);}});
-  document.getElementById('blim').style.display='none';
-  setTimeout(()=>{sg('gg','Notificações limpas! Deslize para cima para fechar.');falar('Notificações limpas! Deslize para cima para fechar a cortina.');},350);
-}
-function clkIcon(nome){
-  if(nome==='Telefone'&&gEt==='icone'){
-    const el=document.getElementById('ictel').querySelector('.aii');el.classList.remove('ensinar');
-    sg('gg','Você abriu o Telefone! Módulo concluído!');falar('Você abriu o Telefone! Excelente trabalho! Módulo concluído!');
-    setTimeout(()=>concluir(),1400);
-  }else if(nome==='Camera'){ir('tcam');initCam();}
-  else if(nome==='WhatsApp'){ir('ttecl');initTecl();}
-}
+  // Ativa/desativa camada
+  const setActive = (el, on) => el?.classList.toggle('active', on);
 
-/* ─ Câmera ─ */
-function initCam(){
-  camF=false;flashOn=false;
-  document.getElementById('cvf').classList.add('blur');
-  document.getElementById('csh').classList.add('blk');
-  document.getElementById('cthumb').style.backgroundImage='';
-  document.getElementById('icfl').textContent='flash_off';
-  document.getElementById('icfl').classList.remove('flon');
-  sg('gc','Toque no centro da imagem para focar. O celular vai ajustar automaticamente!');
-  falar('Toque no centro da imagem para focar. O celular vai ajustar a imagem automaticamente!');
-}
-function focarCam(e){
-  if(camF)return;
-  const vf=document.getElementById('cvf'),ring=document.getElementById('cring');
-  const r=vf.getBoundingClientRect();
-  ring.style.left=(e.clientX-r.left-33)+'px';ring.style.top=(e.clientY-r.top-33)+'px';ring.style.opacity='1';
-  vf.classList.remove('blur');camF=true;
-  setTimeout(()=>{ring.style.opacity='0';},1100);
-  document.getElementById('csh').classList.remove('blk');
-  sg('gc','Focou! Toque no círculo branco grande para tirar a foto!');
-  falar('Focou! Agora toque no círculo branco grande para tirar a foto!');
-}
-function togFlash(e){e.stopPropagation();flashOn=!flashOn;const ic=document.getElementById('icfl');ic.textContent=flashOn?'flash_on':'flash_off';ic.classList.toggle('flon',flashOn);}
-function disparo(){
-  if(!camF){sg('gc','Primeiro toque na imagem para focar!');falar('Primeiro toque na imagem para focar!');return;}
-  const fl=document.getElementById('cflash');fl.style.opacity='1';setTimeout(()=>{fl.style.opacity='0';},160);
-  document.getElementById('cthumb').style.backgroundImage="url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=120&auto=format&fit=crop')";
-  sg('gc','📸 Foto tirada! Toque na miniatura no canto esquerdo para ver na galeria.');
-  falar('Foto tirada! Toque na miniatura no canto esquerdo para abrir a galeria.');
-}
-function irGal(){if(!camF){sg('gc','Primeiro tire uma foto!');falar('Primeiro tire uma foto!');return;}ir('tgal');falar('Aqui está sua foto. Toque em Compartilhar para enviar para alguém!');}
+  // Instrutor
+  const setMsg = (key, delay=0) => {
+    if (instrTimer) { clearTimeout(instrTimer); instrTimer = null; }
+    const apply = () => {
+      const m = MSG[key]; if (!m || !D.bubble) return;
+      D.bubbleTxt.innerHTML = m.html;
+      D.arrow.style.display = m.arrow ? 'flex' : 'none';
+      D.bubble.classList.add('visible');
+    };
+    delay > 0 ? (instrTimer = setTimeout(apply, delay)) : apply();
+  };
 
-/* ─ Galeria ─ */
-function abrirShare(){document.getElementById('ssh').classList.add('ab');sg('ggl','Escolha WhatsApp para enviar a foto!');falar('Escolha WhatsApp para enviar a foto!');}
-function compZap(){ir('tzapf');falar('A foto está na conversa! Toque no botão verde de enviar, o aviãozinho!');}
-function envFoto(){
-  const c=document.getElementById('chatf');
-  const m=document.createElement('div');m.className='zm zmo';m.innerHTML='✅ Foto enviada!<div class="zt">agora <span class="material-symbols-outlined">done_all</span></div>';
-  c.appendChild(m);c.scrollTop=9999;
-  falar('Foto enviada com sucesso!');
-  setTimeout(()=>{const r=document.createElement('div');r.className='zm zmi';r.innerHTML='Que foto incrível!! 😍❤️<div class="zt">agora</div>';c.appendChild(r);c.scrollTop=9999;falar('Que foto incrível! Coração!');},1600);
-  setTimeout(()=>concluir(),3200);
-}
+  // Atualiza estado visual do botão power
+  const setPowerState = (s) => {
+    if (!D.btnPow) return;
+    D.btnPow.className = '';
+    if      (s === 'OFF')     { D.btnPow.classList.add('idle'); D.btnPow.tabIndex = 0; }
+    else if (s === 'PRESS')   { D.btnPow.classList.add('pressing'); }
+    else                      { D.btnPow.classList.add('locked'); D.btnPow.tabIndex = -1; }
+  };
 
-/* ─ Teclado ─ */
-function initTecl(){buf='';maius=false;updCampo();falar('Toque nas letrinhas para escrever. Quando terminar, aperte o botão verde para enviar!');}
-function k(l){if(maius&&/^[a-z]$/.test(l)){l=l.toUpperCase();maius=false;updShift();}buf+=l;updCampo();}
-function del(){buf=buf.slice(0,-1);updCampo();}
-function togMaius(){maius=!maius;updShift();}
-function updShift(){document.getElementById('kshift').classList.toggle('kmon',maius);}
-function updCampo(){
-  const c=document.getElementById('ctecl');c.textContent=buf||'​';
-  const s=document.getElementById('sendt');const t=buf.trim().length>0;
-  s.style.opacity=t?'1':'.3';s.style.pointerEvents=t?'auto':'none';
-}
-function envTecl(){
-  if(!buf.trim())return;
-  const c=document.getElementById('chatt'),m=document.createElement('div');
-  m.className='zm zmo';m.innerHTML=buf+'<div class="zt">agora <span class="material-symbols-outlined">done_all</span></div>';
-  c.appendChild(m);c.scrollTop=9999;buf='';updCampo();
-  falar('Mensagem enviada!');
-  setTimeout(()=>{const r=document.createElement('div');r.className='zm zmi';r.innerHTML='Ebaaa! Você mandou bem demais! 🥳🎉<div class="zt">agora</div>';c.appendChild(r);c.scrollTop=9999;falar('Ebaaa! Você mandou bem demais!');},1400);
-  setTimeout(()=>concluir(),3000);
-}
+  // Indicador de long-press
+  const setLPProgress = (p) => {  // 0.0 → 1.0
+    if (!D.lpFill || !D.lpInd) return;
+    if (p <= 0) { D.lpInd.classList.remove('vis'); D.lpFill.style.height='0%'; return; }
+    D.lpInd.classList.add('vis');
+    D.lpFill.style.height = `${p*100}%`;
+  };
 
-/* ─ Quiz Segurança ─ */
-const QZ=[
-  {q:'📱 Você recebe: "Oi, troquei de número. Pode me mandar R$200 pelo Pix? É urgente!" — O que você faz?',ops:['Mando o Pix, pode ser urgente mesmo!','Ligo para o número antigo da pessoa antes de qualquer coisa.','Peço mais detalhes pela mensagem.'],c:1,ok:'✅ Certo! Sempre ligue para o número que você já conhece antes de fazer qualquer Pix. Golpistas fingem ser familiares para roubar dinheiro.',err:'❌ Cuidado! Este é o "golpe do falso familiar". Sempre ligue para o número antigo que você tem salvo antes de fazer qualquer pagamento!'},
-  {q:'🔗 Chega no WhatsApp: "PARABÉNS! Você ganhou um iPhone! Clique aqui para resgatar em 10 minutos." — O que você faz?',ops:['Clico rápido, pode ser verdade!','Mostro para alguém de confiança antes de clicar.','Apago a mensagem. Não existe prêmio surpresa de graça!'],c:2,ok:'✅ Exato! Links de prêmios surpresa são golpes. A urgência é proposital para você não pensar. Sempre apague!',err:'❌ Links de prêmios surpresa são golpes! A urgência é proposital. Sempre apague e não clique em nada!'},
-  {q:'📞 Uma pessoa liga dizendo ser do banco e pede o número do seu cartão para "confirmar dados". O que você faz?',ops:['Passo os dados para resolver logo.','Desligo e ligo eu mesmo para o número que está no verso do cartão.','Passo só os últimos 4 dígitos.'],c:1,ok:'✅ Perfeito! Bancos NUNCA pedem dados pelo telefone. Desligue e ligue você mesmo para o banco usando o número do verso do cartão.',err:'❌ Bancos nunca pedem dados pelo telefone! Desligue e ligue você mesmo para o número que está no verso do seu cartão.'},
-  {q:'📷 Um desconhecido pede que você mande uma foto do seu RG ou CPF pelo WhatsApp. O que você faz?',ops:['Mando, parece sério.','Mando só parte do documento.','Não mando. Nunca envio documentos para desconhecidos.'],c:2,ok:'✅ Correto! Nunca envie fotos de documentos para desconhecidos. Seus dados podem ser usados para golpes no seu nome.',err:'❌ Nunca envie documentos para desconhecidos! Nem parcialmente. Seus dados podem ser usados para empréstimos e golpes no seu nome.'}
-];
+  // Feedback erro
+  const showError = (elapsedMs) => {
+    let key, txt;
+    if      (elapsedMs < 1000) { key='ERR_FAST'; txt='Tente segurar por mais tempo'; }
+    else if (elapsedMs < 2500) { key='ERR_MED';  txt='Quase! Segure mais um pouquinho'; }
+    else                       { key='ERR_LONG'; txt='Faltou pouco! Tente mais uma vez'; }
 
-function initSeg(){qI=0;qAc=0;qRes=false;qMod=false;document.getElementById('segintro').style.display='block';document.getElementById('btnqz').textContent='COMEÇAR O QUIZ ▶';document.getElementById('btnqz').onclick=acaoQz;document.getElementById('qzarea').innerHTML='';document.getElementById('qzarea').appendChild(document.getElementById('segintro'));}
-function acaoQz(){
-  if(!qMod){qMod=true;document.getElementById('segintro').style.display='none';renderQ();document.getElementById('btnqz').style.display='none';}
-  else{qI++;qRes=false;if(qI>=QZ.length){encerrarQz();return;}renderQ();document.getElementById('btnqz').style.display='none';}
-}
-function renderQ(){
-  const p=QZ[qI],a=document.getElementById('qzarea');
-  a.innerHTML=`<p class="qzp">Pergunta ${qI+1} de ${QZ.length}</p><div class="qz-wrap"><div class="qz-card"><h3>${p.q}</h3><div class="qzops" id="qzops">${p.ops.map((o,i)=>`<div class="qzop" id="qzo${i}" onclick="respQz(${i})">${o}</div>`).join('')}</div><div class="qzfb" id="qzfb"></div></div></div>`;
-  falar(p.q);
-}
-function respQz(i){
-  if(qRes)return;qRes=true;
-  const p=QZ[qI],c=i===p.c;
-  document.getElementById('qzo'+i).classList.add(c?'certa':'errada');
-  if(!c)document.getElementById('qzo'+p.c).classList.add('certa');
-  const fb=document.getElementById('qzfb');fb.textContent=c?p.ok:p.err;fb.className='qzfb '+(c?'ok':'err');
-  if(c)qAc++;
-  falar((c?p.ok:p.err).replace(/^[✅❌]\s*/,''));
-  const btn=document.getElementById('btnqz');btn.style.display='block';
-  btn.textContent=qI<QZ.length-1?'PRÓXIMA PERGUNTA ▶':'VER RESULTADO ▶';
-}
-function encerrarQz(){
-  const msg=qAc>=3?`🏆 Você acertou ${qAc} de ${QZ.length}! Parabéns, você está protegido(a)!`:`💪 Você acertou ${qAc} de ${QZ.length}. Continue praticando, cada aprendizado conta!`;
-  document.getElementById('qzarea').innerHTML=`<div class="card-app"><h1>🛡️ Quiz concluído!</h1><p style="font-size:16px;line-height:1.8;">${msg}</p></div>`;
-  falar(msg.replace(/[🏆💪]/g,''));
-  const btn=document.getElementById('btnqz');btn.style.display='block';btn.textContent='VER CERTIFICADO 🎓';btn.onclick=()=>concluir();
-}
+    // Shake háptico visual
+    if (D.frame) {
+      D.frame.classList.remove('haptic');
+      void D.frame.offsetWidth; // force reflow
+      D.frame.classList.add('haptic');
+      setTimeout(() => D.frame?.classList.remove('haptic'), 400);
+    }
 
-window.addEventListener('load',()=>{if(window.speechSynthesis)speechSynthesis.getVoices();});
+    if (D.feedbk) {
+      D.feedbk.textContent = txt;
+      D.feedbk.classList.add('vis');
+      if (feedbackTimer) clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => D.feedbk?.classList.remove('vis'), 2000);
+    }
+    setMsg(key);
+  };
+
+  // Sequência de boot
+  const BOOT_SEQ = [
+    { t:0,    fn: ()=>{ setActive(D.sOff, false); setActive(D.sBoot, true); }},
+    { t:400,  fn: ()=>{ D.bootLogo?.classList.add('vis'); }},
+    { t:1300, fn: ()=>{ D.bootProg?.classList.add('vis'); }},
+    { t:1600, fn: ()=>{ setFill(30); }},
+    { t:2200, fn: ()=>{ setFill(65); }},
+    { t:3000, fn: ()=>{ setFill(100); }},
+    { t:3500, fn: ()=>{ transitionWelcome(); }},
+  ];
+
+  const setFill = (v) => {
+    if (D.bootFill) D.bootFill.style.width = v+'%';
+    if (D.bootLbl)  D.bootLbl.textContent = `Carregando... ${v}%`;
+    // ARIA
+    const track = document.querySelector('.boot-track');
+    track?.setAttribute('aria-valuenow', v);
+  };
+
+  let bootTimers = [];
+  const runBoot = () => {
+    bootTimers.forEach(clearTimeout); bootTimers = [];
+    BOOT_SEQ.forEach(({ t, fn }) => { bootTimers.push(setTimeout(fn, t)); });
+  };
+
+  const transitionWelcome = () => {
+    FSM.go(FSM.S.WELCOME);
+    setActive(D.sBoot, false);
+    setTimeout(() => setActive(D.sWelc, true), 280);
+  };
+
+  // Bind FSM → UI
+  const bindFSM = () => {
+    FSM.onEnter(FSM.S.PRESSING, () => {
+      setPowerState('PRESS'); setMsg('PRESS');
+      D.feedbk?.classList.remove('vis');
+    });
+    FSM.onEnter(FSM.S.OFF, () => {
+      setPowerState('OFF'); setMsg('OFF');
+    });
+    FSM.onEnter(FSM.S.BOOTING, () => {
+      setPowerState('locked'); setMsg('BOOTING');
+      setLPProgress(0);
+      runBoot();
+    });
+    FSM.onEnter(FSM.S.WELCOME, () => {
+      setPowerState('locked'); setMsg('WELCOME', 700);
+    });
+  };
+
+  // Botão próximo
+  const bindNext = () => {
+    if (!D.btnNext) return;
+    const handle = (e) => {
+      e.preventDefault();
+      document.dispatchEvent(new CustomEvent('consysencia:module-complete',
+        { detail: { module:'module-0-power-on' } }));
+      // Feedback visual imediato
+      D.btnNext.innerHTML = '✅ Módulo Concluído!';
+      D.btnNext.style.background = '#00C875';
+      D.btnNext.style.pointerEvents = 'none';
+      D.btnNext.style.animation = 'none';
+    };
+    D.btnNext.addEventListener('click',   handle);
+    D.btnNext.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') handle(e); });
+  };
+
+  // Init
+  const init = () => {
+    bindFSM();
+    bindNext();
+    setActive(D.sOff,  true);
+    setActive(D.sBoot, false);
+    setActive(D.sWelc, false);
+    setPowerState('OFF');
+    setTimeout(() => { D.bubble?.classList.add('visible'); setMsg('OFF'); }, 500);
+  };
+
+  return Object.freeze({ init, setLPProgress, showError });
+})();
+
+/* ══════════════════════════════════════════════════════════
+   3. INTERACTION CONTROLLER (Long-Press Detection)
+══════════════════════════════════════════════════════════ */
+const Input = (() => {
+  const HOLD_MS      = 3000;  // duração exigida
+  const DEBOUNCE_MS  = 400;   // cooldown pós-release
+
+  let pressStart     = null;
+  let isDown         = false;
+  let rafId          = null;
+  let debounced      = false;
+  let activePtr      = null;
+  let btnEl          = null;
+
+  // rAF loop — atualiza indicador e detecta conclusão
+  const tick = (ts) => {
+    if (!isDown || pressStart === null) return;
+    const elapsed  = ts - pressStart;
+    const progress = Math.min(elapsed / HOLD_MS, 1);
+    UI.setLPProgress(progress);
+
+    if (elapsed >= HOLD_MS) { success(); return; }
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const success = () => {
+    cleanup();
+    FSM.go(FSM.S.BOOTING);
+  };
+
+  const cleanup = () => {
+    isDown = false; pressStart = null; activePtr = null;
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+    UI.setLPProgress(0);
+    debounced = true;
+    setTimeout(() => { debounced = false; }, DEBOUNCE_MS);
+  };
+
+  const onDown = (e) => {
+    if (isDown || debounced) return;
+    if (!FSM.is(FSM.S.OFF))  return;
+    e.preventDefault();
+    activePtr  = e.pointerId ?? null;
+    if (activePtr !== null) {
+      try { btnEl.setPointerCapture(activePtr); } catch(_){}
+    }
+    isDown      = true;
+    pressStart  = performance.now();
+    FSM.go(FSM.S.PRESSING);
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const onUp = (e) => {
+    if (!isDown) return;
+    if (activePtr !== null && e.pointerId !== undefined && e.pointerId !== activePtr) return;
+    const elapsed = performance.now() - pressStart;
+    cleanup();
+    if (FSM.is(FSM.S.PRESSING)) {
+      FSM.go(FSM.S.OFF);
+      UI.showError(elapsed);
+    }
+  };
+
+  const onMove = (e) => { if (isDown) e.preventDefault(); };
+
+  const init = (btn) => {
+    btnEl = btn;
+    if (!btnEl) return;
+    btnEl.addEventListener('pointerdown',  onDown, { passive:false });
+    btnEl.addEventListener('pointerup',    onUp,   { passive:false });
+    btnEl.addEventListener('pointerleave', onUp,   { passive:false });
+    btnEl.addEventListener('pointercancel',onUp,   { passive:false });
+    btnEl.addEventListener('pointermove',  onMove, { passive:false });
+    btnEl.addEventListener('contextmenu',  e => e.preventDefault());
+  };
+
+  return Object.freeze({ init });
+})();
+
+/* ══════════════════════════════════════════════════════════
+   4. BOOTSTRAP
+══════════════════════════════════════════════════════════ */
+(function boot() {
+  const run = () => {
+    UI.init();
+    Input.init(document.getElementById('btn-power'));
+
+    // Suporte teclado: Enter/Space simula hold de 3.1s
+    document.getElementById('btn-power')?.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && FSM.is(FSM.S.OFF)) {
+        e.preventDefault();
+        const btn = e.currentTarget;
+        btn.dispatchEvent(new PointerEvent('pointerdown', { pointerId:99, bubbles:true, cancelable:true }));
+        setTimeout(() => {
+          btn.dispatchEvent(new PointerEvent('pointerup', { pointerId:99, bubbles:true, cancelable:true }));
+        }, 3100);
+      }
+    });
+
+    // Evento de conclusão — SPA principal pode ouvir
+    document.addEventListener('consysencia:module-complete', e => {
+      console.log('[ConSySenci.a] Módulo concluído:', e.detail);
+    });
+  };
+
+  document.readyState === 'loading'
+    ? document.addEventListener('DOMContentLoaded', run)
+    : run();
+})();
 </script>
 </body>
 </html>
