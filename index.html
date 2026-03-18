@@ -9,7 +9,7 @@
     <meta property="og:url" content="https://rosa.consysencia.com/">
     <meta property="og:title" content="Ganhei a Medalha da Caixa Mágica! 🥇">
     <meta property="og:description" content="Perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. Vem aprender você também!">
-    <meta property="og:image" content="https://raw.githubusercontent.com/gigapeutas/consysencia-rosa/refs/heads/main/1-medalha.png">
+    <meta property="og:image" content="https://rosa.consysencia.com/1-medalha.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -246,7 +246,7 @@
             speechSynthesis.onvoiceschanged = carregarVozes;
         } else { carregarVozes(); }
 
-        // Função Falar Ajustada para aceitar um "callback" (o que fazer depois que terminar de falar)
+        // Função Falar Ajustada para aceitar um "callback" (esperar terminar)
         function falar(texto, aoTerminar) {
             window.speechSynthesis.cancel(); 
             const utterThis = new SpeechSynthesisUtterance(texto);
@@ -348,10 +348,11 @@
             falar("Parabéns! Você é um campeão. Acabou de ganhar a medalha da caixa mágica. Compartilhe com sua família!");
         }
 
-        // Função Exclusiva e Direta para o WhatsApp
+        // Compartilha o link "novo" pro WhatsApp baixar a imagem
         function compartilharVitoriaWhatsApp() {
             const texto = 'Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa. Vem aprender você também: ';
-            const linkSite = 'https://rosa.consysencia.com/';
+            const linkSite = 'https://rosa.consysencia.com/?v=1'; 
+            
             const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(texto + linkSite)}`;
             
             window.open(urlWhatsApp, '_blank');
