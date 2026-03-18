@@ -46,8 +46,13 @@
         .status-bar { height: 35px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; background: rgba(0,0,0,0.4); font-size: 13px; z-index: 40; cursor: ns-resize; }
         
         .grid-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 40px 20px; }
-        .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; }
-        .icon-box { width: 60px; height: 60px; border-radius: 22%; background-color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.1s; overflow: hidden; }
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; transition: transform 0.1s; }
+        .tap-ativo { transform: scale(0.9); }
+        .icon-box { width: 60px; height: 60px; border-radius: 22%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); overflow: hidden; background-color: #fff; }
+
+        /* Cores dos Ícones Fixados */
+        .bg-camera { background: #2ECC71; }
+        .bg-telefone { background: #4285F4; }
 
         /* === A CORTINA AVANÇADA (MÓDULO 1.5) === */
         #cortina { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: #000; z-index: 50; transition: top 0.3s ease-out, height 0.3s; display: flex; flex-direction: column; }
@@ -154,7 +159,12 @@
             </div>
 
             <div class="grid-apps">
-                <div class="app-item" onpointerdown="iniciarTap(event)" onpointerup="finalizarTap(event, 'Telefone')"><div class="icon-box bg-telefone"><span class="material-symbols-outlined" style="color:white; font-size: 30px;">call</span></div><span>Telefone</span></div>
+                <div class="app-item" onpointerdown="iniciarTap(event, 'Telefone')" onpointerup="finalizarTap(event)">
+                    <div class="icon-box bg-telefone"><span class="material-symbols-outlined" style="color:white; font-size: 30px;">call</span></div><span>Telefone</span>
+                </div>
+                <div class="app-item" onpointerdown="iniciarTap(event, 'Câmera')" onpointerup="finalizarTap(event)">
+                    <div class="icon-box bg-camera"><span class="material-symbols-outlined" style="color:white; font-size: 32px;">camera_alt</span></div><span>Câmera</span>
+                </div>
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/whatsapp.png'); background-size: cover;"></div><span>WhatsApp</span></div>
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/chrome.png'); background-size: cover;"></div><span>Chrome</span></div>
             </div>
@@ -235,19 +245,43 @@
         // === MÓD. 1 E 1.5: GESTOS E CORTINA ===
         let estadoLi = 1; // 1=Toque, 2=Puxar 1x, 3=Apagar Notif, 4=Puxar 2x, 5=Lanterna, 6=Brilho, 7=Limpar, 8=Fechar
         let toquesCertos = 0;
+        let cameraLessonActive = false; // Flag para controlar a aula de câmera
 
         function iniciarModulo1() { mostrarTela('tela-gestos'); falar("Vamos treinar. Dê um toque bem rapidinho no ícone azul do Telefone."); }
         
+        // Mágica do Toque Corrigida e Inteligente
         let tTap = 0;
-        function iniciarTap(e) { tTap = Date.now(); e.currentTarget.querySelector('.icon-box').style.transform = "scale(0.9)"; }
-        function finalizarTap(e, nome) {
-            e.currentTarget.querySelector('.icon-box').style.transform = "scale(1)";
-            if(estadoLi !== 1) return;
-            if ((Date.now() - tTap) > 500) { falar("Você segurou. Tente dar só um toquinho rápido."); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } 
-            else { 
-                toquesCertos++;
-                if (toquesCertos < 3) { falar(`Acertou ${toquesCertos} vezes. Faça de novo.`); if(navigator.vibrate) navigator.vibrate(50); } 
-                else { estadoLi = 2; document.getElementById('texto-guia-gestos').innerText = "Arraste o relógio para baixo."; falar("Perfeito! Agora coloque o dedo no relógio lá em cima e puxe para baixo."); }
+        let currentItemName = ""; // Armazena qual app foi tocado
+
+        function iniciarTap(e, appName) { 
+            tTap = Date.now(); 
+            currentItemName = appName; // Salva o nome do app
+            e.currentTarget.classList.add('tap-ativo'); // Aplica o efeito visual
+        }
+
+        function finalizarTap(e) {
+            e.currentTarget.classList.remove('tap-ativo'); // Remove o efeito visual
+            if(estadoLi !== 1) return; // Só funciona no estado inicial
+
+            // Correção Pedagógica: Se for Câmera, abre a Câmera (pedido do João)
+            if ("Câmera" === currentItemName) {
+                cameraLessonActive = true;
+                iniciarCamera();
+                return; // Para o fluxo aqui
+            }
+
+            // Lógica do Telefone (3 repetições)
+            if ("Telefone" === currentItemName) {
+                if ((Date.now() - tTap) > 500) { falar("Você segurou. Tente dar só um toquinho rápido."); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } 
+                else { 
+                    toquesCertos++;
+                    if (toquesCertos < 3) { falar(`Acertou ${toquesCertos} vezes. Faça de novo.`); if(navigator.vibrate) navigator.vibrate(50); } 
+                    else { 
+                        estadoLi = 2; 
+                        document.getElementById('texto-guia-gestos').innerText = "Arraste o relógio para baixo."; 
+                        falar("Perfeito! Agora coloque o dedo no relógio lá em cima e puxe para baixo."); 
+                    }
+                }
             }
         }
 
@@ -255,6 +289,7 @@
         let inicioY = 0; const areaGatilho = document.getElementById('area-gatilho'); const cortina = document.getElementById('cortina');
         areaGatilho.ontouchstart = (e) => { inicioY = e.touches[0].clientY; };
         areaGatilho.ontouchend = (e) => {
+            if(cameraLessonActive) return; // Não interfere se estivermos na aula de câmera
             if(estadoLi === 2 && (e.changedTouches[0].clientY - inicioY) > 50) {
                 cortina.classList.add('meia'); estadoLi = 3;
                 document.getElementById('texto-guia-gestos').innerText = "Arraste o aviso para o lado para apagar.";
@@ -267,6 +302,7 @@
         notif.ontouchstart = (e) => { notifX = e.touches[0].clientX; };
         notif.ontouchmove = (e) => { let move = e.touches[0].clientX - notifX; if(estadoLi === 3 && move > 0) notif.style.transform = `translateX(${move}px)`; };
         notif.ontouchend = (e) => {
+            if(cameraLessonActive) return; // Não interfere se estivermos na aula de câmera
             if(estadoLi === 3) {
                 let move = e.changedTouches[0].clientX - notifX;
                 if(move > 80) { 
@@ -278,8 +314,9 @@
         };
 
         // Puxar a Cortina Total
-        cortina.ontouchstart = (e) => { if(estadoLi===4 || estadoLi===8) inicioY = e.touches[0].clientY; };
+        cortina.ontouchstart = (e) => { if(!cameraLessonActive && (estadoLi===4 || estadoLi===8)) inicioY = e.touches[0].clientY; };
         cortina.ontouchend = (e) => {
+            if(cameraLessonActive) return; // Não interfere se estivermos na aula de câmera
             let deslize = e.changedTouches[0].clientY - inicioY;
             if(estadoLi === 4 && deslize > 50) {
                 cortina.classList.remove('meia'); cortina.classList.add('aberta');
@@ -291,8 +328,8 @@
             } else if (estadoLi === 8 && deslize < -50) { // Fechar
                 cortina.classList.remove('aberta');
                 document.getElementById('filtro-geral').style.opacity = 0; // reseta brilho
-                falar("Cortina fechada. Vamos para o treino de Câmera!");
-                setTimeout(() => { iniciarCamera(); }, 1500);
+                falar("Excelente! Toque agora na Câmera, do lado do ícone que treinamos.");
+                estadoLi = 1; // Reseta para o estado inicial para que o toque na câmera funcione
             }
         };
 
@@ -325,7 +362,13 @@
 
         // === MÓD. 2 E 3: CÂMERA E ZAP ===
         let estadoCam = 1;
-        function iniciarCamera() { mostrarTela('tela-camera-simulador'); falar("A imagem está embaçada. Dê um toque na paisagem para focar."); estadoCam = 1; }
+        function iniciarCamera() { 
+            cameraLessonActive = true; 
+            mostrarTela('tela-camera-simulador'); 
+            falar("A imagem está embaçada. Dê um toque na paisagem para focar."); 
+            estadoCam = 1; 
+        }
+        
         function acaoFocar(e) {
             if(estadoCam !== 1) return;
             document.getElementById('visor-cam').classList.remove('em-desfoque'); if (navigator.vibrate) navigator.vibrate(50);
