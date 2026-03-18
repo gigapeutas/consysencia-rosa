@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ConSySenci.a Rosa - A Caixa Mágica</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rosa.consysencia.com/">
+    <meta property="og:title" content="Ganhei a Medalha da Caixa Mágica! 🥇">
+    <meta property="og:description" content="Perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. Vem aprender você também!">
+    <meta property="og:image" content="https://raw.githubusercontent.com/gigapeutas/consysencia-rosa/refs/heads/main/1-medalha.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
     <style>
         :root {
             --rosa-forte: #D81B60;
@@ -28,7 +38,7 @@
             flex-direction: column;
             align-items: center;
             height: 100vh;
-            overflow: hidden; /* Proíbe a rolagem de tela, tudo tem que caber na visão */
+            overflow: hidden; /* Proíbe a rolagem de tela */
         }
 
         /* Cabeçalho Compacto */
@@ -258,11 +268,10 @@
             falar(texto);
         }
 
-        // --- LÓGICA DO JOGO ---
         function iniciarQuiz() {
             modoQuiz = true;
             document.getElementById('area-aula').classList.add('escondido');
-            document.getElementById('rodape').style.display = 'none'; // Esconde botão próximo
+            document.getElementById('rodape').style.display = 'none'; 
             document.getElementById('area-quiz').classList.remove('escondido');
             mostrarPergunta();
         }
@@ -298,15 +307,26 @@
         }
 
         function compartilharVitoria() {
+            const textoCompartilhar = 'Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. Vem aprender você também!';
+            const urlCompartilhar = 'https://rosa.consysencia.com/';
+            
             if (navigator.share) {
                 navigator.share({
-                    title: 'ConSySenci.a Rosa',
-                    text: 'Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa. Vem aprender você também!',
-                    url: 'https://rosa.consysencia.com/'
+                    title: 'Vitória na ConSySenci.a Rosa!',
+                    text: textoCompartilhar,
+                    url: urlCompartilhar
+                }).catch((error) => {
+                    console.log('Erro ao compartilhar nativamente:', error);
+                    abrirWhatsAppDireto(textoCompartilhar, urlCompartilhar);
                 });
             } else {
-                alert("Alerte sua família que você ganhou a medalha! O link é rosa.consysencia.com");
+                abrirWhatsAppDireto(textoCompartilhar, urlCompartilhar);
             }
+        }
+
+        function abrirWhatsAppDireto(texto, url) {
+            const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(texto + " " + url)}`;
+            window.open(urlWhatsApp, '_blank');
         }
     </script>
 </body>
