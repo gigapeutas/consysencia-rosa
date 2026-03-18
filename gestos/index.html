@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rosa - Escola de Gestos</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+
+    <style>
+        :root {
+            --android-bg: #E3F2FD; /* Cor de fundo típica do Android 14 */
+            --barra-topo: rgba(0,0,0,0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: black; /* Moldura do celular */
+        }
+
+        /* O Simulador que imita o tamanho do celular */
+        .tela-celular {
+            background-color: var(--android-bg);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Barra de Status (Bateria, Wi-fi) */
+        .status-bar {
+            height: 30px;
+            background: var(--barra-topo);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .icones-status {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Área onde os Apps ficam */
+        .desktop {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 20px;
+            padding: 40px 20px;
+        }
+
+        .app-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .app-item img {
+            width: 60px;
+            height: 60px;
+            /* Se você ainda não subiu as fotos, este placeholder ajuda a ver o layout */
+            background-color: white;
+            border-radius: 15px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .app-item span {
+            font-size: 12px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* Barra de Navegação de Baixo (◀️ ⚪ ⬛) */
+        .nav-bar {
+            height: 60px;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #ccc;
+        }
+
+        .nav-btn {
+            color: #555;
+            font-size: 30px;
+        }
+
+        /* A Assistente Rosa flutuando */
+        .balao-rosa {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 80%;
+            border: 3px solid #D81B60;
+            z-index: 100;
+        }
+
+        .balao-rosa::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid #D81B60;
+            transform: translateX(-50%);
+        }
+
+        .btn-audio-gestos {
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            background: #D81B60;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tela-celular">
+        <div class="status-bar">
+            <span>10:30</span>
+            <div class="icones-status">
+                <span class="material-symbols-outlined" style="font-size: 18px;">network_cell</span>
+                <span class="material-symbols-outlined" style="font-size: 18px;">wifi</span>
+                <span class="material-symbols-outlined" style="font-size: 18px;">battery_full</span>
+            </div>
+        </div>
+
+        <button class="btn-audio-gestos" onclick="repetir()">🔊</button>
+
+        <div class="desktop">
+            <div class="app-item" onclick="validarToque('Telefone')">
+                <img src="/gestos/icone-telefone.png" alt="Telefone">
+                <span>Telefone</span>
+            </div>
+            </div>
+
+        <div id="instrucao" class="balao-rosa">
+            <p id="texto-guia" style="font-size: 22px; margin: 0;">Olá! Vamos treinar o <b>Toque de Pluma</b>. Tente tocar no ícone do Telefone bem devagar, como se fosse uma bolha de sabão.</p>
+        </div>
+
+        <div class="nav-bar">
+            <span class="material-symbols-outlined nav-btn">arrow_back_ios</span>
+            <span class="material-symbols-outlined nav-btn">circle</span>
+            <span class="material-symbols-outlined nav-btn" onclick="ajudaAbas()">check_box_outline_blank</span>
+        </div>
+    </div>
+
+    <script>
+        function falar(t) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(t);
+            u.lang = 'pt-BR';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
+        }
+
+        function validarToque(app) {
+            if(app === 'Telefone') {
+                document.getElementById('texto-guia').innerHTML = "<b>Excelente!</b> Você tocou com leveza. Agora vamos tentar o toque longo?";
+                falar("Excelente! Você tocou com leveza. Agora vamos tentar o toque longo?");
+            }
+        }
+
+        function ajudaAbas() {
+            falar("Esse quadradinho serve para ver todas as janelas abertas. No final desta aula, vou te ensinar a fechar todas para o seu celular não ficar cansado.");
+        }
+
+        window.onload = () => {
+            falar(document.getElementById('texto-guia').innerText);
+        }
+    </script>
+</body>
+</html>
