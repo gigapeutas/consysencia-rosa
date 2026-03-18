@@ -3,110 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ConSySenci.a - Evolução Digital</title>
+    <title>Consysencia Rosa</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+    
     <style>
         :root { 
-            --gold-accent: #F1C40F; --charcoal-bg: #1C2833; 
-            --slate-blue: #34495E; --ivory-white: #FDFEFE; --success-green: #2ECC71; 
+            /* PALETA MINIMALISTA DE ALTO CONTRASTE */
+            --bg-grafite: #121212; 
+            --card-slate: #1E293B; 
+            --texto-marfim: #F8F9FA; 
+            --rosa-nair: #D81B60; /* A cor de destaque e homenagem */
+            --btn-proximo: #2ECC71; /* Único botão colorido na navegação */
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Open Sans', Arial, sans-serif; user-select: none; -webkit-user-select: none; }
-        body { background-color: var(--charcoal-bg); color: var(--ivory-white); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; padding: 20px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; font-family: 'Open Sans', Arial, sans-serif; }
         
-        .cabeçalho { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 600px; position: fixed; top: 20px; display: none; }
-        /* O "Mentor" agora é mais sóbrio, inspirado em Solo Leveling/image_0.png */
-        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, var(--gold-accent), var(--slate-blue)); border-radius: 50% 50% 0 50%; box-shadow: 0 0 15px rgba(241, 196, 15, 0.5); }
-        .btn-repetir { background: rgba(255,255,255,0.1); border: 2px solid var(--gold-accent); border-radius: 50%; width: 55px; height: 55px; font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gold-accent); }
+        body { background-color: var(--bg-grafite); color: var(--texto-marfim); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* ARQUITETURA SPA (Página Única) */
+        .tela { display: none; flex-direction: column; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: var(--bg-grafite); animation: fadeIn 0.4s ease-in-out; }
+        .tela.ativa { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* LAYOUT BASE (CARDS) */
+        .cabecalho { display: flex; align-items: center; justify-content: space-between; padding: 20px; }
+        .avatar-rosa { width: 60px; height: 60px; background-color: var(--rosa-nair); border-radius: 50%; box-shadow: 0 0 15px rgba(216, 27, 96, 0.4); animation: pulsar 3s infinite; background-image: url('avatar.png'); background-size: cover; background-position: center; }
+        @keyframes pulsar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .btn-ouvir { background: transparent; border: 2px solid var(--rosa-nair); color: var(--rosa-nair); border-radius: 50%; width: 50px; height: 50px; font-size: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+
+        .conteudo-central { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; padding-bottom: 100px; text-align: center; }
+        .card { background-color: var(--card-slate); padding: 30px 20px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-left: 6px solid var(--rosa-nair); }
         
-        .area-central { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 600px; padding-bottom: 80px; text-align: center; }
-        .caixa-texto { background-color: var(--slate-blue); padding: 30px 20px; border-radius: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border-left: 12px solid var(--gold-accent); }
+        h1 { font-size: 28px; color: var(--rosa-nair); margin-bottom: 15px; }
+        p { font-size: 22px; line-height: 1.5; color: var(--texto-marfim); }
 
-        h1 { font-size: 32px; color: var(--gold-accent); margin-bottom: 20px; }
-        p { font-size: 24px; line-height: 1.4; color: var(--ivory-white); }
+        /* ÁREA INFERIOR (BOTÃO PRÓXIMO EM DESTAQUE) */
+        .rodape { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, #000); display: flex; justify-content: center; z-index: 100; }
+        .btn-destaque { background-color: var(--btn-proximo); color: #000; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; max-width: 500px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); }
+        .btn-destaque:active { transform: scale(0.95); }
+
+        .btn-opcao { background-color: var(--card-slate); color: var(--texto-marfim); border: 2px solid var(--rosa-nair); padding: 15px; font-size: 20px; border-radius: 15px; margin: 10px 0; width: 100%; font-weight: bold; }
+
+        .medalha-icone { font-size: 80px; text-shadow: 0 0 20px var(--rosa-nair); margin-bottom: 20px; }
+
+        /* =========================================
+           ESTILOS ESPECÍFICOS: SIMULADOR DE GESTOS 
+           ========================================= */
+        .tela-celular { flex: 1; background: #1C2833; position: relative; display: flex; flex-direction: column; border-radius: 30px 30px 0 0; overflow: hidden; margin-top: 10px; box-shadow: 0 -10px 20px rgba(0,0,0,0.5); }
+        .status-bar { height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; background: rgba(0,0,0,0.3); font-size: 14px; cursor: ns-resize; z-index: 40; }
+        #cortina { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 30; transition: top 0.4s ease-out; padding-top: 60px; }
+        .notificacao { background: var(--card-slate); margin: 10px 15px; padding: 15px; border-radius: 10px; border-left: 4px solid var(--btn-proximo); }
         
-        .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 15px 20px; display: none; box-shadow: 0 -4px 10px rgba(0,0,0,0.2); }
-
-        button.btn-principal { background-color: var(--slate-blue); color: var(--gold-accent); border: 2px solid var(--gold-accent); padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        button.btn-principal:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-
-        /* CORREÇÃO DO QUIZ: Centralização Absoluta */
-        .area-botoes-quiz { display: flex; gap: 15px; margin-top: 20px; width: 100%; justify-content: center; align-items: center; }
-        .btn-sim, .btn-nao { flex: 1; padding: 25px; border-radius: 20px; color: white; font-size: 28px; font-weight: bold; border: none; max-width: 200px; }
-        .btn-sim { background-color: var(--success-green); }
-        .btn-nao { background-color: #E74C3C; }
-
-        .medalha { font-size: 100px; text-align: center; margin: 20px 0; color: var(--gold-accent); filter: drop-shadow(0 0 10px var(--gold-accent)); }
-        .escondido { display: none !important; }
+        .grid-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 40px 20px; }
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: bold; }
+        .icon-box { width: 60px; height: 60px; border-radius: 22%; background-color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .bg-telefone { background-color: #4285F4; }
     </style>
 </head>
 <body>
 
-    <div id="tela-inicio" class="area-central">
-        <div class="caixa-texto">
-            <h1 id="titulo-inicio">Bem-vindo(a)!</h1>
-            <p id="msg-inicio">Toque no botão dourado abaixo para ligar a minha voz e iniciarmos sua evolução digital.</p><br>
-            <button id="btn-start" class="btn-principal" onclick="iniciarAula()">COMEÇAR SISTEMA</button>
+    <div id="tela-inicio" class="tela ativa">
+        <div class="conteudo-central">
+            <div class="avatar-rosa" style="width: 100px; height: 100px; margin-bottom: 30px;"></div>
+            <div class="card">
+                <h1>Consysencia Rosa</h1>
+                <p>Bem-vinda à sua evolução digital. Não tenha medo, estamos juntas nessa jornada.</p>
+            </div>
+        </div>
+        <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo0()">COMEÇAR</button></div>
+    </div>
+
+    <div id="tela-aula" class="tela">
+        <div class="cabecalho">
+            <div class="avatar-rosa"></div>
+            <span style="font-weight: bold; color: var(--rosa-nair);" id="contador-passos">Passo 1/3</span>
+            <button class="btn-ouvir" onclick="repetirFala()">🔊</button>
+        </div>
+        <div class="conteudo-central">
+            <div class="card"><p id="texto-aula">Carregando...</p></div>
+        </div>
+        <div class="rodape"><button class="btn-destaque" onclick="proximoPassoAula()">ENTENDI ➔</button></div>
+    </div>
+
+    <div id="tela-medalha-0" class="tela">
+        <div class="conteudo-central">
+            <div class="medalha-icone">🥇</div>
+            <div class="card">
+                <h1>Primeira Vitória!</h1>
+                <p>Você perdeu o medo da Caixa Mágica. Esta é a sua Medalha de Curiosidade.</p>
+            </div>
+        </div>
+        <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo1()">IR PARA GESTOS ➔</button></div>
+    </div>
+
+    <div id="tela-gestos" class="tela">
+        <div class="cabecalho" style="padding-bottom: 0;">
+            <div class="avatar-rosa" style="width: 40px; height: 40px;"></div>
+            <p id="texto-guia-gestos" style="font-size: 16px; margin-left: 15px; text-align: left; flex: 1;">Toque rápido no Telefone.</p>
+        </div>
+        
+        <div class="tela-celular">
+            <div class="status-bar" id="barra-status">
+                <span>10:30</span>
+                <div style="display: flex; gap: 5px;"><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div>
+            </div>
+
+            <div id="cortina" onclick="fecharCortina()">
+                <div class="notificacao">
+                    <h3 style="color: var(--btn-proximo); margin-bottom: 5px;">WhatsApp</h3>
+                    <p style="font-size: 14px;">Filho: "Tudo bem por aí? Já está dominando o aparelho?"</p>
+                </div>
+                <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #888;">(Toque para fechar)</p>
+            </div>
+
+            <div class="grid-apps">
+                <div class="app-item" onpointerdown="iniciarTap(event)" onpointerup="finalizarTap(event, 'Telefone')">
+                    <div class="icon-box bg-telefone"><svg viewBox="0 0 24 24" fill="white" width="30" height="30"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+                    <span>Telefone</span>
+                </div>
+                <div class="app-item"><div class="icon-box" style="background-image: url('icons/whatsapp.png'); background-size: cover;"></div><span>WhatsApp</span></div>
+                <div class="app-item"><div class="icon-box" style="background-image: url('icons/chrome.png'); background-size: cover;"></div><span>Chrome</span></div>
+            </div>
         </div>
     </div>
 
-    <div id="cabecalho" class="cabeçalho">
-        <div class="rosa-guia"></div>
-        <div id="indicador" style="font-weight:700; font-size: 18px; color: var(--gold-accent);">Passo 1/5</div>
-        <button class="btn-repetir" onclick="repetirAudio()">🔊</button>
-    </div>
-
-    <div id="area-aula" class="area-central escondido">
-        <div class="caixa-texto"><p id="texto-aula">Olá...</p></div>
-    </div>
-
-    <div id="area-quiz" class="area-central escondido">
-        <div class="caixa-texto" style="border-left-color: #3498DB;">
-            <p id="texto-pergunta">Pergunta...</p>
-            
-            <div id="botoes-sim-nao" class="area-botoes-quiz">
-                <button class="btn-sim" onclick="responder(true)">SIM</button>
-                <button class="btn-nao" onclick="responder(false)">NÃO</button>
-            </div>
-            
-            <div id="area-medalha" class="escondido">
-                <div class="medalha">🥇</div>
-                <p><b>Você evoluiu!</b><br>Ganhou a Medalha da Caixa Mágica!</p><br>
-                <button class="btn-principal" onclick="compartilharVitoriaWhatsApp()" style="background-color: #25D366; color: white;">Enviar família no WhatsApp</button>
-                <br><br>
-                <button class="btn-principal" style="background-color: var(--gold-accent); color: #000;" onclick="irParaGestos()">IR PARA ESCOLA DE GESTOS ➔</button>
+    <div id="tela-medalha-1" class="tela">
+        <div class="conteudo-central">
+            <div class="medalha-icone">🏆</div>
+            <div class="card">
+                <h1>Mestre dos Gestos</h1>
+                <p>Você aprendeu a tocar e arrastar perfeitamente. O celular obedece a você!</p>
             </div>
         </div>
+        <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo2()">IR PARA CÂMERA ➔</button></div>
     </div>
 
-    <div id="rodape" style="display:none; position:fixed; bottom:0; left:0; width:100%; padding:15px; background: #000;">
-        <button class="btn-principal" onclick="proximoPasso()">PRÓXIMO ➔</button>
+    <div id="tela-camera" class="tela">
+        <div class="conteudo-central">
+            <div class="avatar-rosa" style="margin-bottom: 20px;"></div>
+            <div class="card">
+                <h1>A Visão do Celular</h1>
+                <p>Chegou a hora de registrar momentos. No próximo treino, vamos aprender a usar os olhos mágicos do aparelho sem colocar o dedo na lente.</p>
+            </div>
+        </div>
+        <div class="rodape"><button class="btn-destaque" style="background-color: var(--rosa-nair); color: white;" onclick="alert('Módulo 2 em construção pelo Arquiteto João!')">EM BREVE</button></div>
     </div>
 
     <script>
-        const roteiro = ["Olá! Nada do que você apertar aqui vai quebrar o aparelho. Se não ouvir direito, aperte no alto-falante lá em cima para eu repetir.", "O vidro da frente é a janela do celular.", "A parte de trás tem as câmeras, evite pôr o dedo lá.", "É normal ele esquentar um pouquinho. Igual a gente!", "O cabo de carregar é a comida dele."];
-        const perguntas = [{texto: "O vidro da frente é como se fosse a janela do celular?", correta: true}];
-        let passoAtual = 0; let voz = null;
-
-        function falar(t, c) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'pt-BR'; u.rate = 0.95; u.onend = () => { if(c) c(); }; window.speechSynthesis.speak(u); }
-        function iniciarAula() { document.getElementById('tela-inicio').classList.add('escondido'); document.getElementById('cabeçalho').style.display = 'flex'; document.getElementById('area-aula').classList.remove('escondido'); document.getElementById('rodape').style.display = 'block'; atualizarTela(); }
-        function repetirAudio() { falar(document.getElementById('texto-aula').innerText || document.getElementById('texto-pergunta').innerText); }
-        function proximoPasso() { passoAtual++; if(passoAtual < roteiro.length) atualizarTela(); else iniciarQuiz(); }
-        function atualizarTela() { const t = roteiro[passoAtual]; document.getElementById('texto-aula').innerText = t; document.getElementById('indicador').innerText = `Passo ${passoAtual+1}/${roteiro.length}`; falar(t); }
-        function iniciarQuiz() { document.getElementById('area-aula').classList.add('escondido'); document.getElementById('rodape').style.display = 'none'; document.getElementById('area-quiz').classList.remove('escondido'); falar(perguntas[0].texto); }
-        
-        function responder(r) { 
-            if(r === perguntas[0].correta) { 
-                document.getElementById('botoes-sim-nao').classList.add('escondido'); 
-                document.getElementById('area-medalha').classList.remove('escondido'); 
-                falar("Parabéns! Você evoluiu. Clique no botão dourado para irmos para a Escola de Gestos."); 
-                if (navigator.vibrate) navigator.vibrate(50); // Vibração de conquista
-                localStorage.setItem('progressoRosa', '1'); 
-            } else { 
-                falar("Ops! Não é bem assim. Vamos tentar de novo!"); 
-            } 
+        // --- CONTROLE DE TELAS (SPA ROUTER) ---
+        function mostrarTela(idTela) {
+            document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+            document.getElementById(idTela).classList.add('ativa');
         }
-        
-        function compartilharVitoriaWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent('Acabei de evoluir! 🥇 Ganhei a Medalha da Caixa Mágica no ConSySenci.a Rosa.')}`, '_blank'); setTimeout(() => irParaGestos(), 3000); }
-        function irParaGestos() { window.location.href='/gestos/'; }
+
+        // --- SISTEMA DE VOZ (Natural e Calma) ---
+        let textoAtualParaRepetir = "";
+        function falar(texto) {
+            textoAtualParaRepetir = texto;
+            window.speechSynthesis.cancel();
+            let u = new SpeechSynthesisUtterance(texto);
+            u.lang = 'pt-BR';
+            u.rate = 0.85; // Velocidade "passo de bebê"
+            
+            // Tenta forçar uma voz mais natural do Android/Google
+            let vozes = window.speechSynthesis.getVoices();
+            let vozNatural = vozes.find(v => v.lang.includes('pt-BR') && v.name.includes('Google'));
+            if(vozNatural) u.voice = vozNatural;
+
+            window.speechSynthesis.speak(u);
+        }
+        function repetirFala() { falar(textoAtualParaRepetir); }
+        // Carrega as vozes no início
+        if (speechSynthesis.onvoiceschanged !== undefined) { speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices(); }
+
+        // --- MÓDULO 0: CAIXA MÁGICA ---
+        const roteiroMod0 = [
+            "O vidro da frente é a janela do celular. Trate com carinho.",
+            "Atrás estão as câmeras, os olhos dele. Evite colocar o dedo lá para a foto não ficar embaçada.",
+            "O cabo de carregar é a comidinha dele. Conecte com cuidado."
+        ];
+        let passoMod0 = 0;
+
+        function iniciarModulo0() {
+            mostrarTela('tela-aula');
+            passoMod0 = 0;
+            atualizarAulaMod0();
+        }
+
+        function atualizarAulaMod0() {
+            document.getElementById('texto-aula').innerText = roteiroMod0[passoMod0];
+            document.getElementById('contador-passos').innerText = `Passo ${passoMod0 + 1}/3`;
+            falar(roteiroMod0[passoMod0]);
+        }
+
+        function proximoPassoAula() {
+            passoMod0++;
+            if(passoMod0 < roteiroMod0.length) {
+                atualizarAulaMod0();
+            } else {
+                mostrarTela('tela-medalha-0');
+                falar("Parabéns! Você ganhou a sua primeira medalha. Clique no botão verde abaixo para irmos para a aula de gestos.");
+            }
+        }
+
+        // --- MÓDULO 1: GESTOS (Toque e Swipe) ---
+        let licaoGestos = 1; // 1 = Toque, 2 = Swipe
+
+        function iniciarModulo1() {
+            mostrarTela('tela-gestos');
+            licaoGestos = 1;
+            document.getElementById('texto-guia-gestos').innerText = "Dê um toque rápido no botão azul do Telefone.";
+            falar("Vamos treinar os dedos. Dê um toque bem rapidinho no ícone azul do Telefone.");
+        }
+
+        let tempoTap = 0;
+        function iniciarTap(e) { tempoTap = Date.now(); e.currentTarget.querySelector('.icon-box').style.transform = "scale(0.9)"; }
+        function finalizarTap(e, nome) {
+            e.currentTarget.querySelector('.icon-box').style.transform = "scale(1)";
+            if(licaoGestos !== 1 || nome !== 'Telefone') return; 
+
+            let duracao = Date.now() - tempoTap;
+            if (duracao > 500) {
+                falar("Você segurou o dedo. Tente dar só um toquinho rápido e soltar.");
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // Correção tátil
+            } else { 
+                licaoGestos = 2; 
+                document.getElementById('texto-guia-gestos').innerText = "Muito bem. Agora coloque o dedo no relógio lá no topo e puxe para baixo.";
+                falar("Perfeito! Esse é o toque suave. Agora, coloque o dedo lá em cima no relógio e puxe a tela para baixo, como uma cortina."); 
+                if (navigator.vibrate) navigator.vibrate(50); 
+            }
+        }
+
+        // Lógica de Arrastar (Swipe)
+        let inicioY = 0;
+        const barra = document.getElementById('barra-status');
+        barra.ontouchstart = (e) => { inicioY = e.touches[0].clientY; };
+        barra.ontouchend = (e) => {
+            if(licaoGestos !== 2) return;
+            let fimY = e.changedTouches[0].clientY;
+            if ((fimY - inicioY) > 50) { 
+                document.getElementById('cortina').style.top = "0"; 
+                falar("Isso mesmo! Você abriu os avisos. Toque na tela para fechar."); 
+                if (navigator.vibrate) navigator.vibrate(50);
+            } else { 
+                falar("Tem que colocar o dedo lá em cima e arrastar para baixo sem soltar."); 
+            }
+        };
+
+        function fecharCortina() { 
+            document.getElementById('cortina').style.top = "-100%"; 
+            mostrarTela('tela-medalha-1');
+            falar("Excelente! Você dominou os gestos e ganhou a Medalha de Mestre. O celular obedece a você."); 
+        }
+
+        // --- MÓDULO 2: PREPARAÇÃO ---
+        function iniciarModulo2() {
+            mostrarTela('tela-camera');
+            falar("Chegou a hora de registrar os momentos. Em breve vamos treinar como tirar fotos lindas.");
+        }
     </script>
 </body>
 </html>
