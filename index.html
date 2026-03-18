@@ -10,59 +10,115 @@
         body { background-color: var(--rosa-fundo); color: var(--texto-escuro); display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
         
         .cabecalho { display: flex; align-items: center; justify-content: space-between; width: 90%; margin-top: 20px; display: none; }
-        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, #FF80AB, var(--rosa-forte)); border-radius: 50% 50% 10% 50%; }
+        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, #FF80AB, var(--rosa-forte)); border-radius: 50% 50% 10% 50%; animation: respirar 3.5s infinite ease-in-out; }
+        @keyframes respirar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        
+        /* CORREÇÃO AQUI: Botão do alto-falante grande, redondo e bonito */
+        .btn-repetir { 
+            background: white; 
+            border: 2px solid var(--rosa-forte); 
+            border-radius: 50%; 
+            width: 55px; 
+            height: 55px; 
+            font-size: 26px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
         
         .area-central { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 90%; max-width: 600px; padding-bottom: 80px; }
         .caixa-texto { background-color: white; padding: 30px 20px; border-radius: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-left: 12px solid var(--rosa-forte); text-align: center; }
 
         button.btn-principal { background-color: var(--botao-verde); color: white; border: none; padding: 20px; font-size: 24px; font-weight: bold; border-radius: 50px; width: 100%; cursor: pointer; }
-        button.btn-whatsapp { background-color: var(--whatsapp-cor) !important; font-size: 20px; }
+        button.btn-whatsapp { background-color: var(--whatsapp-cor) !important; font-size: 20px; margin-top: 15px; }
+
+        .area-botoes-quiz { display: flex; gap: 15px; margin-top: 20px; }
+        .btn-sim, .btn-nao { flex: 1; padding: 20px; border-radius: 20px; color: white; font-size: 24px; font-weight: bold; border: none; }
+        .btn-sim { background-color: var(--botao-verde); }
+        .btn-nao { background-color: #E74C3C; }
 
         .medalha { font-size: 100px; text-align: center; margin: 20px 0; }
         .escondido { display: none !important; }
+        .bloqueado { pointer-events: none; opacity: 0.6; }
     </style>
 </head>
 <body>
 
     <div id="tela-inicio" class="area-central">
-        <div class="caixa-texto">
-            <h1 style="color:var(--rosa-forte); margin-bottom: 20px;">Bem-vindo(a)!</h1>
+        <div class="caixa-texto" style="border-left: none;">
+            <h1 style="color:var(--rosa-forte); margin-bottom: 20px; font-size: 32px;">Bem-vindo(a)!</h1>
             <p style="font-size:24px; line-height:1.4;">Toque no botão verde abaixo para ligar a minha voz e começarmos.</p><br>
             <button class="btn-principal" onclick="iniciarAula()">COMEÇAR AULA</button>
         </div>
     </div>
 
-    <div id="cabecalho" class="cabecalho"><div class="rosa-guia"></div><div id="indicador" style="font-weight:bold;">Passo 1/5</div><button class="btn-repetir" onclick="repetirAudio()">🔊</button></div>
+    <div id="cabecalho" class="cabecalho">
+        <div class="rosa-guia"></div>
+        <div id="indicador" style="font-weight:bold; font-size: 18px; color: #666;">Passo 1/5</div>
+        <button class="btn-repetir" onclick="repetirAudio()">🔊</button>
+    </div>
 
-    <div id="area-aula" class="area-central escondido"><div class="caixa-texto"><p id="texto-aula" style="font-size:24px;">Olá...</p></div></div>
+    <div id="area-aula" class="area-central escondido">
+        <div class="caixa-texto"><p id="texto-aula" style="font-size:24px; line-height: 1.4;">Olá...</p></div>
+    </div>
 
     <div id="area-quiz" class="area-central escondido">
         <div class="caixa-texto" style="border-left-color: #3498DB;">
             <p id="texto-pergunta" style="font-size:24px; margin-bottom:20px;">Você abriu a janela da Caixa Mágica?</p>
-            <div id="botoes-sim-nao" class="area-botoes-quiz"><button class="btn-sim" onclick="responder(true)">SIM</button><button class="btn-nao" onclick="responder(false)">NÃO</button></div>
+            <div id="botoes-sim-nao" class="area-botoes-quiz">
+                <button class="btn-sim" onclick="responder(true)">SIM</button>
+                <button class="btn-nao" onclick="responder(false)">NÃO</button>
+            </div>
             
             <div id="area-medalha" class="escondido">
                 <div class="medalha">🥇</div>
-                <p><b>Você é Campeão(ã)!</b><br>Ganhou a Medalha da Caixa Mágica!</p><br>
+                <p style="font-size: 22px; color: #333;"><b>Você é Campeão(ã)!</b><br>Ganhou a Medalha da Caixa Mágica!</p>
                 <button class="btn-principal btn-whatsapp" onclick="compartilharVitoriaWhatsApp()">Enviar família no WhatsApp</button>
+                <br><br>
+                <button class="btn-principal" style="background-color: var(--rosa-forte);" onclick="irParaGestos()">IR PARA ESCOLA DE GESTOS</button>
             </div>
         </div>
     </div>
 
-    <div id="rodape" class="rodape-fixo" style="display:none; position:fixed; bottom:0; left:0; width:100%; padding:15px; background:white;"><button class="btn-principal" onclick="proximoPasso()">PRÓXIMO ➔</button></div>
+    <div id="rodape" style="display:none; position:fixed; bottom:0; left:0; width:100%; padding:15px; background:white; box-shadow: 0 -4px 10px rgba(0,0,0,0.05);">
+        <button class="btn-principal" onclick="proximoPasso()">PRÓXIMO ➔</button>
+    </div>
 
     <script>
-        const roteiro = ["Olá! Nada do que você apertar aqui vai quebrar o aparelho.", "O vidro da frente é a janela do celular.", "A parte de trás tem as câmeras, evite pôr o dedo lá.", "É normal ele esquentar, igual a gente!", "O cabo de carregar é a comida dele."];
-        const perguntas = [{texto: "O vidro da frente é a janela do celular?", correta: true}];
-        let passoAtual = 0; let pergunAtual = 0; let voz = null;
+        // CORREÇÃO AQUI: Texto do roteiro restaurado com a explicação do alto-falante
+        const roteiro = [
+            "Olá! Eu sou a Rosa. Não tenha medo, nada do que você apertar aqui vai quebrar o aparelho. Se não ouvir direito, aperte no alto-falante lá em cima para eu repetir.", 
+            "O seu aparelho é de vidro e plástico. O vidro da frente é a janela por onde vemos o mundo.", 
+            "A parte de trás tem as câmeras, que são os olhos dele. Evite colocar o dedo lá para não sujar a visão.", 
+            "É normal ele esquentar um pouquinho. Igual a gente! Só não abafe ele na coberta.", 
+            "O cabo de carregar é a comida dele. Use sempre o original para a bateria não viciar."
+        ];
+        const perguntas = [{texto: "O vidro da frente é como se fosse a janela do celular?", correta: true}];
+        
+        let passoAtual = 0; 
+        let voz = null;
 
         function falar(t, c) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'pt-BR'; u.rate = 0.95; u.onend = () => { if(c) c(); }; window.speechSynthesis.speak(u); }
         function iniciarAula() { document.getElementById('tela-inicio').classList.add('escondido'); document.getElementById('cabecalho').style.display = 'flex'; document.getElementById('area-aula').classList.remove('escondido'); document.getElementById('rodape').style.display = 'block'; atualizarTela(); }
+        function repetirAudio() { falar(document.getElementById('texto-aula').innerText || document.getElementById('texto-pergunta').innerText); }
         function proximoPasso() { passoAtual++; if(passoAtual < roteiro.length) atualizarTela(); else iniciarQuiz(); }
         function atualizarTela() { const t = roteiro[passoAtual]; document.getElementById('texto-aula').innerText = t; document.getElementById('indicador').innerText = `Passo ${passoAtual+1}/${roteiro.length}`; falar(t); }
         function iniciarQuiz() { document.getElementById('area-aula').classList.add('escondido'); document.getElementById('rodape').style.display = 'none'; document.getElementById('area-quiz').classList.remove('escondido'); falar(perguntas[0].texto); }
-        function responder(r) { if(r === perguntas[0].correta) { document.getElementById('botoes-sim-nao').classList.add('escondido'); document.getElementById('area-medalha').classList.remove('escondido'); falar("Parabéns! Você ganhou a medalha. Clique no botão verde para irmos para a Escola de Gestos."); localStorage.setItem('progressoRosa', '1'); } else { falar("Tente de novo!"); } }
-        function compartilharVitoriaWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent('Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa.')}`, '_blank'); setTimeout(() => window.location.href='/gestos/', 3000); }
+        function responder(r) { if(r === perguntas[0].correta) { document.getElementById('botoes-sim-nao').classList.add('escondido'); document.getElementById('area-medalha').classList.remove('escondido'); falar("Parabéns! Você ganhou a medalha. Pode enviar para sua família e depois ir para a Escola de Gestos."); localStorage.setItem('progressoRosa', '1'); } else { falar("Ops! Não é bem assim. Vamos tentar de novo!"); } }
+        function compartilharVitoriaWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent('Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa.')}`, '_blank'); }
+        function irParaGestos() { window.location.href='/gestos/'; }
+
+        // Verificação se já passou
+        window.onload = function() {
+            if (localStorage.getItem('progressoRosa') === '1') {
+                document.querySelector('#tela-inicio h1').innerText = "Você voltou!";
+                document.querySelector('#tela-inicio p').innerText = "Você já ganhou a primeira medalha. Vamos continuar os treinos?";
+                document.querySelector('#tela-inicio button').innerText = "IR PARA OS GESTOS";
+                document.querySelector('#tela-inicio button').onclick = irParaGestos;
+            }
+        };
     </script>
 </body>
 </html>
