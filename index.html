@@ -3,43 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador UAU</title>
+<title>Simulador Pro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
 <style>
-:root{
---bg:#121212;
---rosa:#D81B60;
---verde:#2ECC71;
-}
-
 body{
 margin:0;
-background:var(--bg);
-color:white;
-font-family:Arial;
+background:#000;
+font-family:sans-serif;
 overflow:hidden;
 }
 
-/* TELAS */
-.tela{
-display:none;
+/* CONTAINER CELULAR */
+.phone{
+width:100%;
 height:100vh;
-justify-content:center;
-align-items:center;
-flex-direction:column;
+background:#111;
+position:relative;
+overflow:hidden;
 }
-.tela.ativa{display:flex;}
 
-/* BOTÃO */
-button{
-padding:15px 25px;
-border:none;
-border-radius:30px;
-background:var(--verde);
-font-weight:bold;
-font-size:18px;
+/* STATUS */
+.status{
+height:40px;
+background:#000;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
 }
 
 /* GRID */
@@ -51,21 +43,37 @@ padding:20px;
 }
 
 .app{
-display:flex;
-flex-direction:column;
-align-items:center;
+text-align:center;
+color:#fff;
 }
 
 .icon{
 width:65px;
 height:65px;
+background:#333;
 border-radius:20px;
 display:flex;
 align-items:center;
 justify-content:center;
-background:#444;
+margin:auto;
 position:relative;
 overflow:hidden;
+}
+
+/* PULSO */
+.pulse{
+position:absolute;
+width:90px;
+height:90px;
+border:3px solid #ff2d7a;
+border-radius:50%;
+animation:pulse 1.5s infinite;
+pointer-events:none;
+}
+
+@keyframes pulse{
+0%{transform:scale(0.7);opacity:1;}
+100%{transform:scale(1.6);opacity:0;}
 }
 
 /* RIPPLE */
@@ -74,66 +82,38 @@ position:absolute;
 border-radius:50%;
 background:rgba(255,255,255,0.5);
 transform:scale(0);
-animation:ripple 0.5s linear;
+animation:ripple 0.5s;
 }
 
 @keyframes ripple{
 to{transform:scale(4);opacity:0;}
 }
 
-/* PULSO */
-.pulso{
-position:absolute;
-width:80px;
-height:80px;
-border-radius:50%;
-border:3px solid var(--rosa);
-animation:pulse 1.5s infinite;
-pointer-events:none;
-}
-
-@keyframes pulse{
-0%{transform:scale(0.8);opacity:1;}
-70%{transform:scale(1.5);opacity:0;}
-100%{opacity:0;}
-}
-
-/* CORTINA */
-#cortina{
+/* CORTINA REAL */
+.curtain{
 position:absolute;
 top:-100%;
 left:0;
 width:100%;
 height:100%;
 background:#222;
-transition:top .2s;
+transition:top .3s;
 }
 
-.status{
-background:#000;
-padding:10px;
-text-align:center;
-}
-
-/* CÂMERA */
+/* CAMERA */
 .camera{
-flex:1;
-display:flex;
-justify-content:center;
-align-items:center;
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
 background:url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600') center/cover;
 filter:blur(8px);
-transition:.3s;
+transition:.4s;
 }
 
-.foco{filter:blur(0);}
-
-.disparo{
-width:70px;
-height:70px;
-background:white;
-border-radius:50%;
-margin:20px;
+.focus{
+filter:blur(0);
 }
 
 </style>
@@ -141,79 +121,63 @@ margin:20px;
 
 <body>
 
-<div id="inicio" class="tela ativa">
-<h1>Vamos aprender juntas</h1>
-<button onclick="start()">COMEÇAR</button>
-</div>
+<div class="phone">
 
-<div id="home" class="tela">
 <div class="status" id="status">Arraste para baixo</div>
 
-<div id="cortina"></div>
+<div id="curtain" class="curtain"></div>
 
 <div class="grid">
 
-<div class="app" onclick="tap(event,'telefone')">
-<div class="icon" id="telefone" style="background:#4285F4;">
+<div class="app" onclick="tap(event,'tel')">
+<div class="icon" id="tel" style="background:#4285F4">
 <span class="material-symbols-outlined">call</span>
 </div>
-<span>Telefone</span>
+Telefone
 </div>
 
-<div class="app" onclick="tap(event,'camera')">
-<div class="icon" id="camera" style="background:#2ECC71;">
+<div class="app" onclick="tap(event,'cam')">
+<div class="icon" id="cam" style="background:#2ECC71">
 <span class="material-symbols-outlined">photo_camera</span>
 </div>
-<span>Câmera</span>
+Câmera
 </div>
 
 </div>
-</div>
 
-<div id="cam" class="tela">
-<div class="camera" id="camview" onclick="focar()"></div>
-<div class="disparo" onclick="foto()"></div>
-</div>
-
-<div id="final" class="tela">
-<h1>🎓 Você conseguiu!</h1>
-<button onclick="location.reload()">REINICIAR</button>
 </div>
 
 <script>
 
-let estado = "inicio";
-
 /* VOZ */
 function falar(t){
-let u = new SpeechSynthesisUtterance(t);
+speechSynthesis.cancel();
+let u=new SpeechSynthesisUtterance(t);
 u.lang="pt-BR";
 speechSynthesis.speak(u);
 }
 
 /* PULSO */
-function pulso(el){
-removePulso();
-let r = el.getBoundingClientRect();
-
-let p = document.createElement("div");
-p.className="pulso";
-p.style.left = (r.left + r.width/2 - 40)+"px";
-p.style.top = (r.top + r.height/2 - 40)+"px";
-
+function pulse(el){
+removePulse();
+let r=el.getBoundingClientRect();
+let p=document.createElement("div");
+p.className="pulse";
+p.style.left=(r.left+r.width/2-45)+"px";
+p.style.top=(r.top+r.height/2-45)+"px";
 document.body.appendChild(p);
 }
 
-function removePulso(){
-let p=document.querySelector(".pulso");
+function removePulse(){
+let p=document.querySelector(".pulse");
 if(p)p.remove();
 }
 
 /* RIPPLE */
 function ripple(e){
-let c = document.createElement("span");
+let c=document.createElement("span");
 c.className="ripple";
-let d = Math.max(e.target.clientWidth,e.target.clientHeight);
+let d=Math.max(e.target.clientWidth,e.target.clientHeight);
 c.style.width=c.style.height=d+"px";
 c.style.left=e.offsetX-d/2+"px";
 c.style.top=e.offsetY-d/2+"px";
@@ -221,75 +185,86 @@ e.target.appendChild(c);
 setTimeout(()=>c.remove(),500);
 }
 
+/* ESTADO */
+let estado="inicio";
+
 /* START */
-function start(){
-go("home");
 setTimeout(()=>{
-pulso(document.getElementById("telefone"));
+pulse(document.getElementById("tel"));
 falar("Toque no telefone azul");
-estado="telefone";
-},800);
-}
+estado="tel";
+},1000);
 
 /* TAP */
 function tap(e,app){
 ripple(e);
 
-if(estado==="telefone"){
-if(app==="telefone"){
-removePulso();
-falar("Muito bem!");
-estado="camera";
-setTimeout(()=>{
-pulso(document.getElementById("camera"));
-falar("Agora toque na câmera");
-},1000);
-}else{
-erro();
-}
-}
-
-else if(estado==="camera"){
-if(app==="camera"){
-removePulso();
-go("cam");
-setTimeout(()=>{
-falar("Toque na imagem para focar");
-},500);
-estado="foco";
-}else erro();
-}
-
-}
-
-/* ERRO */
-function erro(){
-falar("Esse não é o botão certo");
+if(app!==estado){
 navigator.vibrate && navigator.vibrate([100,50,100]);
+falar("Esse não é o correto");
+return;
 }
 
-/* TROCAR TELA */
-function go(id){
-document.querySelectorAll(".tela").forEach(t=>t.classList.remove("ativa"));
-document.getElementById(id).classList.add("ativa");
+removePulse();
+
+if(app==="tel"){
+falar("Perfeito!");
+estado="cam";
+
+setTimeout(()=>{
+pulse(document.getElementById("cam"));
+falar("Agora toque na câmera");
+},800);
+}
+
+else if(app==="cam"){
+falar("Abrindo câmera...");
+abrirCamera();
+}
 }
 
 /* CAMERA */
-function focar(){
-if(estado!=="foco")return;
-document.getElementById("camview").classList.add("foco");
-falar("Agora tire a foto");
-estado="foto";
+function abrirCamera(){
+let cam=document.createElement("div");
+cam.className="camera";
+document.body.appendChild(cam);
+
+setTimeout(()=>{
+falar("Toque para focar");
+cam.onclick=()=>{
+cam.classList.add("focus");
+falar("Muito bem!");
+};
+},800);
 }
 
-function foto(){
-if(estado!=="foto")return;
-falar("Foto tirada!");
-setTimeout(()=>{
-go("final");
-falar("Parabéns!");
-},1000);
+/* CORTINA REAL */
+let startY=0;
+let curtain=document.getElementById("curtain");
+
+document.getElementById("status").addEventListener("touchstart",(e)=>{
+startY=e.touches[0].clientY;
+});
+
+document.getElementById("status").addEventListener("touchmove",(e)=>{
+let y=e.touches[0].clientY;
+let diff=y-startY;
+
+if(diff>0){
+curtain.style.top=(-100+diff/2)+"%";
 }
+});
+
+document.getElementById("status").addEventListener("touchend",(e)=>{
+let y=e.changedTouches[0].clientY;
+
+if(y-startY>120){
+curtain.style.top="0%";
+falar("Aqui ficam as notificações");
+}else{
+curtain.style.top="-100%";
+}
+});
 
 </script>
 
