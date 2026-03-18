@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!--
+    ConSySenci.a Rosa — index.html
+    Módulo 0: O Físico / Onboarding: Ligar o Celular
+    © 2026 ConSySenci.a — Todos os direitos reservados
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0,
+                 maximum-scale=1.0, user-scalable=no,
+                 viewport-fit=cover">
+
+  <!-- PWA / Mobile -->
+  <meta name="mobile-web-app-capable"       content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="theme-color" content="#000000">
+
+  <!-- SEO / Social -->
+  <meta name="description"
+        content="ConSySenci.a Rosa — Aprenda a usar o celular do zero. 100% gratuito, sem anúncios.">
+
+  <title>ConSySenci.a Rosa</title>
+
+  <!-- Fonte: Nunito (legibilidade) + Oswald (display/headings) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Oswald:wght@500;700&display=swap"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CAMADA DE INSTRUÇÃO — fora do celular, sempre visível
+  ════════════════════════════════════════════════════════ -->
+  <aside id="instructor-layer" aria-live="polite" aria-atomic="true">
+    <div class="instructor-bubble" role="status">
+      <!-- Seta apontando para o botão power -->
+      <div class="instructor-arrow" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </div>
+      <p>
+        Toque e <strong>segure</strong> o botão lateral por
+        <strong>3 segundos</strong> para ligar
+      </p>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════════
+       WRAPPER DO SIMULADOR — escala responsiva
+  ════════════════════════════════════════════════════════ -->
+  <main id="simulator-wrapper" role="application"
+        aria-label="Simulador de smartphone para aprendizado">
+
+    <!-- ─────────────────────────────────────────────────────
+         MOLDURA DO SMARTPHONE (Redmi A3)
+    ──────────────────────────────────────────────────────── -->
+    <div id="phone-frame" role="img" aria-label="Smartphone simulado">
+
+      <!-- Botões de Volume (decorativos — não interativos neste módulo) -->
+      <div class="btn-volume btn-volume-up"
+           aria-hidden="true"
+           title="Botão de volume"></div>
+      <div class="btn-volume btn-volume-down"
+           aria-hidden="true"
+           title="Botão de volume"></div>
+
+      <!-- ─────────────────────────────────────────────────
+           BOTÃO POWER — o único elemento interativo
+      ────────────────────────────────────────────────────── -->
+      <div id="btn-power"
+           class="state-idle"
+           role="button"
+           tabindex="0"
+           aria-label="Botão Power — Toque e segure por 3 segundos para ligar o celular"
+           aria-pressed="false">
+      </div>
+
+      <!-- ─────────────────────────────────────────────────
+           INDICADOR DE PROGRESSO DO LONG-PRESS
+           (ao lado do botão power, dentro da moldura)
+      ────────────────────────────────────────────────────── -->
+      <div id="longpress-indicator" aria-hidden="true">
+        <div class="lp-track">
+          <div class="lp-fill"></div>
+        </div>
+        <span class="lp-label">3s</span>
+      </div>
+
+      <!-- ─────────────────────────────────────────────────
+           TELA DO SMARTPHONE
+      ────────────────────────────────────────────────────── -->
+      <div id="phone-screen">
+
+        <!-- ── ESTADO: OFF ─────────────────────────────── -->
+        <section id="screen-off"
+                 class="screen-layer"
+                 aria-label="Tela apagada"
+                 aria-hidden="true">
+          <!--
+            Tela totalmente preta.
+            O reflexo ambiente é aplicado via CSS ::after.
+          -->
+        </section>
+
+        <!-- ── ESTADO: BOOTING ─────────────────────────── -->
+        <section id="screen-boot"
+                 class="screen-layer"
+                 aria-label="Celular ligando"
+                 aria-hidden="true">
+
+          <!-- Logo de Boot -->
+          <div class="boot-logo-wrap" aria-live="polite">
+            <div class="boot-logo-icon" aria-hidden="true">🌹</div>
+            <div class="boot-logo-text">ConSySenci.a</div>
+            <div class="boot-logo-sub">Rosa</div>
+          </div>
+
+          <!-- Barra de Progresso -->
+          <div class="boot-progress-wrap" aria-live="polite">
+            <div class="boot-progress-track"
+                 role="progressbar"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 aria-valuenow="0"
+                 aria-label="Carregando o sistema">
+              <div class="boot-progress-fill"></div>
+            </div>
+            <span class="boot-progress-label">Carregando... 0%</span>
+          </div>
+
+        </section>
+
+        <!-- ── ESTADO: WELCOME ─────────────────────────── -->
+        <section id="screen-welcome"
+                 class="screen-layer"
+                 aria-label="Tela de boas-vindas"
+                 aria-hidden="true">
+
+          <div class="welcome-icon" aria-hidden="true">🌟</div>
+
+          <h1 class="welcome-heading">
+            Celular<br>Ligado!
+          </h1>
+
+          <p class="welcome-body">
+            Você fez seu primeiro passo.<br>
+            <strong>Isso é aprender!</strong>
+          </p>
+
+          <!-- Botão Próximo — área de toque grande (≥64px) -->
+          <button id="btn-next"
+                  type="button"
+                  aria-label="Próximo passo do aprendizado">
+            <span>Próximo</span>
+            <span class="btn-next-arrow" aria-hidden="true">→</span>
+          </button>
+
+        </section>
+
+        <!-- ── OVERLAY DE FEEDBACK (early release) ──────── -->
+        <div id="feedback-overlay"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true">
+        </div>
+
+      </div>
+      <!-- /phone-screen -->
+
+    </div>
+    <!-- /phone-frame -->
+
+  </main>
+  <!-- /simulator-wrapper -->
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS — ordem importa (dependências primeiro)
+  ════════════════════════════════════════════════════════ -->
+
+  <!-- 1. Máquina de estados (sem dependências) -->
+  <script src="js/state.js"></script>
+
+  <!-- 2. UI Controller (depende de state.js) -->
+  <script src="js/ui.js"></script>
+
+  <!-- 3. Interaction Controller (depende de state.js e ui.js) -->
+  <script src="js/interaction.js"></script>
+
+  <!-- 4. Bootstrap do módulo -->
+  <script>
+    /**
+     * Bootstrap — inicializa o módulo quando o DOM estiver pronto.
+     * Mantido inline para evitar arquivo adicional e garantir
+     * que seja o último a executar (após todos os scripts).
+     */
+    (function bootstrap() {
+      'use strict';
+
+      // ── Aguarda DOM completo ────────────────────────────
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+
+      function init() {
+        // Habilita modo debug via URL param: ?debug=1
+        if (new URLSearchParams(window.location.search).get('debug') === '1') {
+          window.__CONSYSENCIA_DEBUG__ = true;
+          console.log('[ConSySenci.a] Modo debug ativado.');
+        }
+
+        // ── Inicializa UI (bind de estado, telas) ─────────
+        window.SimulatorUI.init();
+
+        // ── Inicializa Interação (long-press no btn-power) ─
+        window.InteractionController.init({
+          btnPower: document.getElementById('btn-power'),
+
+          // Sucesso: 3 segundos segurados
+          onSuccess: () => {
+            // O FSM já transitou para BOOTING em interaction.js
+            // O UI Controller reage via onEnter(BOOTING) registrado em ui.js
+            console.log('[ConSySenci.a] Long-press concluído — iniciando boot.');
+          },
+
+          // Liberação prematura
+          onEarlyRelease: (elapsedMs) => {
+            window.SimulatorUI.showEarlyReleaseFeedback(elapsedMs);
+          },
+        });
+
+        // ── Evento de conclusão do módulo ─────────────────
+        // O módulo principal (SPA) pode ouvir este evento
+        // para avançar para o próximo módulo.
+        document.addEventListener('simulator:complete', (e) => {
+          console.log('[ConSySenci.a] Módulo concluído:', e.detail);
+          // Aqui o SPA principal faria: ir('tela-proxima')
+          // Por ora, exibe confirmação visual
+          const btn = document.getElementById('btn-next');
+          if (btn) {
+            btn.textContent = '✅ Módulo Concluído!';
+            btn.style.background = '#00C875';
+            btn.style.pointerEvents = 'none';
+          }
+        });
+
+        // ── Suporte a teclado: Enter/Space no btn-power ───
+        document.getElementById('btn-power')?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            // Simula pointerdown/pointerup sintéticos para o handler
+            const pe = new PointerEvent('pointerdown', {
+              pointerId: 1, bubbles: true, cancelable: true
+            });
+            e.target.dispatchEvent(pe);
+            // Segura por 3.1s programaticamente (acessibilidade)
+            setTimeout(() => {
+              const pu = new PointerEvent('pointerup', {
+                pointerId: 1, bubbles: true, cancelable: true
+              });
+              e.target.dispatchEvent(pu);
+            }, 3100);
+          }
+        });
+      }
+
+    })();
+  </script>
+
+</body>
+</html>
