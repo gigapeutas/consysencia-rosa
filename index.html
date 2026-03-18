@@ -27,9 +27,27 @@
 
         /* LAYOUT BASE (CARDS) */
         .cabecalho { display: flex; align-items: center; justify-content: space-between; padding: 20px; }
-        .avatar-rosa { width: 60px; height: 60px; background-color: var(--rosa-nair); border-radius: 50%; box-shadow: 0 0 15px rgba(216, 27, 96, 0.4); animation: pulsar 3s infinite; background-image: url('avatar.png'); background-size: cover; background-position: center; }
-        @keyframes pulsar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .btn-ouvir { background: transparent; border: 2px solid var(--rosa-nair); color: var(--rosa-nair); border-radius: 50%; width: 50px; height: 50px; font-size: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        
+        /* A NOVA FACE UNISSEX PREMIUM DO SISTEMA */
+        .avatar-rosa { 
+            width: 65px; 
+            height: 65px; 
+            background-image: url('avatar.png'); /* Caminho para a imagem local na raiz */
+            background-size: cover;
+            background-position: center; 
+            border-radius: 50%; 
+            box-shadow: 0 0 20px rgba(216, 27, 96, 0.4); 
+            border: 2px solid var(--rosa-nair);
+            animation: pulsar 4s infinite ease-in-out;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulsar {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(216, 27, 96, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(216, 27, 96, 0.6); }
+        }
+
+        .btn-ouvir { background: transparent; border: 2px solid var(--rosa-nair); color: var(--rosa-nair); border-radius: 50%; width: 55px; height: 55px; font-size: 26px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
 
         .conteudo-central { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; padding-bottom: 100px; text-align: center; }
         .card { background-color: var(--card-slate); padding: 30px 20px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-left: 6px solid var(--rosa-nair); }
@@ -39,12 +57,11 @@
 
         /* ÁREA INFERIOR (BOTÃO PRÓXIMO EM DESTAQUE) */
         .rodape { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, #000); display: flex; justify-content: center; z-index: 100; }
-        .btn-destaque { background-color: var(--btn-proximo); color: #000; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; max-width: 500px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); }
+        .btn-destaque { background-color: var(--btn-proximo); color: #000; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; max-width: 500px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: transform 0.1s; }
         .btn-destaque:active { transform: scale(0.95); }
 
-        .btn-opcao { background-color: var(--card-slate); color: var(--texto-marfim); border: 2px solid var(--rosa-nair); padding: 15px; font-size: 20px; border-radius: 15px; margin: 10px 0; width: 100%; font-weight: bold; }
-
-        .medalha-icone { font-size: 80px; text-shadow: 0 0 20px var(--rosa-nair); margin-bottom: 20px; }
+        .medalha-icone { font-size: 80px; text-shadow: 0 0 20px var(--rosa-nair); margin-bottom: 20px; animation: pulo 1s ease-out; }
+        @keyframes pulo { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
         /* =========================================
            ESTILOS ESPECÍFICOS: SIMULADOR DE GESTOS 
@@ -55,8 +72,9 @@
         .notificacao { background: var(--card-slate); margin: 10px 15px; padding: 15px; border-radius: 10px; border-left: 4px solid var(--btn-proximo); }
         
         .grid-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 40px 20px; }
-        .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: bold; }
-        .icon-box { width: 60px; height: 60px; border-radius: 22%; background-color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; }
+        
+        .icon-box { width: 68px; height: 68px; border-radius: 22%; background-color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.1s; overflow: hidden; }
         .bg-telefone { background-color: #4285F4; }
     </style>
 </head>
@@ -64,7 +82,7 @@
 
     <div id="tela-inicio" class="tela ativa">
         <div class="conteudo-central">
-            <div class="avatar-rosa" style="width: 100px; height: 100px; margin-bottom: 30px;"></div>
+            <div class="avatar-rosa" style="width: 120px; height: 120px; margin-bottom: 30px;"></div>
             <div class="card">
                 <h1>Consysencia Rosa</h1>
                 <p>Bem-vinda à sua evolução digital. Não tenha medo, estamos juntas nessa jornada.</p>
@@ -76,7 +94,7 @@
     <div id="tela-aula" class="tela">
         <div class="cabecalho">
             <div class="avatar-rosa"></div>
-            <span style="font-weight: bold; color: var(--rosa-nair);" id="contador-passos">Passo 1/3</span>
+            <span style="font-weight: bold; color: var(--rosa-nair); font-size: 20px;" id="contador-passos">Passo 1/3</span>
             <button class="btn-ouvir" onclick="repetirFala()">🔊</button>
         </div>
         <div class="conteudo-central">
@@ -97,9 +115,9 @@
     </div>
 
     <div id="tela-gestos" class="tela">
-        <div class="cabecalho" style="padding-bottom: 0;">
-            <div class="avatar-rosa" style="width: 40px; height: 40px;"></div>
-            <p id="texto-guia-gestos" style="font-size: 16px; margin-left: 15px; text-align: left; flex: 1;">Toque rápido no Telefone.</p>
+        <div class="cabecalho" style="padding-bottom: 10px;">
+            <div class="avatar-rosa" style="width: 50px; height: 50px;"></div>
+            <p id="texto-guia-gestos" style="font-size: 18px; margin-left: 15px; text-align: left; flex: 1; font-weight: bold;">Toque rápido no Telefone.</p>
         </div>
         
         <div class="tela-celular">
@@ -110,19 +128,27 @@
 
             <div id="cortina" onclick="fecharCortina()">
                 <div class="notificacao">
-                    <h3 style="color: var(--btn-proximo); margin-bottom: 5px;">WhatsApp</h3>
-                    <p style="font-size: 14px;">Filho: "Tudo bem por aí? Já está dominando o aparelho?"</p>
+                    <h3 style="color: var(--btn-proximo); margin-bottom: 5px; font-size: 18px;">WhatsApp</h3>
+                    <p style="font-size: 16px;">Filho: "Tudo bem por aí? Já está dominando o aparelho?"</p>
                 </div>
-                <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #888;">(Toque para fechar)</p>
+                <p style="text-align: center; margin-top: 30px; font-size: 16px; color: #888;">(Toque na tela para fechar)</p>
             </div>
 
             <div class="grid-apps">
                 <div class="app-item" onpointerdown="iniciarTap(event)" onpointerup="finalizarTap(event, 'Telefone')">
-                    <div class="icon-box bg-telefone"><svg viewBox="0 0 24 24" fill="white" width="30" height="30"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+                    <div class="icon-box bg-telefone"><svg viewBox="0 0 24 24" fill="white" width="36" height="36"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
                     <span>Telefone</span>
                 </div>
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/whatsapp.png'); background-size: cover;"></div><span>WhatsApp</span></div>
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/chrome.png'); background-size: cover;"></div><span>Chrome</span></div>
+                <div class="app-item">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 512 512" width="48" height="48">
+                            <circle cx="256" cy="256" r="236" fill="#f2f2f2"/><circle cx="256" cy="256" r="140" fill="#5f6368"/><circle cx="256" cy="256" r="50" fill="#a0a0a0"/>
+                        </svg>
+                    </div>
+                    <span>Câmera</span>
+                </div>
             </div>
         </div>
     </div>
@@ -135,37 +161,37 @@
                 <p>Você aprendeu a tocar e arrastar perfeitamente. O celular obedece a você!</p>
             </div>
         </div>
-        <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo2()">IR PARA CÂMERA ➔</button></div>
+        <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo2()">IR PARA A CÂMERA ➔</button></div>
     </div>
 
     <div id="tela-camera" class="tela">
         <div class="conteudo-central">
-            <div class="avatar-rosa" style="margin-bottom: 20px;"></div>
+            <div class="avatar-rosa" style="width: 100px; height: 100px; margin-bottom: 30px;"></div>
             <div class="card">
                 <h1>A Visão do Celular</h1>
-                <p>Chegou a hora de registrar momentos. No próximo treino, vamos aprender a usar os olhos mágicos do aparelho sem colocar o dedo na lente.</p>
+                <p>Chegou a hora de registrar momentos. Em breve, vamos aprender a usar as câmeras mágicas do aparelho.</p>
             </div>
         </div>
-        <div class="rodape"><button class="btn-destaque" style="background-color: var(--rosa-nair); color: white;" onclick="alert('Módulo 2 em construção pelo Arquiteto João!')">EM BREVE</button></div>
+        <div class="rodape"><button class="btn-destaque" style="background-color: var(--rosa-nair); color: white;" onclick="alert('Módulo 2 em construção!')">EM BREVE</button></div>
     </div>
 
     <script>
-        // --- CONTROLE DE TELAS (SPA ROUTER) ---
+        // --- CONTROLE DE TELAS (SPA) ---
         function mostrarTela(idTela) {
             document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
             document.getElementById(idTela).classList.add('ativa');
         }
 
-        // --- SISTEMA DE VOZ (Natural e Calma) ---
+        // --- SISTEMA DE VOZ DA ROSA ---
         let textoAtualParaRepetir = "";
         function falar(texto) {
             textoAtualParaRepetir = texto;
             window.speechSynthesis.cancel();
             let u = new SpeechSynthesisUtterance(texto);
             u.lang = 'pt-BR';
-            u.rate = 0.85; // Velocidade "passo de bebê"
+            u.rate = 0.85; // Velocidade de bebê, calma e didática
             
-            // Tenta forçar uma voz mais natural do Android/Google
+            // Força a voz mais natural em Androids
             let vozes = window.speechSynthesis.getVoices();
             let vozNatural = vozes.find(v => v.lang.includes('pt-BR') && v.name.includes('Google'));
             if(vozNatural) u.voice = vozNatural;
@@ -173,14 +199,13 @@
             window.speechSynthesis.speak(u);
         }
         function repetirFala() { falar(textoAtualParaRepetir); }
-        // Carrega as vozes no início
         if (speechSynthesis.onvoiceschanged !== undefined) { speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices(); }
 
         // --- MÓDULO 0: CAIXA MÁGICA ---
         const roteiroMod0 = [
             "O vidro da frente é a janela do celular. Trate com carinho.",
             "Atrás estão as câmeras, os olhos dele. Evite colocar o dedo lá para a foto não ficar embaçada.",
-            "O cabo de carregar é a comidinha dele. Conecte com cuidado."
+            "O cabo de carregar é a comidinha dele. Conecte sempre com cuidado."
         ];
         let passoMod0 = 0;
 
@@ -203,16 +228,17 @@
             } else {
                 mostrarTela('tela-medalha-0');
                 falar("Parabéns! Você ganhou a sua primeira medalha. Clique no botão verde abaixo para irmos para a aula de gestos.");
+                if (navigator.vibrate) navigator.vibrate([100, 100, 200]);
             }
         }
 
-        // --- MÓDULO 1: GESTOS (Toque e Swipe) ---
-        let licaoGestos = 1; // 1 = Toque, 2 = Swipe
+        // --- MÓDULO 1: GESTOS BÁSICOS ---
+        let licaoGestos = 1;
 
         function iniciarModulo1() {
             mostrarTela('tela-gestos');
             licaoGestos = 1;
-            document.getElementById('texto-guia-gestos').innerText = "Dê um toque rápido no botão azul do Telefone.";
+            document.getElementById('texto-guia-gestos').innerText = "Toque rápido no ícone azul do Telefone.";
             falar("Vamos treinar os dedos. Dê um toque bem rapidinho no ícone azul do Telefone.");
         }
 
@@ -225,16 +251,15 @@
             let duracao = Date.now() - tempoTap;
             if (duracao > 500) {
                 falar("Você segurou o dedo. Tente dar só um toquinho rápido e soltar.");
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // Correção tátil
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
             } else { 
                 licaoGestos = 2; 
-                document.getElementById('texto-guia-gestos').innerText = "Muito bem. Agora coloque o dedo no relógio lá no topo e puxe para baixo.";
+                document.getElementById('texto-guia-gestos').innerText = "Arraste o relógio no topo para baixo.";
                 falar("Perfeito! Esse é o toque suave. Agora, coloque o dedo lá em cima no relógio e puxe a tela para baixo, como uma cortina."); 
                 if (navigator.vibrate) navigator.vibrate(50); 
             }
         }
 
-        // Lógica de Arrastar (Swipe)
         let inicioY = 0;
         const barra = document.getElementById('barra-status');
         barra.ontouchstart = (e) => { inicioY = e.touches[0].clientY; };
@@ -252,14 +277,17 @@
 
         function fecharCortina() { 
             document.getElementById('cortina').style.top = "-100%"; 
-            mostrarTela('tela-medalha-1');
-            falar("Excelente! Você dominou os gestos e ganhou a Medalha de Mestre. O celular obedece a você."); 
+            setTimeout(() => {
+                mostrarTela('tela-medalha-1');
+                falar("Excelente! Você dominou os gestos e ganhou a Medalha de Mestre. O celular obedece a você."); 
+                if (navigator.vibrate) navigator.vibrate([100, 100, 200, 100, 300]);
+            }, 500);
         }
 
         // --- MÓDULO 2: PREPARAÇÃO ---
         function iniciarModulo2() {
             mostrarTela('tela-camera');
-            falar("Chegou a hora de registrar os momentos. Em breve vamos treinar como tirar fotos lindas.");
+            falar("Chegou a hora de registrar os momentos. No próximo treinamento vamos aprender a tirar fotos perfeitas.");
         }
     </script>
 </body>
