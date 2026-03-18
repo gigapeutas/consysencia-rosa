@@ -1,279 +1,690 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!--
-    ConSySenci.a Rosa — index.html
-    Módulo 0: O Físico / Onboarding: Ligar o Celular
-    © 2026 ConSySenci.a — Todos os direitos reservados
-  -->
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0,
-                 maximum-scale=1.0, user-scalable=no,
-                 viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+<title>ConSySenci.a Rosa — Módulo 0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:#000; --neon:#39FF14;
+  --neon-d:rgba(57,255,20,.15); --neon-g:rgba(57,255,20,.45); --neon-m:rgba(57,255,20,.30);
+  --gh:#E0E0E0; --gm:#888; --gl:#2A2A2A;
+  --pw:360px; --ph:780px; --pr:48px;
+  --pbl:#1A1A1E; --pb2:#0D0D0F; --pbn:#222228; --pbh:#333340;
+  --fn:'Nunito','Segoe UI',sans-serif; --fnd:'Oswald','Impact',sans-serif;
+  --df:300ms; --dn:600ms; --dvs:1500ms;
+  --eo:cubic-bezier(.16,1,.3,1); --eio:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html { height:100%; touch-action:manipulation; }
+body { height:100%; background:var(--void); font-family:var(--fn); color:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  overflow:hidden; user-select:none; -webkit-user-select:none; }
 
-  <!-- PWA / Mobile -->
-  <meta name="mobile-web-app-capable"       content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="theme-color" content="#000000">
+/* INSTRUCTOR */
+#instructor-layer { position:fixed; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-end; padding-bottom:28px; z-index:100; pointer-events:none; }
+.ibubble { background:rgba(10,10,10,.93); border:1.5px solid var(--neon-m);
+  border-radius:20px; padding:16px 22px; max-width:340px; text-align:center;
+  box-shadow:0 0 24px var(--neon-d),0 8px 32px rgba(0,0,0,.7);
+  opacity:0; transform:translateY(12px);
+  transition:opacity var(--dn) var(--eo), transform var(--dn) var(--eo); }
+.ibubble.on { opacity:1; transform:translateY(0); }
+.ibubble p { font-size:22px; font-weight:700; line-height:1.55; color:var(--gh); }
+.ibubble p strong { color:var(--neon); }
+.iarrow { display:flex; flex-direction:column; align-items:center; gap:4px;
+  margin-bottom:10px; animation:arrowB 1.2s var(--eio) infinite; }
+.iarrow span { display:block; width:8px; height:8px;
+  border-right:3px solid var(--neon); border-bottom:3px solid var(--neon);
+  transform:rotate(45deg); opacity:.9; }
+.iarrow span:nth-child(2) { opacity:.5; margin-top:-4px; }
+@keyframes arrowB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
 
-  <!-- SEO / Social -->
-  <meta name="description"
-        content="ConSySenci.a Rosa — Aprenda a usar o celular do zero. 100% gratuito, sem anúncios.">
+/* WRAPPER */
+#sim-wrap { position:relative; display:flex; align-items:center; justify-content:center; }
 
-  <title>ConSySenci.a Rosa</title>
+/* PHONE FRAME */
+#phone-frame { position:relative; width:var(--pw); height:var(--ph);
+  border-radius:var(--pr);
+  background:linear-gradient(160deg,var(--pbl) 0%,#222228 40%,#151518 70%,var(--pb2) 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.07), 0 0 0 2px rgba(0,0,0,.8),
+             0 20px 60px rgba(0,0,0,.9), 0 4px 12px rgba(0,0,0,.6),
+             inset 0 1px 0 rgba(255,255,255,.06);
+  flex-shrink:0; }
+/* câmera punch-hole */
+#phone-frame::before { content:''; position:absolute; top:18px; left:50%;
+  transform:translateX(-50%); width:12px; height:12px;
+  background:#0A0A0C; border-radius:50%;
+  box-shadow:0 0 0 2px rgba(255,255,255,.04), inset 0 0 4px rgba(0,0,0,.9); z-index:10; }
+/* speaker */
+#phone-frame::after { content:''; position:absolute; top:20px; left:50%;
+  transform:translateX(-50%) translateX(14px); width:48px; height:4px;
+  background:rgba(255,255,255,.04); border-radius:2px; }
 
-  <!-- Fonte: Nunito (legibilidade) + Oswald (display/headings) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Oswald:wght@500;700&display=swap"
-        rel="stylesheet">
+/* VOLUME BUTTONS */
+.bvol { position:absolute; left:-4px; border-radius:3px 0 0 3px;
+  background:linear-gradient(90deg,#111114,var(--pbn)); box-shadow:-2px 0 4px rgba(0,0,0,.5); }
+.bvol-u { top:150px; width:4px; height:52px; }
+.bvol-d { top:216px; width:4px; height:52px; }
 
-  <link rel="stylesheet" href="css/main.css">
+/* POWER BUTTON */
+#btn-power { position:absolute; right:-5px; top:160px; width:5px; height:72px;
+  border-radius:0 4px 4px 0;
+  background:linear-gradient(270deg,var(--pbh) 0%,var(--pbn) 60%,#111114 100%);
+  box-shadow:3px 0 6px rgba(0,0,0,.6);
+  cursor:pointer;
+  /* hitbox expandida — acessibilidade motora */
+  padding:14px 24px 14px 10px; margin:-14px -24px -14px -10px;
+  transition:background var(--df) var(--eo), box-shadow var(--df) var(--eo);
+  z-index:50; touch-action:none; }
+#btn-power.idle    { animation:pwrPulse 2s var(--eio) infinite; }
+#btn-power.pressing { background:linear-gradient(270deg,#55FF40 0%,#2A8A20 60%,#111114 100%);
+  box-shadow:3px 0 8px rgba(0,0,0,.6),5px 0 18px var(--neon-g),8px 0 28px var(--neon-d); animation:none; }
+#btn-power.locked  { pointer-events:none; animation:none; }
+@keyframes pwrPulse {
+  0%,100% { box-shadow:3px 0 6px rgba(0,0,0,.6), 4px 0 0 var(--neon-d); }
+  50%     { box-shadow:3px 0 10px rgba(0,0,0,.6), 6px 0 14px var(--neon-g); }
+}
+#btn-power:focus-visible { outline:3px solid var(--neon); outline-offset:6px; }
+
+/* LONG-PRESS INDICATOR */
+#lp-ind { position:absolute; right:20px; top:130px; width:24px; height:100px;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  opacity:0; transition:opacity var(--df); z-index:15; pointer-events:none; }
+#lp-ind.on { opacity:1; }
+.lp-track { width:4px; height:72px; background:var(--gl); border-radius:2px;
+  overflow:hidden; position:relative; }
+.lp-fill { position:absolute; bottom:0; left:0; right:0; height:0%;
+  background:linear-gradient(0deg,var(--neon),#60FF40);
+  border-radius:2px; box-shadow:0 0 6px var(--neon-g); }
+.lp-lbl { font-size:9px; color:var(--gm); letter-spacing:.5px; margin-top:5px; text-transform:uppercase; }
+
+/* PHONE SCREEN */
+#phone-screen { position:absolute; top:12px; left:12px; right:12px; bottom:12px;
+  border-radius:calc(var(--pr) - 12px); background:var(--void); overflow:hidden; }
+
+/* SCREEN LAYERS */
+.slayer { position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition:opacity var(--dn) var(--eo); }
+.slayer.on { opacity:1; pointer-events:auto; }
+
+/* SCREEN OFF */
+#s-off { background:var(--void); }
+
+/* SCREEN BOOT */
+#s-boot { background:var(--void); }
+.boot-logo { display:flex; flex-direction:column; align-items:center; gap:12px;
+  opacity:0; transform:scale(.92);
+  transition:opacity var(--dvs) var(--eo), transform var(--dvs) var(--eo); }
+.boot-logo.on { opacity:1; transform:scale(1); }
+.boot-icon { font-size:64px; line-height:1;
+  filter:drop-shadow(0 0 20px var(--neon-g)); animation:iconF 3s var(--eio) infinite; }
+@keyframes iconF { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+.boot-txt { font-family:var(--fnd); font-size:28px; letter-spacing:2px; color:var(--neon);
+  text-shadow:0 0 10px var(--neon-g), 0 0 30px var(--neon-d); }
+.boot-sub { font-size:13px; color:var(--gm); letter-spacing:4px; text-transform:uppercase; margin-top:-6px; }
+.boot-prog { position:absolute; bottom:80px; left:48px; right:48px;
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  opacity:0; transition:opacity var(--dn) var(--eo); }
+.boot-prog.on { opacity:1; }
+.boot-track { width:100%; height:3px; background:var(--gl); border-radius:2px; overflow:hidden; }
+.boot-fill { height:100%; width:0%;
+  background:linear-gradient(90deg,var(--neon),#80FF60);
+  border-radius:2px; box-shadow:0 0 8px var(--neon-g);
+  transition:width var(--dn) linear; }
+.boot-lbl { font-size:13px; color:var(--gm); letter-spacing:1px; }
+
+/* SCREEN WELCOME */
+#s-welcome { background:var(--void); padding:40px 32px; gap:28px; text-align:center; }
+.wlc-icon { font-size:72px; line-height:1;
+  filter:drop-shadow(0 0 16px var(--neon-g)); animation:iconF 4s var(--eio) infinite; }
+.wlc-h { font-family:var(--fnd); font-size:40px; color:var(--neon);
+  letter-spacing:1px; text-shadow:0 0 20px var(--neon-g); line-height:1.15; }
+.wlc-p { font-size:22px; font-weight:600; color:var(--gh); line-height:1.65; max-width:280px; }
+.wlc-p strong { color:var(--neon); }
+#btn-next { display:flex; align-items:center; justify-content:center; gap:12px;
+  width:100%; min-height:64px;
+  background:var(--neon); color:var(--void);
+  font-family:var(--fn); font-size:26px; font-weight:900;
+  border:none; border-radius:18px; cursor:pointer; letter-spacing:.5px;
+  box-shadow:0 6px 24px rgba(57,255,20,.4);
+  transition:transform var(--df) var(--eo), box-shadow var(--df) var(--eo);
+  touch-action:manipulation;
+  animation:btnP 2.5s var(--eio) infinite; }
+@keyframes btnP {
+  0%,100% { box-shadow:0 0 0 0 var(--neon-g), 0 6px 24px rgba(57,255,20,.4); }
+  50%     { box-shadow:0 0 0 8px transparent, 0 6px 32px rgba(57,255,20,.55); }
+}
+#btn-next:active { transform:scale(.96); animation:none; }
+#btn-next:focus-visible { outline:3px solid var(--neon); outline-offset:4px; }
+
+/* FEEDBACK ERROR */
+#feedback-ov { position:absolute; bottom:32px; left:16px; right:16px;
+  background:rgba(255,68,68,.12); border:1.5px solid rgba(255,68,68,.4);
+  border-radius:14px; padding:14px 18px; text-align:center;
+  font-size:16px; font-weight:700; color:#FF8080;
+  opacity:0; transform:translateY(8px);
+  transition:opacity var(--df) var(--eo), transform var(--df) var(--eo);
+  pointer-events:none; z-index:20; }
+#feedback-ov.on { opacity:1; transform:translateY(0); }
+
+/* HAPTIC */
+@keyframes hapticShake {
+  0%{transform:translateX(0)} 20%{transform:translateX(-3px)}
+  40%{transform:translateX(3px)} 60%{transform:translateX(-2px)}
+  80%{transform:translateX(2px)} 100%{transform:translateX(0)} }
+.haptic { animation:hapticShake .35s var(--eo); }
+
+/* RESPONSIVE */
+@media(max-height:820px){ #sim-wrap{transform:scale(.88)} }
+@media(max-height:700px){ #sim-wrap{transform:scale(.75)} }
+@media(max-height:600px){ #sim-wrap{transform:scale(.65)} }
+@media(max-width:400px) { #sim-wrap{transform:scale(.94)} }
+@media(max-width:370px) { #sim-wrap{transform:scale(.85)} }
+@media(max-height:480px) and (orientation:landscape) {
+  #sim-wrap{transform:scale(.55)} .ibubble p{font-size:18px;} }
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms!important; transition-duration:300ms!important; } }
+</style>
 </head>
-
 <body>
 
-  <!-- ═══════════════════════════════════════════════════════
-       CAMADA DE INSTRUÇÃO — fora do celular, sempre visível
-  ════════════════════════════════════════════════════════ -->
-  <aside id="instructor-layer" aria-live="polite" aria-atomic="true">
-    <div class="instructor-bubble" role="status">
-      <!-- Seta apontando para o botão power -->
-      <div class="instructor-arrow" aria-hidden="true">
-        <span></span>
-        <span></span>
-      </div>
-      <p>
-        Toque e <strong>segure</strong> o botão lateral por
-        <strong>3 segundos</strong> para ligar
-      </p>
+<!-- INSTRUCTOR LAYER -->
+<aside id="instructor-layer" aria-live="polite" aria-atomic="true">
+  <div class="ibubble" id="ibubble" role="status">
+    <div class="iarrow" id="iarrow" aria-hidden="true">
+      <span></span><span></span>
     </div>
-  </aside>
+    <p id="itxt">
+      Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar
+    </p>
+  </div>
+</aside>
 
-  <!-- ═══════════════════════════════════════════════════════
-       WRAPPER DO SIMULADOR — escala responsiva
-  ════════════════════════════════════════════════════════ -->
-  <main id="simulator-wrapper" role="application"
-        aria-label="Simulador de smartphone para aprendizado">
+<!-- SIMULATOR -->
+<main id="sim-wrap" role="application" aria-label="Simulador de smartphone">
+  <div id="phone-frame">
 
-    <!-- ─────────────────────────────────────────────────────
-         MOLDURA DO SMARTPHONE (Redmi A3)
-    ──────────────────────────────────────────────────────── -->
-    <div id="phone-frame" role="img" aria-label="Smartphone simulado">
+    <div class="bvol bvol-u" aria-hidden="true"></div>
+    <div class="bvol bvol-d" aria-hidden="true"></div>
 
-      <!-- Botões de Volume (decorativos — não interativos neste módulo) -->
-      <div class="btn-volume btn-volume-up"
-           aria-hidden="true"
-           title="Botão de volume"></div>
-      <div class="btn-volume btn-volume-down"
-           aria-hidden="true"
-           title="Botão de volume"></div>
-
-      <!-- ─────────────────────────────────────────────────
-           BOTÃO POWER — o único elemento interativo
-      ────────────────────────────────────────────────────── -->
-      <div id="btn-power"
-           class="state-idle"
-           role="button"
-           tabindex="0"
-           aria-label="Botão Power — Toque e segure por 3 segundos para ligar o celular"
-           aria-pressed="false">
-      </div>
-
-      <!-- ─────────────────────────────────────────────────
-           INDICADOR DE PROGRESSO DO LONG-PRESS
-           (ao lado do botão power, dentro da moldura)
-      ────────────────────────────────────────────────────── -->
-      <div id="longpress-indicator" aria-hidden="true">
-        <div class="lp-track">
-          <div class="lp-fill"></div>
-        </div>
-        <span class="lp-label">3s</span>
-      </div>
-
-      <!-- ─────────────────────────────────────────────────
-           TELA DO SMARTPHONE
-      ────────────────────────────────────────────────────── -->
-      <div id="phone-screen">
-
-        <!-- ── ESTADO: OFF ─────────────────────────────── -->
-        <section id="screen-off"
-                 class="screen-layer"
-                 aria-label="Tela apagada"
-                 aria-hidden="true">
-          <!--
-            Tela totalmente preta.
-            O reflexo ambiente é aplicado via CSS ::after.
-          -->
-        </section>
-
-        <!-- ── ESTADO: BOOTING ─────────────────────────── -->
-        <section id="screen-boot"
-                 class="screen-layer"
-                 aria-label="Celular ligando"
-                 aria-hidden="true">
-
-          <!-- Logo de Boot -->
-          <div class="boot-logo-wrap" aria-live="polite">
-            <div class="boot-logo-icon" aria-hidden="true">🌹</div>
-            <div class="boot-logo-text">ConSySenci.a</div>
-            <div class="boot-logo-sub">Rosa</div>
-          </div>
-
-          <!-- Barra de Progresso -->
-          <div class="boot-progress-wrap" aria-live="polite">
-            <div class="boot-progress-track"
-                 role="progressbar"
-                 aria-valuemin="0"
-                 aria-valuemax="100"
-                 aria-valuenow="0"
-                 aria-label="Carregando o sistema">
-              <div class="boot-progress-fill"></div>
-            </div>
-            <span class="boot-progress-label">Carregando... 0%</span>
-          </div>
-
-        </section>
-
-        <!-- ── ESTADO: WELCOME ─────────────────────────── -->
-        <section id="screen-welcome"
-                 class="screen-layer"
-                 aria-label="Tela de boas-vindas"
-                 aria-hidden="true">
-
-          <div class="welcome-icon" aria-hidden="true">🌟</div>
-
-          <h1 class="welcome-heading">
-            Celular<br>Ligado!
-          </h1>
-
-          <p class="welcome-body">
-            Você fez seu primeiro passo.<br>
-            <strong>Isso é aprender!</strong>
-          </p>
-
-          <!-- Botão Próximo — área de toque grande (≥64px) -->
-          <button id="btn-next"
-                  type="button"
-                  aria-label="Próximo passo do aprendizado">
-            <span>Próximo</span>
-            <span class="btn-next-arrow" aria-hidden="true">→</span>
-          </button>
-
-        </section>
-
-        <!-- ── OVERLAY DE FEEDBACK (early release) ──────── -->
-        <div id="feedback-overlay"
-             role="alert"
-             aria-live="assertive"
-             aria-atomic="true">
-        </div>
-
-      </div>
-      <!-- /phone-screen -->
-
+    <div id="btn-power" class="idle"
+         role="button" tabindex="0"
+         aria-label="Botão Power — Toque e segure por 3 segundos para ligar">
     </div>
-    <!-- /phone-frame -->
 
-  </main>
-  <!-- /simulator-wrapper -->
+    <div id="lp-ind" aria-hidden="true">
+      <div class="lp-track">
+        <div class="lp-fill" id="lp-fill"></div>
+      </div>
+      <span class="lp-lbl">3s</span>
+    </div>
 
-  <!-- ═══════════════════════════════════════════════════════
-       SCRIPTS — ordem importa (dependências primeiro)
-  ════════════════════════════════════════════════════════ -->
+    <div id="phone-screen">
 
-  <!-- 1. Máquina de estados (sem dependências) -->
-  <script src="js/state.js"></script>
+      <!-- TELA OFF -->
+      <section id="s-off" class="slayer on" aria-label="Tela apagada"></section>
 
-  <!-- 2. UI Controller (depende de state.js) -->
-  <script src="js/ui.js"></script>
+      <!-- TELA BOOT -->
+      <section id="s-boot" class="slayer" aria-label="Celular ligando">
+        <div class="boot-logo" id="boot-logo">
+          <div class="boot-icon">🌹</div>
+          <div class="boot-txt">ConSySenci.a</div>
+          <div class="boot-sub">Rosa</div>
+        </div>
+        <div class="boot-prog" id="boot-prog">
+          <div class="boot-track">
+            <div class="boot-fill" id="boot-fill"></div>
+          </div>
+          <span class="boot-lbl" id="boot-lbl">Carregando... 0%</span>
+        </div>
+      </section>
 
-  <!-- 3. Interaction Controller (depende de state.js e ui.js) -->
-  <script src="js/interaction.js"></script>
+      <!-- TELA WELCOME -->
+      <section id="s-welcome" class="slayer" aria-label="Boas-vindas">
+        <div class="wlc-icon">🌟</div>
+        <h1 class="wlc-h">Celular<br>Ligado!</h1>
+        <p class="wlc-p">Você fez seu primeiro passo.<br><strong>Isso é aprender!</strong></p>
+        <button id="btn-next" type="button">
+          <span>Próximo</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </section>
 
-  <!-- 4. Bootstrap do módulo -->
-  <script>
-    /**
-     * Bootstrap — inicializa o módulo quando o DOM estiver pronto.
-     * Mantido inline para evitar arquivo adicional e garantir
-     * que seja o último a executar (após todos os scripts).
-     */
-    (function bootstrap() {
-      'use strict';
+      <!-- FEEDBACK DE ERRO -->
+      <div id="feedback-ov" role="alert" aria-live="assertive"></div>
 
-      // ── Aguarda DOM completo ────────────────────────────
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
+    </div><!-- /phone-screen -->
+  </div><!-- /phone-frame -->
+</main>
 
-      function init() {
-        // Habilita modo debug via URL param: ?debug=1
-        if (new URLSearchParams(window.location.search).get('debug') === '1') {
-          window.__CONSYSENCIA_DEBUG__ = true;
-          console.log('[ConSySenci.a] Modo debug ativado.');
-        }
+<script>
+/*
+  ConSySenci.a Rosa — Módulo 0: Ligar o Celular
+  © 2026 ConSySenci.a — Todos os direitos reservados
 
-        // ── Inicializa UI (bind de estado, telas) ─────────
-        window.SimulatorUI.init();
+  BUG CORRIGIDO: referências DOM agora são resolvidas DENTRO
+  do init(), após o DOM estar completamente parseado.
+  Antes eram resolvidas na declaração do IIFE (antes do DOM).
+*/
+'use strict';
 
-        // ── Inicializa Interação (long-press no btn-power) ─
-        window.InteractionController.init({
-          btnPower: document.getElementById('btn-power'),
+/* ═══════════════════════════════════════════════════════════
+   1. MÁQUINA DE ESTADOS FINITOS
+   OFF → PRESSING → BOOTING → WELCOME
+═══════════════════════════════════════════════════════════ */
+const FSM = (() => {
+  const S = Object.freeze({
+    OFF:      'OFF',
+    PRESSING: 'PRESSING',
+    BOOTING:  'BOOTING',
+    WELCOME:  'WELCOME',
+  });
 
-          // Sucesso: 3 segundos segurados
-          onSuccess: () => {
-            // O FSM já transitou para BOOTING em interaction.js
-            // O UI Controller reage via onEnter(BOOTING) registrado em ui.js
-            console.log('[ConSySenci.a] Long-press concluído — iniciando boot.');
-          },
+  // Transições válidas por estado
+  const TRANS = {
+    OFF:      ['PRESSING'],
+    PRESSING: ['OFF', 'BOOTING'],
+    BOOTING:  ['WELCOME'],
+    WELCOME:  [],
+  };
 
-          // Liberação prematura
-          onEarlyRelease: (elapsedMs) => {
-            window.SimulatorUI.showEarlyReleaseFeedback(elapsedMs);
-          },
-        });
+  let cur  = S.OFF;
+  let prev = null;
+  const enterCbs  = new Map(); // callbacks por estado
+  const globalCbs = [];        // callbacks em qualquer transição
 
-        // ── Evento de conclusão do módulo ─────────────────
-        // O módulo principal (SPA) pode ouvir este evento
-        // para avançar para o próximo módulo.
-        document.addEventListener('simulator:complete', (e) => {
-          console.log('[ConSySenci.a] Módulo concluído:', e.detail);
-          // Aqui o SPA principal faria: ir('tela-proxima')
-          // Por ora, exibe confirmação visual
-          const btn = document.getElementById('btn-next');
-          if (btn) {
-            btn.textContent = '✅ Módulo Concluído!';
-            btn.style.background = '#00C875';
-            btn.style.pointerEvents = 'none';
-          }
-        });
+  const is  = s    => cur === s;
+  const get = ()   => cur;
 
-        // ── Suporte a teclado: Enter/Space no btn-power ───
-        document.getElementById('btn-power')?.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            // Simula pointerdown/pointerup sintéticos para o handler
-            const pe = new PointerEvent('pointerdown', {
-              pointerId: 1, bubbles: true, cancelable: true
-            });
-            e.target.dispatchEvent(pe);
-            // Segura por 3.1s programaticamente (acessibilidade)
-            setTimeout(() => {
-              const pu = new PointerEvent('pointerup', {
-                pointerId: 1, bubbles: true, cancelable: true
-              });
-              e.target.dispatchEvent(pu);
-            }, 3100);
-          }
-        });
-      }
+  const go  = (next) => {
+    if (!TRANS[cur].includes(next)) return false;
+    prev = cur;
+    cur  = next;
+    (enterCbs.get(next) || []).forEach(fn => fn({ from: prev, to: cur }));
+    globalCbs.forEach(fn => fn({ from: prev, to: cur }));
+    return true;
+  };
 
-    })();
-  </script>
+  const onEnter  = (s, fn) => {
+    if (!enterCbs.has(s)) enterCbs.set(s, []);
+    enterCbs.get(s).push(fn);
+  };
 
+  return Object.freeze({ S, is, get, go, onEnter });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════
+   2. UI CONTROLLER
+   CORREÇÃO PRINCIPAL: 'D' (refs DOM) resolvido dentro de init()
+═══════════════════════════════════════════════════════════ */
+const UI = (() => {
+
+  // Referências DOM — preenchidas em init(), não na declaração
+  let D = null;
+
+  const MSGS = {
+    OFF:      { arrow: true,  html: 'Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar' },
+    PRESSING: { arrow: false, html: '✅ Isso! Continue <strong>segurando</strong>...' },
+    BOOTING:  { arrow: false, html: '✨ Perfeito! O celular está <strong>ligando</strong>...' },
+    WELCOME:  { arrow: false, html: '🎉 Você <strong>ligou o celular!</strong> Primeiro passo concluído!' },
+    ERR_FAST: { arrow: true,  html: '⚡ Muito rápido! Toque e <strong>segure firme</strong> por 3 segundos' },
+    ERR_MED:  { arrow: true,  html: '⏱️ Quase! Segure um <strong>pouquinho mais</strong>...' },
+    ERR_LONG: { arrow: true,  html: '👏 Faltou pouco! Segure até a tela <strong>acender</strong>' },
+  };
+
+  let feedbackTimer = null;
+  let instrTimer    = null;
+  let bootTimers    = [];
+
+  /* ── Helpers básicos ─────────────────────────────────── */
+
+  const show = (el) => el && el.classList.add('on');
+  const hide = (el) => el && el.classList.remove('on');
+
+  /* ── Instrutor ───────────────────────────────────────── */
+
+  const setMsg = (key, delay = 0) => {
+    if (instrTimer) { clearTimeout(instrTimer); instrTimer = null; }
+    const apply = () => {
+      const m = MSGS[key];
+      if (!m || !D) return;
+      D.itxt.innerHTML   = m.html;
+      D.iarrow.style.display = m.arrow ? 'flex' : 'none';
+      show(D.ibubble);
+    };
+    delay > 0 ? (instrTimer = setTimeout(apply, delay)) : apply();
+  };
+
+  /* ── Botão Power — estado visual ────────────────────── */
+
+  const setPowerClass = (cls) => {
+    if (!D) return;
+    D.btnPow.className = cls; // 'idle' | 'pressing' | 'locked'
+    D.btnPow.tabIndex  = cls === 'locked' ? -1 : 0;
+  };
+
+  /* ── Indicador de long-press ─────────────────────────── */
+
+  const setLPProgress = (p) => { // 0.0 → 1.0
+    if (!D) return;
+    if (p <= 0) {
+      hide(D.lpInd);
+      D.lpFill.style.height = '0%';
+    } else {
+      show(D.lpInd);
+      D.lpFill.style.height = (p * 100) + '%';
+    }
+  };
+
+  /* ── Feedback de erro (solto antes do tempo) ─────────── */
+
+  const showError = (elapsedMs) => {
+    if (!D) return;
+    let key, txt;
+    if      (elapsedMs < 1000) { key = 'ERR_FAST'; txt = 'Tente segurar por mais tempo'; }
+    else if (elapsedMs < 2500) { key = 'ERR_MED';  txt = 'Quase! Segure mais um pouquinho'; }
+    else                       { key = 'ERR_LONG'; txt = 'Faltou pouco! Tente mais uma vez'; }
+
+    // Shake háptico visual no frame
+    D.frame.classList.remove('haptic');
+    void D.frame.offsetWidth; // force reflow para reiniciar animação
+    D.frame.classList.add('haptic');
+    setTimeout(() => D.frame && D.frame.classList.remove('haptic'), 400);
+
+    // Overlay dentro da tela
+    D.feedbk.textContent = txt;
+    show(D.feedbk);
+    if (feedbackTimer) clearTimeout(feedbackTimer);
+    feedbackTimer = setTimeout(() => hide(D.feedbk), 2200);
+
+    setMsg(key);
+  };
+
+  /* ── Progresso da barra de boot ──────────────────────── */
+
+  const setBootFill = (pct) => {
+    if (!D) return;
+    D.bootFill.style.width  = pct + '%';
+    D.bootLbl.textContent   = 'Carregando... ' + pct + '%';
+  };
+
+  /* ── Sequência de boot ───────────────────────────────── */
+
+  const runBoot = () => {
+    bootTimers.forEach(clearTimeout);
+    bootTimers = [];
+
+    const seq = [
+      // Passo 0: apaga tela OFF, acende tela boot
+      [0,    () => { hide(D.sOff); show(D.sBoot); }],
+      // Passo 1: logo surge (fade-in lento via CSS transition)
+      [420,  () => { show(D.bootLogo); }],
+      // Passo 2: barra de progresso aparece
+      [1350, () => { show(D.bootProg); }],
+      // Passos 3-5: progresso avança
+      [1650, () => { setBootFill(30); }],
+      [2300, () => { setBootFill(68); }],
+      [3050, () => { setBootFill(100); }],
+      // Passo 6: transição para tela de boas-vindas
+      [3600, () => { toWelcome(); }],
+    ];
+
+    seq.forEach(([t, fn]) => { bootTimers.push(setTimeout(fn, t)); });
+  };
+
+  /* ── Transição para Welcome ──────────────────────────── */
+
+  const toWelcome = () => {
+    FSM.go(FSM.S.WELCOME); // transição no FSM
+    hide(D.sBoot);
+    setTimeout(() => show(D.sWelc), 320);
+  };
+
+  /* ── Botão Próximo ───────────────────────────────────── */
+
+  const bindNext = () => {
+    if (!D.btnNext) return;
+    const handle = (e) => {
+      e.preventDefault();
+      // Dispara evento para o SPA principal ouvir
+      document.dispatchEvent(new CustomEvent('consysencia:complete', {
+        detail: { module: 'module-0-power-on' }
+      }));
+      // Feedback visual imediato no botão
+      D.btnNext.innerHTML      = '✅ Concluído!';
+      D.btnNext.style.background    = '#00C875';
+      D.btnNext.style.pointerEvents = 'none';
+      D.btnNext.style.animation     = 'none';
+    };
+    D.btnNext.addEventListener('click',   handle);
+    D.btnNext.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') handle(e);
+    });
+  };
+
+  /* ── Reage a transições do FSM ───────────────────────── */
+
+  const bindFSM = () => {
+    FSM.onEnter(FSM.S.PRESSING, () => {
+      setPowerClass('pressing');
+      setMsg('PRESSING');
+      hide(D.feedbk);
+    });
+
+    FSM.onEnter(FSM.S.OFF, () => {
+      setPowerClass('idle');
+      setMsg('OFF');
+    });
+
+    FSM.onEnter(FSM.S.BOOTING, () => {
+      setPowerClass('locked');
+      setMsg('BOOTING');
+      setLPProgress(0);
+      runBoot();
+    });
+
+    FSM.onEnter(FSM.S.WELCOME, () => {
+      setPowerClass('locked');
+      setMsg('WELCOME', 700);
+    });
+  };
+
+  /* ── INIT — DOM resolvido AQUI, após o parser terminar ── */
+
+  const init = () => {
+    // Resolve referências DOM agora (DOM está pronto)
+    D = {
+      frame:    document.getElementById('phone-frame'),
+      btnPow:   document.getElementById('btn-power'),
+      sOff:     document.getElementById('s-off'),
+      sBoot:    document.getElementById('s-boot'),
+      sWelc:    document.getElementById('s-welcome'),
+      bootLogo: document.getElementById('boot-logo'),
+      bootProg: document.getElementById('boot-prog'),
+      bootFill: document.getElementById('boot-fill'),
+      bootLbl:  document.getElementById('boot-lbl'),
+      feedbk:   document.getElementById('feedback-ov'),
+      lpInd:    document.getElementById('lp-ind'),
+      lpFill:   document.getElementById('lp-fill'),
+      ibubble:  document.getElementById('ibubble'),
+      iarrow:   document.getElementById('iarrow'),
+      itxt:     document.getElementById('itxt'),
+      btnNext:  document.getElementById('btn-next'),
+    };
+
+    bindFSM();
+    bindNext();
+
+    // Estado visual inicial
+    show(D.sOff);
+    setPowerClass('idle');
+
+    // Bolha de instrução surge após breve delay
+    setTimeout(() => { show(D.ibubble); setMsg('OFF'); }, 500);
+  };
+
+  return Object.freeze({ init, setLPProgress, showError });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════
+   3. INPUT CONTROLLER — Long-Press via requestAnimationFrame
+═══════════════════════════════════════════════════════════ */
+const Input = (() => {
+  const HOLD_MS     = 3000; // duração necessária para ligar
+  const DEBOUNCE_MS = 400;  // cooldown anti-clique-duplo
+
+  let pressStart  = null;
+  let isDown      = false;
+  let rafId       = null;
+  let debounced   = false;
+  let activePtr   = null;
+  let btnEl       = null;
+
+  /* rAF tick — mede tempo e atualiza indicador */
+  const tick = (ts) => {
+    if (!isDown || pressStart === null) return;
+
+    const elapsed  = ts - pressStart;
+    const progress = Math.min(elapsed / HOLD_MS, 1);
+
+    UI.setLPProgress(progress);
+
+    if (elapsed >= HOLD_MS) {
+      onSuccess();
+      return;
+    }
+
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const onSuccess = () => {
+    cleanup();
+    FSM.go(FSM.S.BOOTING); // dispara sequência de boot
+  };
+
+  const cleanup = () => {
+    isDown     = false;
+    pressStart = null;
+    activePtr  = null;
+
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    UI.setLPProgress(0);
+
+    // Debounce — evita re-press acidental imediato
+    debounced = true;
+    setTimeout(() => { debounced = false; }, DEBOUNCE_MS);
+  };
+
+  /* Início do press */
+  const onDown = (e) => {
+    if (isDown || debounced)     return;
+    if (!FSM.is(FSM.S.OFF))     return;
+
+    e.preventDefault();
+
+    // Captura o pointer para seguir o dedo fora do elemento
+    activePtr = (e.pointerId !== undefined) ? e.pointerId : null;
+    if (activePtr !== null) {
+      try { btnEl.setPointerCapture(activePtr); } catch (_) {}
+    }
+
+    isDown     = true;
+    pressStart = performance.now();
+
+    FSM.go(FSM.S.PRESSING);
+    rafId = requestAnimationFrame(tick);
+  };
+
+  /* Fim do press (solto antes do tempo ou saiu do elemento) */
+  const onUp = (e) => {
+    if (!isDown) return;
+    // Ignora eventos de outros pointers
+    if (activePtr !== null && e.pointerId !== undefined && e.pointerId !== activePtr) return;
+
+    const elapsed = performance.now() - pressStart;
+    cleanup();
+
+    // Só mostra erro se o FSM ainda está em PRESSING
+    // (se onSuccess() já rodou, FSM estará em BOOTING)
+    if (FSM.is(FSM.S.PRESSING)) {
+      FSM.go(FSM.S.OFF);
+      UI.showError(elapsed);
+    }
+  };
+
+  const onMove = (e) => { if (isDown) e.preventDefault(); };
+
+  const init = (btn) => {
+    btnEl = btn;
+    if (!btnEl) { console.error('[Input] btn-power não encontrado'); return; }
+
+    btnEl.addEventListener('pointerdown',   onDown, { passive: false });
+    btnEl.addEventListener('pointerup',     onUp,   { passive: false });
+    btnEl.addEventListener('pointerleave',  onUp,   { passive: false });
+    btnEl.addEventListener('pointercancel', onUp,   { passive: false });
+    btnEl.addEventListener('pointermove',   onMove, { passive: false });
+    btnEl.addEventListener('contextmenu',   (e) => e.preventDefault());
+  };
+
+  return Object.freeze({ init });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════
+   4. BOOTSTRAP
+   Aguarda DOM pronto antes de inicializar qualquer módulo
+═══════════════════════════════════════════════════════════ */
+(function bootstrap() {
+  const run = () => {
+    // Inicializa UI primeiro (registra listeners do FSM, resolve DOM)
+    UI.init();
+
+    // Inicializa Input (registra eventos no btn-power)
+    Input.init(document.getElementById('btn-power'));
+
+    // Suporte a teclado: Enter/Space no btn-power simula hold de 3.1s
+    document.getElementById('btn-power').addEventListener('keydown', (e) => {
+      if ((e.key !== 'Enter' && e.key !== ' ') || !FSM.is(FSM.S.OFF)) return;
+      e.preventDefault();
+      const btn = e.currentTarget;
+      btn.dispatchEvent(new PointerEvent('pointerdown', {
+        pointerId: 99, bubbles: true, cancelable: true
+      }));
+      setTimeout(() => {
+        btn.dispatchEvent(new PointerEvent('pointerup', {
+          pointerId: 99, bubbles: true, cancelable: true
+        }));
+      }, 3100);
+    });
+
+    // SPA principal pode ouvir este evento para avançar de módulo
+    document.addEventListener('consysencia:complete', (e) => {
+      console.log('[ConSySenci.a] Módulo concluído:', e.detail);
+    });
+  };
+
+  // Garante que o DOM está pronto — resolve o bug raiz
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    // DOM já parseado (script defer ou no final do body)
+    run();
+  }
+})();
+</script>
 </body>
 </html>
