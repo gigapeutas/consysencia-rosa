@@ -10,9 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════
-   DESIGN TOKENS
-═══════════════════════════════════════════════════ */
 :root {
   --void:#000; --bg:#0A0A0A; --surf:#111; --surf2:#1A1A1A;
   --neon:#39FF14; --neon-d:rgba(57,255,20,.14); --neon-g:rgba(57,255,20,.44); --neon-m:rgba(57,255,20,.26);
@@ -23,33 +20,22 @@
   --fn:'Nunito','Segoe UI',sans-serif; --fnd:'Oswald','Impact',sans-serif;
   --df:280ms; --dn:550ms; --dvs:1400ms;
   --eo:cubic-bezier(.16,1,.3,1); --eio:cubic-bezier(.4,0,.2,1);
+  --wbg:#0B141A; --wchat:#0D1F2D; --wbubble-out:#005C4B; --wbubble-in:#1F2C34;
+  --wgreen:#00A884; --wgreen-d:#008c6e; --wtoolbar:#202C33; --wdivider:#2A373F;
 }
-
-/* ═══════════════════════════════════════════════════
-   BASE
-═══════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{height:100%;touch-action:manipulation;}
 body{height:100%;background:var(--void);font-family:var(--fn);color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none;}
-
-/* ═══════════════════════════════════════════════════
-   SPA — PÁGINAS
-═══════════════════════════════════════════════════ */
 .page{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;background:var(--void);}
 .page.active{display:flex;animation:pgIn .35s var(--eo);}
 @keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ═══════════════════════════════════════════════════
-   MAPA DE MÓDULOS
-═══════════════════════════════════════════════════ */
+/* MAPA */
 #pg-mapa{justify-content:flex-start;overflow-y:auto;padding:0 20px 40px;}
 .mapa-topo{width:100%;max-width:440px;text-align:center;padding:22px 0 20px;}
 .mapa-logo{font-family:var(--fnd);font-size:24px;letter-spacing:2.5px;color:var(--neon);text-shadow:0 0 14px var(--neon-g);}
 .mapa-sub{font-size:13px;color:var(--gm);margin-top:4px;font-weight:600;}
-
-.mod-card{display:flex;align-items:center;gap:14px;width:100%;max-width:440px;
-  background:var(--surf);border-radius:16px;padding:15px 16px;margin-bottom:11px;
-  border:2px solid var(--gl2);transition:border-color .2s,transform .12s,opacity .2s;}
+.mod-card{display:flex;align-items:center;gap:14px;width:100%;max-width:440px;background:var(--surf);border-radius:16px;padding:15px 16px;margin-bottom:11px;border:2px solid var(--gl2);transition:border-color .2s,transform .12s,opacity .2s;}
 .mod-card.livre{border-color:var(--neon);cursor:pointer;}
 .mod-card.livre:active{transform:scale(.97);}
 .mod-card.bloq{opacity:.35;cursor:not-allowed;}
@@ -64,26 +50,14 @@ body{height:100%;background:var(--void);font-family:var(--fn);color:#fff;overflo
 .b-novo{background:var(--neon);color:#000;}
 .b-feito{background:var(--verde);color:#000;}
 .b-lock{font-size:18px;}
-
-/* Barra de progresso geral */
 .prog-geral{width:100%;max-width:440px;margin-bottom:18px;}
 .prog-label{font-size:11px;color:var(--gm);font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;}
 .prog-track{width:100%;height:4px;background:var(--gl);border-radius:4px;overflow:hidden;}
 .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--neon),#80FF60);border-radius:4px;transition:width .6s var(--eo);}
 
-/* ═══════════════════════════════════════════════════
-   SIMULADOR — FRAME ANDROID COMPARTILHADO
-═══════════════════════════════════════════════════ */
+/* SIMULADOR FRAME */
 .pg-sim{position:relative;}
-
-/* Instructor bubble — fora do frame, não sofre com scale */
-.instructor{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
-  width:calc(100% - 28px);max-width:360px;
-  background:rgba(6,6,6,.96);border:1.5px solid var(--neon-m);
-  border-radius:16px;padding:13px 18px;text-align:center;
-  box-shadow:0 0 18px var(--neon-d),0 6px 24px rgba(0,0,0,.7);
-  z-index:200;opacity:0;transform:translateX(-50%) translateY(10px);
-  transition:opacity var(--dn) var(--eo),transform var(--dn) var(--eo);}
+.instructor{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:calc(100% - 28px);max-width:360px;background:rgba(6,6,6,.96);border:1.5px solid var(--neon-m);border-radius:16px;padding:13px 18px;text-align:center;box-shadow:0 0 18px var(--neon-d),0 6px 24px rgba(0,0,0,.7);z-index:200;opacity:0;transform:translateX(-50%) translateY(10px);transition:opacity var(--dn) var(--eo),transform var(--dn) var(--eo);}
 .instructor.vis{opacity:1;transform:translateX(-50%) translateY(0);}
 .instructor p{font-size:18px;font-weight:700;line-height:1.5;color:var(--gh);}
 .instructor p strong{color:var(--neon);}
@@ -91,74 +65,33 @@ body{height:100%;background:var(--void);font-family:var(--fn);color:#fff;overflo
 .iarrow span{display:block;width:7px;height:7px;border-right:2.5px solid var(--neon);border-bottom:2.5px solid var(--neon);transform:rotate(45deg);}
 .iarrow span:nth-child(2){opacity:.4;margin-top:-4px;}
 @keyframes arB{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-
-/* Wrapper do simulador (escala responsiva) */
 .sim-wrap{display:flex;align-items:center;justify-content:center;width:100%;height:100%;transform-origin:center center;}
-
-/* Moldura do celular */
-.pf{position:relative;width:var(--pw);height:var(--ph);border-radius:var(--pr);
-  background:linear-gradient(160deg,var(--pbl) 0%,#222228 40%,#151518 70%,var(--pb2) 100%);
-  box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 0 2px rgba(0,0,0,.8),0 18px 50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05);
-  flex-shrink:0;}
-/* punch-hole */
+.pf{position:relative;width:var(--pw);height:var(--ph);border-radius:var(--pr);background:linear-gradient(160deg,var(--pbl) 0%,#222228 40%,#151518 70%,var(--pb2) 100%);box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 0 2px rgba(0,0,0,.8),0 18px 50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05);flex-shrink:0;}
 .pf::before{content:'';position:absolute;top:15px;left:50%;transform:translateX(-50%);width:11px;height:11px;background:#080808;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.04);z-index:10;}
-/* speaker */
 .pf::after{content:'';position:absolute;top:17px;left:50%;transform:translateX(-50%) translateX(12px);width:42px;height:4px;background:rgba(255,255,255,.04);border-radius:2px;}
-
-/* Botões volume */
 .vb{position:absolute;left:-4px;border-radius:3px 0 0 3px;background:linear-gradient(90deg,#111114,var(--pbn));box-shadow:-2px 0 4px rgba(0,0,0,.5);}
 .vb-u{top:138px;width:4px;height:46px;}
 .vb-d{top:196px;width:4px;height:46px;}
-
-/* Botão power */
-.pbtn{position:absolute;right:-5px;top:148px;width:5px;height:66px;
-  border-radius:0 4px 4px 0;
-  background:linear-gradient(270deg,var(--pbh) 0%,var(--pbn) 60%,#111114 100%);
-  box-shadow:3px 0 6px rgba(0,0,0,.6);
-  cursor:pointer;padding:14px 26px 14px 10px;margin:-14px -26px -14px -10px;
-  transition:background var(--df) var(--eo),box-shadow var(--df) var(--eo);
-  z-index:50;touch-action:none;}
+.pbtn{position:absolute;right:-5px;top:148px;width:5px;height:66px;border-radius:0 4px 4px 0;background:linear-gradient(270deg,var(--pbh) 0%,var(--pbn) 60%,#111114 100%);box-shadow:3px 0 6px rgba(0,0,0,.6);cursor:pointer;padding:14px 26px 14px 10px;margin:-14px -26px -14px -10px;transition:background var(--df) var(--eo),box-shadow var(--df) var(--eo);z-index:50;touch-action:none;}
 .pbtn.idle{animation:pwp 2s var(--eio) infinite;}
 .pbtn.pressing{background:linear-gradient(270deg,#55FF40 0%,#2A8A20 60%,#111114 100%);box-shadow:3px 0 8px rgba(0,0,0,.6),6px 0 20px var(--neon-g);animation:none;}
 .pbtn.locked{pointer-events:none;animation:none;}
 @keyframes pwp{0%,100%{box-shadow:3px 0 6px rgba(0,0,0,.6),4px 0 0 var(--neon-d);}50%{box-shadow:3px 0 10px rgba(0,0,0,.6),7px 0 16px var(--neon-g);}}
-
-/* Indicador long-press */
-.lpind{position:absolute;right:21px;top:120px;width:22px;height:93px;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  opacity:0;transition:opacity var(--df);z-index:15;pointer-events:none;}
+.lpind{position:absolute;right:21px;top:120px;width:22px;height:93px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;opacity:0;transition:opacity var(--df);z-index:15;pointer-events:none;}
 .lpind.vis{opacity:1;}
 .lptr{width:4px;height:66px;background:var(--gl);border-radius:2px;overflow:hidden;position:relative;}
 .lpfl{position:absolute;bottom:0;left:0;right:0;height:0%;background:linear-gradient(0deg,var(--neon),#60FF40);border-radius:2px;box-shadow:0 0 6px var(--neon-g);}
 .lplb{font-size:9px;color:var(--gm);letter-spacing:.5px;margin-top:4px;text-transform:uppercase;}
-
-/* Tela interna */
 .ps{position:absolute;top:10px;left:10px;right:10px;bottom:10px;border-radius:calc(var(--pr) - 10px);background:var(--void);overflow:hidden;}
-
-/* Camadas de estado */
 .sl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity var(--dn) var(--eo);}
 .sl.vis{opacity:1;pointer-events:auto;}
-
-/* Feedback erro */
-.fberr{position:absolute;bottom:26px;left:12px;right:12px;
-  background:rgba(255,68,68,.11);border:1.5px solid rgba(255,68,68,.35);
-  border-radius:12px;padding:12px 14px;text-align:center;
-  font-size:14px;font-weight:700;color:#FF8888;
-  opacity:0;transform:translateY(8px);
-  transition:opacity var(--df) var(--eo),transform var(--df) var(--eo);
-  pointer-events:none;z-index:20;}
+.fberr{position:absolute;bottom:26px;left:12px;right:12px;background:rgba(255,68,68,.11);border:1.5px solid rgba(255,68,68,.35);border-radius:12px;padding:12px 14px;text-align:center;font-size:14px;font-weight:700;color:#FF8888;opacity:0;transform:translateY(8px);transition:opacity var(--df) var(--eo),transform var(--df) var(--eo);pointer-events:none;z-index:20;}
 .fberr.vis{opacity:1;transform:translateY(0);}
-
-/* Haptic */
 @keyframes hsh{0%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}100%{transform:translateX(0)}}
 .haptic{animation:hsh .35s var(--eo);}
 
-/* ═══════════════════════════════════════════════════
-   MÓDULO 0 — TELAS
-═══════════════════════════════════════════════════ */
+/* MÓDULO 0 */
 #m0-off{background:var(--void);}
-
-/* Boot */
 #m0-boot{background:var(--void);}
 .blogo{display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;transform:scale(.93);transition:opacity var(--dvs) var(--eo),transform var(--dvs) var(--eo);}
 .blogo.vis{opacity:1;transform:scale(1);}
@@ -171,58 +104,30 @@ body{height:100%;background:var(--void);font-family:var(--fn);color:#fff;overflo
 .bptrack{width:100%;height:3px;background:var(--gl);border-radius:2px;overflow:hidden;}
 .bpfill{height:100%;width:0%;background:linear-gradient(90deg,var(--neon),#80FF60);border-radius:2px;box-shadow:0 0 7px var(--neon-g);transition:width var(--dn) linear;}
 .bplbl{font-size:11px;color:var(--gm);letter-spacing:1px;}
-
-/* Welcome */
-#m0-welc{background:var(--void);padding:28px 26px;gap:20px;text-align:center;}
+#m0-welc{background:var(--void);padding:26px 24px;gap:18px;text-align:center;}
 .wico{font-size:62px;line-height:1;filter:drop-shadow(0 0 13px var(--neon-g));animation:ifl 4s var(--eio) infinite;}
 .wtit{font-family:var(--fnd);font-size:36px;color:var(--neon);letter-spacing:1px;text-shadow:0 0 16px var(--neon-g);line-height:1.15;}
 .wtxt{font-size:18px;font-weight:600;color:var(--gh);line-height:1.65;max-width:250px;}
 .wtxt strong{color:var(--neon);}
-
-/* Botão próximo genérico */
-.btn-prox{display:flex;align-items:center;justify-content:center;gap:9px;
-  width:100%;min-height:58px;
-  background:var(--neon);color:var(--void);
-  font-family:var(--fn);font-size:22px;font-weight:900;
-  border:none;border-radius:14px;cursor:pointer;letter-spacing:.3px;
-  box-shadow:0 5px 20px rgba(57,255,20,.38);
-  transition:transform var(--df) var(--eo);touch-action:manipulation;
-  animation:bpul 2.5s var(--eio) infinite;}
+.btn-prox{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:58px;background:var(--neon);color:var(--void);font-family:var(--fn);font-size:22px;font-weight:900;border:none;border-radius:14px;cursor:pointer;letter-spacing:.3px;box-shadow:0 5px 20px rgba(57,255,20,.38);transition:transform var(--df) var(--eo);touch-action:manipulation;animation:bpul 2.5s var(--eio) infinite;}
 @keyframes bpul{0%,100%{box-shadow:0 0 0 0 var(--neon-g),0 5px 20px rgba(57,255,20,.38);}50%{box-shadow:0 0 0 7px transparent,0 5px 28px rgba(57,255,20,.52);}}
 .btn-prox:active{transform:scale(.95);animation:none;}
 .btn-prox.done{background:var(--verde);animation:none;pointer-events:none;}
-.btn-prox:focus-visible{outline:3px solid var(--neon);outline-offset:4px;}
 
-/* ═══════════════════════════════════════════════════
-   MÓDULO 1 — ANDROID LAUNCHER + GESTOS
-═══════════════════════════════════════════════════ */
-
-/* Status bar */
-.sb{height:26px;background:#000;display:flex;align-items:center;justify-content:space-between;
-  padding:0 11px;flex-shrink:0;z-index:40;font-size:11px;font-weight:700;letter-spacing:.2px;
-  touch-action:none;cursor:ns-resize;position:relative;}
+/* MÓDULO 1 */
+.sb{height:26px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:0 11px;flex-shrink:0;z-index:40;font-size:11px;font-weight:700;letter-spacing:.2px;touch-action:none;cursor:ns-resize;position:relative;}
 .sb-icons{display:flex;gap:4px;align-items:center;}
 .sb-ico{font-size:13px;line-height:1;}
-
-/* Launcher Android */
-.launcher{flex:1;position:relative;overflow:hidden;
-  background:#0A1628;
-  background-image:radial-gradient(ellipse at 25% 45%,rgba(13,50,100,.8) 0%,transparent 55%),radial-gradient(ellipse at 78% 18%,rgba(80,10,50,.5) 0%,transparent 48%),linear-gradient(180deg,#0A1628 0%,#060D1F 100%);}
-
-/* Widget relógio */
+.launcher{flex:1;position:relative;overflow:hidden;background:#0A1628;background-image:radial-gradient(ellipse at 25% 45%,rgba(13,50,100,.8) 0%,transparent 55%),radial-gradient(ellipse at 78% 18%,rgba(80,10,50,.5) 0%,transparent 48%),linear-gradient(180deg,#0A1628 0%,#060D1F 100%);}
 .rel-widget{position:absolute;top:14px;left:0;width:100%;display:flex;flex-direction:column;align-items:center;z-index:2;pointer-events:none;}
 .rel-h{font-family:var(--fnd);font-size:50px;font-weight:700;color:#fff;letter-spacing:2px;text-shadow:0 2px 10px rgba(0,0,0,.6);line-height:1;}
 .rel-d{font-size:12px;color:rgba(255,255,255,.62);margin-top:4px;}
-
-/* Grid de apps */
 .app-grid{position:absolute;top:128px;left:0;width:100%;padding:0 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px 6px;z-index:2;}
 .app-ic{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:transform .1s;}
 .app-ic:active{transform:scale(.86);}
-.app-img{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 3px 9px rgba(0,0,0,.44);position:relative;overflow:hidden;}
+.app-img{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 9px rgba(0,0,0,.44);position:relative;overflow:hidden;}
 .app-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 50%);border-radius:inherit;}
 .app-lbl{font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.9);text-align:center;line-height:1.2;}
-/* cores apps */
 .ic-tel{background:linear-gradient(135deg,#1A73E8,#0D47A1);}
 .ic-cam{background:linear-gradient(135deg,#43A047,#1B5E20);}
 .ic-zap{background:linear-gradient(135deg,#25D366,#128C7E);}
@@ -231,48 +136,28 @@ body{height:100%;background:var(--void);font-family:var(--fn);color:#fff;overflo
 .ic-gal{background:linear-gradient(135deg,#8E24AA,#4A148C);}
 .ic-yt{background:linear-gradient(135deg,#FF0000,#B71C1C);}
 .ic-cfg{background:linear-gradient(135deg,#546E7A,#263238);}
-/* SVG icons inline simples */
 .app-img svg{width:24px;height:24px;}
-
-/* Dock */
-.dock{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-  background:rgba(255,255,255,.09);backdrop-filter:blur(10px);
-  border-radius:20px;padding:8px 14px;display:flex;gap:14px;align-items:center;
-  border:1px solid rgba(255,255,255,.1);z-index:3;}
-
-/* Nav bar Android */
+.dock{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.09);backdrop-filter:blur(10px);border-radius:20px;padding:8px 14px;display:flex;gap:14px;align-items:center;border:1px solid rgba(255,255,255,.1);z-index:3;}
 .nav-bar{height:36px;background:#000;display:flex;align-items:center;justify-content:space-around;flex-shrink:0;z-index:40;}
 .nb-btn{color:#888;font-size:18px;padding:8px;cursor:pointer;transition:color .15s;border:none;background:none;font-family:inherit;}
 .nb-btn:active{color:#fff;}
-
-/* Highlight ensinando */
 .ensin{box-shadow:0 0 0 3px var(--neon),0 0 12px var(--neon-g)!important;animation:pe 1s ease-in-out infinite alternate;}
 @keyframes pe{from{box-shadow:0 0 0 2px var(--neon),0 0 9px var(--neon-g);}to{box-shadow:0 0 0 5px #80FF60,0 0 20px var(--neon-g);}}
-
-/* ── CORTINA DE NOTIFICAÇÕES ── */
-.cortina{position:absolute;top:-100%;left:0;width:100%;
-  background:rgba(8,8,16,.96);backdrop-filter:blur(12px);
-  z-index:60;transition:top .26s ease;
-  display:flex;flex-direction:column;border-bottom:1px solid rgba(255,255,255,.07);}
+.cortina{position:absolute;top:-100%;left:0;width:100%;background:rgba(8,8,16,.96);backdrop-filter:blur(12px);z-index:60;transition:top .26s ease;display:flex;flex-direction:column;border-bottom:1px solid rgba(255,255,255,.07);}
 .cortina.meia{top:26px;}
 .cortina.total{top:26px;}
 .cortina-cab{padding:13px 13px 7px;flex-shrink:0;}
-/* Quick Settings */
 .qs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
-.qs-pill{background:#3C4043;border-radius:9px;padding:8px 10px;
-  display:flex;align-items:center;gap:7px;cursor:pointer;border:none;
-  color:#fff;font-family:var(--fn);font-size:11px;font-weight:700;transition:background .18s;width:100%;text-align:left;}
+.qs-pill{background:#3C4043;border-radius:9px;padding:8px 10px;display:flex;align-items:center;gap:7px;cursor:pointer;border:none;color:#fff;font-family:var(--fn);font-size:11px;font-weight:700;transition:background .18s;width:100%;text-align:left;}
 .qs-pill.on{background:rgba(138,180,248,.2);}
 .qs-pill .qi{font-size:16px;color:#9E9E9E;flex-shrink:0;}
 .qs-pill.on .qi{color:#8AB4F8;}
 .qs-pill.on .qn{color:#8AB4F8;}
 .qn{font-size:10px;line-height:1.2;}
-/* Brilho */
 .br-row{display:flex;align-items:center;gap:9px;margin-bottom:2px;}
 .br-ico{font-size:15px;color:#888;}
 input[type=range].sl-bri{flex:1;-webkit-appearance:none;height:4px;background:#555;border-radius:4px;outline:none;}
 input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;cursor:pointer;}
-/* Notificações */
 .notif-area{flex:1;overflow-y:auto;padding:6px 11px 0;display:flex;flex-direction:column;gap:7px;max-height:180px;}
 .notif{background:#1A1A2A;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:opacity .3s,transform .3s;}
 .notif-ico{width:32px;height:32px;border-radius:50%;background:#128C7E;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
@@ -283,9 +168,67 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
 .btn-lim{background:none;border:none;color:#8AB4F8;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fn);}
 .dica-sub{text-align:center;color:#444;font-size:11px;padding:5px 0 10px;}
 
-/* ═══════════════════════════════════════════════════
-   TELA CERTIFICADO / MÓDULO CONCLUÍDO
-═══════════════════════════════════════════════════ */
+/* MÓDULO 2 — WHATSAPP */
+.wa-header{background:var(--wtoolbar);padding:10px 12px 8px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid var(--wdivider);}
+.wa-back{font-size:20px;color:var(--wgreen);cursor:pointer;padding:2px 4px;flex-shrink:0;}
+.wa-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.wa-info{flex:1;min-width:0;}
+.wa-name{font-size:14px;font-weight:800;color:#E9EDEF;line-height:1;}
+.wa-status{font-size:11px;color:var(--wgreen);margin-top:2px;}
+.wa-actions{display:flex;gap:14px;color:#8696A0;font-size:18px;}
+.wa-msgs{flex:1;overflow-y:auto;padding:10px 10px 6px;display:flex;flex-direction:column;gap:4px;background:var(--wchat);background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+.wa-date-sep{text-align:center;margin:6px 0;}
+.wa-date-sep span{background:rgba(17,27,33,.85);color:#8696A0;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;}
+.wa-bubble{max-width:82%;padding:7px 10px 18px;border-radius:8px;position:relative;font-size:13px;line-height:1.5;word-break:break-word;}
+.wa-bubble.recv{background:var(--wbubble-in);border-radius:0 8px 8px 8px;align-self:flex-start;color:#E9EDEF;}
+.wa-bubble.recv::before{content:'';position:absolute;left:-8px;top:0;border:8px solid transparent;border-right-color:var(--wbubble-in);border-top:0;border-left:0;}
+.wa-bubble.sent{background:var(--wbubble-out);border-radius:8px 0 8px 8px;align-self:flex-end;color:#E9EDEF;}
+.wa-bubble.sent::after{content:'';position:absolute;right:-8px;top:0;border:8px solid transparent;border-left-color:var(--wbubble-out);border-top:0;border-right:0;}
+.wa-bubble-time{position:absolute;bottom:4px;right:8px;font-size:10px;color:#8696A0;}
+.wa-tick{color:var(--wgreen);font-size:12px;}
+.wa-typing{display:flex;align-items:center;gap:4px;padding:10px 14px;align-self:flex-start;background:var(--wbubble-in);border-radius:0 12px 12px 12px;margin:2px 0;}
+.wa-typing span{width:7px;height:7px;background:#8696A0;border-radius:50%;animation:tdot 1.4s var(--eio) infinite;}
+.wa-typing span:nth-child(2){animation-delay:.2s;}
+.wa-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.wa-input-area{background:var(--wtoolbar);padding:6px 10px;flex-shrink:0;display:flex;align-items:center;gap:8px;border-top:1px solid var(--wdivider);}
+.wa-input-box{flex:1;background:#2A3942;border-radius:22px;padding:9px 14px;font-size:14px;color:#E9EDEF;font-family:var(--fn);font-weight:600;min-height:40px;display:flex;align-items:center;position:relative;cursor:text;border:2px solid transparent;transition:border-color .2s;}
+.wa-input-box.focus{border-color:var(--wgreen);}
+.wa-input-box.ensin-input{border-color:var(--neon)!important;box-shadow:0 0 0 3px var(--neon-d),0 0 12px var(--neon-g);animation:inputPulse 1s ease-in-out infinite alternate;}
+@keyframes inputPulse{from{box-shadow:0 0 0 2px var(--neon-d),0 0 8px var(--neon-g);}to{box-shadow:0 0 0 4px rgba(57,255,20,.2),0 0 16px var(--neon-g);}}
+.wa-placeholder{color:#8696A0;font-size:13px;position:absolute;}
+.wa-text{color:#E9EDEF;font-size:14px;font-weight:600;word-break:break-word;line-height:1.4;}
+.wa-cursor{display:inline-block;width:2px;height:16px;background:var(--wgreen);margin-left:1px;vertical-align:middle;animation:cbl .9s step-end infinite;}
+@keyframes cbl{0%,100%{opacity:1;}50%{opacity:0;}}
+.wa-send{width:42px;height:42px;border-radius:50%;background:var(--wgreen);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:18px;transition:background .15s,transform .1s;box-shadow:0 2px 8px rgba(0,168,132,.4);}
+.wa-send:active{transform:scale(.88);background:var(--wgreen-d);}
+.wa-send.ensin-send{box-shadow:0 0 0 3px var(--neon),0 0 16px var(--neon-g)!important;animation:pe 1s ease-in-out infinite alternate;}
+.wa-send:disabled{background:#2A3942;cursor:not-allowed;opacity:.5;box-shadow:none;animation:none;}
+
+/* TECLADO VIRTUAL */
+.vkb{position:absolute;bottom:0;left:0;right:0;background:#1C1C1E;border-top:1px solid #333;z-index:30;transform:translateY(100%);transition:transform .32s var(--eo);}
+.vkb.open{transform:translateY(0);}
+.vkb-rows{padding:8px 4px 10px;display:flex;flex-direction:column;gap:6px;}
+.vkb-row{display:flex;gap:4px;justify-content:center;}
+.vk{background:#2C2C2E;border:none;border-radius:7px;color:#fff;font-family:var(--fn);font-size:14px;font-weight:700;height:40px;flex:1;cursor:pointer;max-width:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 0 #111;transition:background .1s,transform .1s;position:relative;min-width:0;}
+.vk:active,.vk.pressed{background:#555;transform:scale(.9);}
+.vk.wide{max-width:none;flex:1.5;}
+.vk.space{max-width:none;flex:4;font-size:11px;color:#888;}
+.vk.action{background:#444;font-size:12px;max-width:none;flex:1.5;}
+.vk.highlight{background:var(--wgreen);color:#000;animation:keyPulse .8s ease-in-out infinite alternate;}
+@keyframes keyPulse{from{box-shadow:0 2px 0 #111;}to{box-shadow:0 0 0 3px rgba(0,168,132,.5),0 2px 0 #111;}}
+.vk-hint{position:absolute;top:-24px;left:50%;transform:translateX(-50%);background:var(--wgreen);color:#000;font-size:13px;font-weight:900;padding:2px 7px;border-radius:5px;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .2s;z-index:10;}
+.vk.highlight .vk-hint{opacity:1;}
+
+/* GUIA DE DIGITAÇÃO */
+.typing-guide{background:rgba(0,168,132,.08);border:1px solid rgba(0,168,132,.2);border-radius:10px;padding:7px 12px;margin:0 10px 4px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.tg-label{font-size:11px;color:#8696A0;font-weight:700;flex-shrink:0;}
+.tg-text{font-size:13px;color:#E9EDEF;font-weight:700;flex:1;line-height:1.4;letter-spacing:.5px;}
+.tg-char{color:#555;}
+.tg-char.done{color:var(--wgreen);}
+.tg-char.next{color:#fff;background:rgba(0,168,132,.3);border-radius:3px;padding:0 2px;}
+
+/* CERTIFICADO */
 #pg-cert{text-align:center;gap:22px;padding:32px 28px;}
 .cert-ico{font-size:72px;animation:cbo .6s cubic-bezier(.36,.07,.19,.97);}
 @keyframes cbo{0%{transform:scale(0) rotate(-18deg)}65%{transform:scale(1.18) rotate(4deg)}100%{transform:scale(1) rotate(0)}}
@@ -293,17 +236,9 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
 .cert-sub{font-size:17px;font-weight:600;color:var(--gh);line-height:1.7;max-width:280px;}
 .cert-sub strong{color:var(--neon);}
 .cert-frase{font-size:13px;color:var(--gm);max-width:260px;line-height:1.7;font-style:italic;}
-.btn-mapa{display:flex;align-items:center;justify-content:center;gap:8px;
-  width:100%;max-width:320px;min-height:56px;
-  background:var(--neon);color:var(--void);
-  font-family:var(--fn);font-size:20px;font-weight:900;
-  border:none;border-radius:14px;cursor:pointer;
-  box-shadow:0 5px 18px rgba(57,255,20,.35);transition:transform .2s;touch-action:manipulation;}
+.btn-mapa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:320px;min-height:56px;background:var(--neon);color:var(--void);font-family:var(--fn);font-size:20px;font-weight:900;border:none;border-radius:14px;cursor:pointer;box-shadow:0 5px 18px rgba(57,255,20,.35);transition:transform .2s;touch-action:manipulation;}
 .btn-mapa:active{transform:scale(.95);}
 
-/* ═══════════════════════════════════════════════════
-   RESPONSIVIDADE
-═══════════════════════════════════════════════════ */
 @media(max-height:800px){.sim-wrap{transform:scale(.87)}}
 @media(max-height:680px){.sim-wrap{transform:scale(.76)}}
 @media(max-height:580px){.sim-wrap{transform:scale(.66)}}
@@ -315,47 +250,36 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════
-     PÁGINA: MAPA DE MÓDULOS
-═══════════════════════════════════════════════════════ -->
+<!-- MAPA -->
 <div id="pg-mapa" class="page active">
   <div class="mapa-topo">
     <div class="mapa-logo">CONSYSENCI.A</div>
     <div class="mapa-sub">Escolha o módulo para começar</div>
   </div>
-
   <div class="prog-geral">
-    <div class="prog-label">
-      <span>Seu progresso</span>
-      <span id="prog-pct">0 de 5 módulos</span>
-    </div>
+    <div class="prog-label"><span>Seu progresso</span><span id="prog-pct">0 de 5 módulos</span></div>
     <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
   </div>
-
   <div class="mod-card livre" id="mc-0" onclick="irMod(0)">
     <span class="mod-em">📦</span>
     <div class="mod-inf"><h3>Módulo 0 — A Caixa Mágica</h3><p>Ligar o celular, botões e carregamento</p></div>
     <div class="mod-bx"><span class="badge b-novo" id="badge-0">NOVO</span></div>
   </div>
-
   <div class="mod-card bloq" id="mc-1" onclick="irMod(1)">
     <span class="mod-em">👆</span>
     <div class="mod-inf"><h3>Módulo 1 — Escola de Gestos</h3><p>Toque, rolagem e painel de notificações</p></div>
     <div class="mod-bx"><span class="b-lock" id="badge-1">🔒</span></div>
   </div>
-
   <div class="mod-card bloq" id="mc-2" onclick="irMod(2)">
     <span class="mod-em">⌨️</span>
     <div class="mod-inf"><h3>Módulo 2 — O Teclado Fantasma</h3><p>Digitar mensagens no WhatsApp</p></div>
     <div class="mod-bx"><span class="b-lock" id="badge-2">🔒</span></div>
   </div>
-
   <div class="mod-card bloq" id="mc-3" onclick="irMod(3)">
     <span class="mod-em">💬</span>
     <div class="mod-inf"><h3>Módulo 3 — Comunicação</h3><p>WhatsApp, áudios, fotos e emojis</p></div>
     <div class="mod-bx"><span class="b-lock" id="badge-3">🔒</span></div>
   </div>
-
   <div class="mod-card bloq" id="mc-4" onclick="irMod(4)">
     <span class="mod-em">🛡️</span>
     <div class="mod-inf"><h3>Módulo 4 — Escudo de Prata</h3><p>Golpes, Pix falso e links perigosos</p></div>
@@ -363,18 +287,15 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     PÁGINA: MÓDULO 0 — LIGAR O CELULAR
-═══════════════════════════════════════════════════════ -->
+<!-- MÓDULO 0 -->
 <div id="pg-mod0" class="page pg-sim">
   <div class="sim-wrap">
     <div class="pf" id="pf0">
-      <div class="vb vb-u" aria-hidden="true"></div>
-      <div class="vb vb-d" aria-hidden="true"></div>
-      <div id="pbtn0" class="pbtn idle" role="button" tabindex="0" aria-label="Botão Power — toque e segure 3 segundos para ligar"></div>
+      <div class="vb vb-u"></div><div class="vb vb-d"></div>
+      <div id="pbtn0" class="pbtn idle" role="button" tabindex="0" aria-label="Botão Power"></div>
       <div class="lpind" id="lpi0"><div class="lptr"><div class="lpfl" id="lpf0"></div></div><span class="lplb">3s</span></div>
       <div class="ps" id="ps0">
-        <div id="m0-off"  class="sl vis"></div>
+        <div id="m0-off" class="sl vis"></div>
         <div id="m0-boot" class="sl">
           <div class="blogo" id="m0-blogo"><div class="bico">🌹</div><div class="btxt">ConSySenci.a</div><div class="bsub">Rosa</div></div>
           <div class="bprog" id="m0-bprog"><div class="bptrack"><div class="bpfill" id="m0-bpfill"></div></div><span class="bplbl" id="m0-bplbl">Carregando... 0%</span></div>
@@ -383,7 +304,7 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
           <div class="wico">🌟</div>
           <h1 class="wtit">Celular<br>Ligado!</h1>
           <p class="wtxt">Você fez seu primeiro passo.<br><strong>Isso é aprender!</strong></p>
-          <button class="btn-prox" id="m0-prox"><span>Próximo</span><span aria-hidden="true">→</span></button>
+          <button class="btn-prox" id="m0-prox"><span>Próximo</span><span>→</span></button>
         </div>
         <div class="fberr" id="m0-fb"></div>
       </div>
@@ -395,563 +316,503 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     PÁGINA: MÓDULO 1 — ESCOLA DE GESTOS
-═══════════════════════════════════════════════════════ -->
+<!-- MÓDULO 1 -->
 <div id="pg-mod1" class="page pg-sim">
   <div class="sim-wrap">
     <div class="pf" id="pf1">
-      <div class="vb vb-u" aria-hidden="true"></div>
-      <div class="vb vb-d" aria-hidden="true"></div>
-      <!-- Power button (decorativo no mod1) -->
-      <div class="pbtn locked" aria-hidden="true"></div>
+      <div class="vb vb-u"></div><div class="vb vb-d"></div>
+      <div class="pbtn locked"></div>
       <div class="ps" id="ps1" style="display:flex;flex-direction:column;">
-
-        <!-- STATUS BAR — gatilho do arrastar -->
-        <div class="sb" id="m1-sb"
-             onpointerdown="m1SbDown(event)"
-             onpointermove="m1SbMove(event)"
-             onpointerup="m1SbUp(event)"
-             onpointercancel="m1SbUp(event)">
+        <div class="sb" id="m1-sb" onpointerdown="m1SbDown(event)" onpointermove="m1SbMove(event)" onpointerup="m1SbUp(event)" onpointercancel="m1SbUp(event)">
           <span id="m1-hora">10:30</span>
-          <div class="sb-icons">
-            <span class="sb-ico">📶</span>
-            <span class="sb-ico">🔋</span>
-          </div>
+          <div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div>
         </div>
-
-        <!-- CORTINA -->
         <div class="cortina" id="m1-cortina">
           <div class="cortina-cab">
             <div class="qs-grid">
-              <button class="qs-pill on" id="qs-wifi"    onclick="togQS('qs-wifi')">   <span class="qi">📶</span><span class="qn">Wi-Fi<br>Ativo</span></button>
-              <button class="qs-pill on" id="qs-dados"   onclick="togQS('qs-dados')">  <span class="qi">📡</span><span class="qn">Dados<br>Ativos</span></button>
-              <button class="qs-pill"    id="qs-lan"     onclick="togQS('qs-lan');m1QSAcao('lanterna')"><span class="qi">🔦</span><span class="qn">Lanterna</span></button>
-              <button class="qs-pill"    id="qs-aviao"   onclick="togQS('qs-aviao');m1QSAcao('aviao')"><span class="qi">✈️</span><span class="qn">Modo Avião</span></button>
-              <button class="qs-pill on" id="qs-bt"      onclick="togQS('qs-bt')">     <span class="qi">📘</span><span class="qn">Bluetooth</span></button>
-              <button class="qs-pill"    id="qs-nr"      onclick="togQS('qs-nr')">     <span class="qi">🔕</span><span class="qn">Não perturbe</span></button>
+              <button class="qs-pill on" id="qs-wifi"  onclick="togQS('qs-wifi')">  <span class="qi">📶</span><span class="qn">Wi-Fi<br>Ativo</span></button>
+              <button class="qs-pill on" id="qs-dados" onclick="togQS('qs-dados')"> <span class="qi">📡</span><span class="qn">Dados<br>Ativos</span></button>
+              <button class="qs-pill"   id="qs-lan"    onclick="togQS('qs-lan')">   <span class="qi">🔦</span><span class="qn">Lanterna</span></button>
+              <button class="qs-pill"   id="qs-aviao"  onclick="togQS('qs-aviao')"> <span class="qi">✈️</span><span class="qn">Modo Avião</span></button>
+              <button class="qs-pill on" id="qs-bt"    onclick="togQS('qs-bt')">    <span class="qi">📘</span><span class="qn">Bluetooth</span></button>
+              <button class="qs-pill"   id="qs-nr"     onclick="togQS('qs-nr')">    <span class="qi">🔕</span><span class="qn">Não perturbe</span></button>
             </div>
             <div class="br-row">
               <span class="br-ico">🌑</span>
-              <input type="range" class="sl-bri" min="5" max="100" value="75" oninput="m1Brilho(this.value)">
+              <input type="range" class="sl-bri" min="5" max="100" value="75">
               <span class="br-ico">☀️</span>
             </div>
           </div>
           <div class="notif-area" id="m1-notifs">
-            <div class="notif" id="m1-n1">
-              <div class="notif-ico">💬</div>
-              <div class="notif-body"><strong>Filho</strong><span>Oi! Tudo bem por aí? 😊</span></div>
-              <span class="notif-time">agora</span>
-            </div>
-            <div class="notif" id="m1-n2">
-              <div class="notif-ico" style="background:#1A73E8;">📧</div>
-              <div class="notif-body"><strong>Gmail</strong><span>Sua fatura chegou.</span></div>
-              <span class="notif-time">5 min</span>
-            </div>
+            <div class="notif" id="m1-n1"><div class="notif-ico">💬</div><div class="notif-body"><strong>Filho</strong><span>Oi! Tudo bem por aí? 😊</span></div><span class="notif-time">agora</span></div>
+            <div class="notif" id="m1-n2"><div class="notif-ico" style="background:#1A73E8;">📧</div><div class="notif-body"><strong>Gmail</strong><span>Sua fatura chegou.</span></div><span class="notif-time">5 min</span></div>
           </div>
-          <div class="cortina-rod">
-            <button class="btn-lim" id="m1-btnlim" style="display:none;" onclick="m1LimNotifs()">Limpar tudo</button>
-          </div>
+          <div class="cortina-rod"><button class="btn-lim" id="m1-btnlim" style="display:none;" onclick="m1LimNotifs()">Limpar tudo</button></div>
           <p class="dica-sub" id="m1-dicasub" style="display:none;">▲ Deslize para cima para fechar</p>
         </div>
-
-        <!-- LAUNCHER -->
         <div class="launcher" id="m1-launcher">
-          <div class="rel-widget">
-            <div class="rel-h" id="m1-relh">10:30</div>
-            <div class="rel-d" id="m1-reld">Quarta, 18 de março</div>
-          </div>
+          <div class="rel-widget"><div class="rel-h" id="m1-relh">10:30</div><div class="rel-d" id="m1-reld">Quarta, 18 de março</div></div>
           <div class="app-grid">
-            <div class="app-ic" id="m1-tel" onclick="m1ClicarApp('Telefone')">
-              <div class="app-img ic-tel"><svg viewBox="0 0 24 24" fill="white"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div>
-              <span class="app-lbl">Telefone</span>
-            </div>
-            <div class="app-ic" id="m1-cam" onclick="m1ClicarApp('Camera')">
-              <div class="app-img ic-cam"><svg viewBox="0 0 24 24" fill="white"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></div>
-              <span class="app-lbl">Câmera</span>
-            </div>
-            <div class="app-ic" id="m1-zap" onclick="m1ClicarApp('WhatsApp')">
-              <div class="app-img ic-zap"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.06-1.38C8.42 21.5 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.64 13.36c-.2.56-1.16 1.08-1.6 1.14-.44.06-.44.32-2.76-.6-2.76-1.06-4.52-3.86-4.66-4.04-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.06 1-2.34.26-.28.56-.34.74-.34h.54c.18 0 .42-.06.66.5.24.58.82 2 .9 2.14.08.14.12.3.02.48-.1.18-.16.3-.3.46-.16.16-.32.36-.46.48-.16.14-.32.3-.14.6.18.3.82 1.34 1.76 2.18 1.2 1.06 2.2 1.4 2.52 1.56.3.14.48.1.66-.08.18-.18.76-.88.96-1.18.2-.3.4-.26.66-.16.28.1 1.74.82 2.04.96.3.16.5.22.56.34.08.1.08.64-.12 1.2z"/></svg></div>
-              <span class="app-lbl">WhatsApp</span>
-            </div>
-            <div class="app-ic">
-              <div class="app-img ic-chr"><span style="font-size:22px;">🌐</span></div>
-              <span class="app-lbl">Chrome</span>
-            </div>
-            <div class="app-ic">
-              <div class="app-img ic-map"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg></div>
-              <span class="app-lbl">Maps</span>
-            </div>
-            <div class="app-ic">
-              <div class="app-img ic-gal"><svg viewBox="0 0 24 24" fill="white"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>
-              <span class="app-lbl">Galeria</span>
-            </div>
-            <div class="app-ic">
-              <div class="app-img ic-yt"><svg viewBox="0 0 24 24" fill="white"><path d="M19.59 7a2.56 2.56 0 0 0-1.8-1.81C16.27 5 12 5 12 5s-4.27 0-5.79.19A2.56 2.56 0 0 0 4.41 7 26.86 26.86 0 0 0 4.21 12a26.86 26.86 0 0 0 .2 5 2.56 2.56 0 0 0 1.8 1.81C7.73 19 12 19 12 19s4.27 0 5.79-.19a2.56 2.56 0 0 0 1.8-1.81 26.86 26.86 0 0 0 .2-5 26.86 26.86 0 0 0-.2-5zM10 15V9l5.2 3z"/></svg></div>
-              <span class="app-lbl">YouTube</span>
-            </div>
-            <div class="app-ic">
-              <div class="app-img ic-cfg"><svg viewBox="0 0 24 24" fill="white"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7 7 0 0 0-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54a7.36 7.36 0 0 0-1.62.94l-2.39-.96a.47.47 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54a7.36 7.36 0 0 0 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2z"/></svg></div>
-              <span class="app-lbl">Config.</span>
-            </div>
+            <div class="app-ic" id="m1-tel" onclick="m1ClicarApp('Telefone')"><div class="app-img ic-tel"><svg viewBox="0 0 24 24" fill="white"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div><span class="app-lbl">Telefone</span></div>
+            <div class="app-ic"><div class="app-img ic-cam"><svg viewBox="0 0 24 24" fill="white"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></div><span class="app-lbl">Câmera</span></div>
+            <div class="app-ic" id="m1-zap" onclick="m1ClicarApp('WhatsApp')"><div class="app-img ic-zap"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.06-1.38C8.42 21.5 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.64 13.36c-.2.56-1.16 1.08-1.6 1.14-.44.06-.44.32-2.76-.6-2.76-1.06-4.52-3.86-4.66-4.04-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.06 1-2.34.26-.28.56-.34.74-.34h.54c.18 0 .42-.06.66.5.24.58.82 2 .9 2.14.08.14.12.3.02.48-.1.18-.16.3-.3.46-.16.16-.32.36-.46.48-.16.14-.32.3-.14.6.18.3.82 1.34 1.76 2.18 1.2 1.06 2.2 1.4 2.52 1.56.3.14.48.1.66-.08.18-.18.76-.88.96-1.18.2-.3.4-.26.66-.16.28.1 1.74.82 2.04.96.3.16.5.22.56.34.08.1.08.64-.12 1.2z"/></svg></div><span class="app-lbl">WhatsApp</span></div>
+            <div class="app-ic"><div class="app-img ic-chr"><span style="font-size:22px;">🌐</span></div><span class="app-lbl">Chrome</span></div>
+            <div class="app-ic"><div class="app-img ic-map"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg></div><span class="app-lbl">Maps</span></div>
+            <div class="app-ic"><div class="app-img ic-gal"><svg viewBox="0 0 24 24" fill="white"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div><span class="app-lbl">Galeria</span></div>
+            <div class="app-ic"><div class="app-img ic-yt"><svg viewBox="0 0 24 24" fill="white"><path d="M19.59 7a2.56 2.56 0 0 0-1.8-1.81C16.27 5 12 5 12 5s-4.27 0-5.79.19A2.56 2.56 0 0 0 4.41 7 26.86 26.86 0 0 0 4.21 12a26.86 26.86 0 0 0 .2 5 2.56 2.56 0 0 0 1.8 1.81C7.73 19 12 19 12 19s4.27 0 5.79-.19a2.56 2.56 0 0 0 1.8-1.81 26.86 26.86 0 0 0 .2-5 26.86 26.86 0 0 0-.2-5zM10 15V9l5.2 3z"/></svg></div><span class="app-lbl">YouTube</span></div>
+            <div class="app-ic"><div class="app-img ic-cfg"><svg viewBox="0 0 24 24" fill="white"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7 7 0 0 0-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54a7.36 7.36 0 0 0-1.62.94l-2.39-.96a.47.47 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54a7.36 7.36 0 0 0 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2z"/></svg></div><span class="app-lbl">Config.</span></div>
           </div>
-          <!-- Dock -->
           <div class="dock">
             <div class="app-ic" onclick="m1ClicarApp('Telefone')" style="gap:0;"><div class="app-img ic-tel" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="white" style="width:20px;height:20px;"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div></div>
-            <div class="app-ic" onclick="m1ClicarApp('Camera')"   style="gap:0;"><div class="app-img ic-cam" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="white" style="width:20px;height:20px;"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></div></div>
+            <div class="app-ic" style="gap:0;"><div class="app-img ic-cam" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="white" style="width:20px;height:20px;"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></div></div>
             <div class="app-ic" onclick="m1ClicarApp('WhatsApp')" style="gap:0;"><div class="app-img ic-zap" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="white" style="width:20px;height:20px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.06-1.38C8.42 21.5 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.64 13.36c-.2.56-1.16 1.08-1.6 1.14-.44.06-.44.32-2.76-.6-2.76-1.06-4.52-3.86-4.66-4.04-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.06 1-2.34.26-.28.56-.34.74-.34h.54c.18 0 .42-.06.66.5.24.58.82 2 .9 2.14.08.14.12.3.02.48-.1.18-.16.3-.3.46-.16.16-.32.36-.46.48-.16.14-.32.3-.14.6.18.3.82 1.34 1.76 2.18 1.2 1.06 2.2 1.4 2.52 1.56.3.14.48.1.66-.08.18-.18.76-.88.96-1.18.2-.3.4-.26.66-.16.28.1 1.74.82 2.04.96.3.16.5.22.56.34.08.1.08.64-.12 1.2z"/></svg></div></div>
             <div class="app-ic" style="gap:0;"><div class="app-img ic-chr" style="width:44px;height:44px;"><span style="font-size:20px;">🌐</span></div></div>
           </div>
         </div>
-
-        <!-- Nav bar -->
-        <div class="nav-bar">
-          <button class="nb-btn" onclick="Router.go('pg-mapa')">←</button>
-          <button class="nb-btn">⬤</button>
-          <button class="nb-btn">⬜</button>
-        </div>
-
-      </div><!-- /ps1 -->
-    </div><!-- /pf1 -->
-  </div><!-- /sim-wrap -->
-
+        <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')">←</button><button class="nb-btn">⬤</button><button class="nb-btn">⬜</button></div>
+      </div>
+    </div>
+  </div>
   <div class="instructor" id="instr1">
     <div class="iarrow" id="ia1" style="display:none;"><span></span><span></span></div>
     <p id="it1">Arraste o dedo de <strong>cima para baixo</strong> na barra preta do topo!</p>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     PÁGINA: CERTIFICADO (reutilizável)
-═══════════════════════════════════════════════════════ -->
+<!-- MÓDULO 2 — O TECLADO FANTASMA -->
+<div id="pg-mod2" class="page pg-sim">
+  <div class="sim-wrap">
+    <div class="pf" id="pf2">
+      <div class="vb vb-u"></div><div class="vb vb-d"></div>
+      <div class="pbtn locked"></div>
+      <div class="ps" id="ps2" style="display:flex;flex-direction:column;">
+
+        <!-- Status bar -->
+        <div class="sb">
+          <span id="m2-hora">10:30</span>
+          <div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div>
+        </div>
+
+        <!-- LAUNCHER -->
+        <div id="m2-launcher" style="position:absolute;top:26px;left:0;right:0;bottom:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px;background:#0A1628;background-image:radial-gradient(ellipse at 25% 45%,rgba(13,50,100,.8) 0%,transparent 55%);transition:opacity .35s;">
+          <div style="font-size:40px;">📱</div>
+          <div style="font-family:var(--fnd);font-size:20px;color:#fff;letter-spacing:1px;">Abra o WhatsApp</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.5);text-align:center;max-width:220px;line-height:1.6;">Toque no ícone verde para começar!</div>
+          <div id="m2-wapp-ic" onclick="M2.abrirWhatsApp()" style="cursor:pointer;margin-top:10px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <div style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px var(--neon),0 0 20px var(--neon-g);animation:pe 1s ease-in-out infinite alternate;">
+              <svg viewBox="0 0 24 24" fill="white" style="width:44px;height:44px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.06-1.38C8.42 21.5 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.64 13.36c-.2.56-1.16 1.08-1.6 1.14-.44.06-.44.32-2.76-.6-2.76-1.06-4.52-3.86-4.66-4.04-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.06 1-2.34.26-.28.56-.34.74-.34h.54c.18 0 .42-.06.66.5.24.58.82 2 .9 2.14.08.14.12.3.02.48-.1.18-.16.3-.3.46-.16.16-.32.36-.46.48-.16.14-.32.3-.14.6.18.3.82 1.34 1.76 2.18 1.2 1.06 2.2 1.4 2.52 1.56.3.14.48.1.66-.08.18-.18.76-.88.96-1.18.2-.3.4-.26.66-.16.28.1 1.74.82 2.04.96.3.16.5.22.56.34.08.1.08.64-.12 1.2z"/></svg>
+            </div>
+            <div style="color:var(--neon);font-size:12px;font-weight:800;">WhatsApp</div>
+          </div>
+        </div>
+
+        <!-- WHATSAPP -->
+        <div id="m2-wapp" style="position:absolute;top:26px;left:0;right:0;bottom:36px;opacity:0;pointer-events:none;transition:opacity .4s var(--eo);display:flex;flex-direction:column;background:var(--wbg);">
+
+          <!-- LISTA DE CONVERSAS -->
+          <div id="m2-lista" style="display:flex;flex-direction:column;height:100%;">
+            <div style="background:var(--wtoolbar);padding:12px 14px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--wdivider);">
+              <span style="font-family:var(--fnd);font-size:18px;color:#E9EDEF;letter-spacing:.5px;">WhatsApp</span>
+              <div style="display:flex;gap:16px;color:#8696A0;font-size:18px;">🔍 ⋮</div>
+            </div>
+            <div style="display:flex;background:var(--wtoolbar);border-bottom:2px solid var(--wgreen);">
+              <div style="flex:1;text-align:center;padding:10px 0;font-size:12px;font-weight:800;color:var(--wgreen);border-bottom:2px solid var(--wgreen);margin-bottom:-2px;">CONVERSAS</div>
+              <div style="flex:1;text-align:center;padding:10px 0;font-size:12px;font-weight:700;color:#8696A0;">STATUS</div>
+              <div style="flex:1;text-align:center;padding:10px 0;font-size:12px;font-weight:700;color:#8696A0;">CHAMADAS</div>
+            </div>
+            <div style="flex:1;overflow-y:auto;background:var(--wbg);">
+              <div id="m2-conv-filho" onclick="M2.abrirConversa()" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--wdivider);cursor:pointer;background:rgba(0,168,132,.06);border-left:3px solid var(--neon);animation:pe 1s ease-in-out infinite alternate;">
+                <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#FF8A65,#E64A19);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👦</div>
+                <div style="flex:1;min-width:0;">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                    <strong style="font-size:14px;color:#E9EDEF;">Filho 💙</strong>
+                    <span style="font-size:11px;color:var(--wgreen);">agora</span>
+                  </div>
+                  <div style="font-size:12px;color:#8696A0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Oi mãe! Tudo bem por aí? 😊</div>
+                </div>
+                <div style="width:20px;height:20px;border-radius:50%;background:var(--wgreen);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#000;flex-shrink:0;">1</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--wdivider);opacity:.4;"><div style="width:46px;height:46px;border-radius:50%;background:#546E7A;display:flex;align-items:center;justify-content:center;font-size:20px;">👩</div><div style="flex:1;"><div style="font-size:14px;color:#E9EDEF;">Vizinha Maria</div><div style="font-size:12px;color:#8696A0;">Boa tarde! 👋</div></div></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--wdivider);opacity:.3;"><div style="width:46px;height:46px;border-radius:50%;background:#1A73E8;display:flex;align-items:center;justify-content:center;font-size:20px;">👨</div><div style="flex:1;"><div style="font-size:14px;color:#E9EDEF;">Dr. Silva</div><div style="font-size:12px;color:#8696A0;">Consulta confirmada.</div></div></div>
+            </div>
+            <div style="padding:6px;font-size:10px;color:#555;text-align:center;">↑ Toque na conversa do filho</div>
+          </div>
+
+          <!-- CHAT -->
+          <div id="m2-chat" style="display:none;flex-direction:column;height:100%;">
+            <div class="wa-header">
+              <span class="wa-back" onclick="M2.voltarLista()">←</span>
+              <div class="wa-avatar">👦</div>
+              <div class="wa-info"><div class="wa-name">Filho 💙</div><div class="wa-status" id="m2-status-filho">online</div></div>
+              <div class="wa-actions"><span>📞</span><span>⋮</span></div>
+            </div>
+
+            <!-- Guia passo a passo -->
+            <div class="typing-guide" id="m2-guide" style="display:none;">
+              <span class="tg-label">Digite:</span>
+              <div class="tg-text" id="m2-guide-text"></div>
+            </div>
+
+            <div class="wa-msgs" id="m2-msgs">
+              <div class="wa-date-sep"><span>Hoje</span></div>
+              <div class="wa-bubble recv">Oi mãe! Tudo bem por aí? 😊<span class="wa-bubble-time">10:28</span></div>
+            </div>
+
+            <div class="wa-input-area">
+              <div class="wa-input-box" id="m2-input" onclick="M2.focarInput()">
+                <span class="wa-placeholder" id="m2-placeholder">Mensagem</span>
+                <span class="wa-text" id="m2-text"></span>
+                <span class="wa-cursor" id="m2-cursor" style="display:none;"></span>
+              </div>
+              <button class="wa-send" id="m2-send" disabled onclick="M2.enviarMsg()">
+                <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </div>
+
+            <!-- Teclado -->
+            <div class="vkb" id="m2-vkb">
+              <div class="vkb-rows" id="m2-vkb-rows"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-bar" style="position:absolute;bottom:0;left:0;right:0;">
+          <button class="nb-btn" onclick="M2.voltar()">←</button>
+          <button class="nb-btn">⬤</button>
+          <button class="nb-btn">⬜</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="instructor" id="instr2">
+    <div class="iarrow" id="ia2"><span></span><span></span></div>
+    <p id="it2">Toque no ícone do <strong>WhatsApp</strong> para abrir o aplicativo!</p>
+  </div>
+</div>
+
+<!-- CERTIFICADO -->
 <div id="pg-cert" class="page">
   <div class="cert-ico" id="cert-ico">🎓</div>
   <div class="cert-tit" id="cert-tit">Módulo Concluído!</div>
   <p class="cert-sub" id="cert-sub">Parabéns! Continue sua jornada digital.</p>
   <p class="cert-frase">"A tecnologia só é grandiosa quando abraça a todos."</p>
-  <button class="btn-mapa" onclick="atualizarMapa(); Router.go('pg-mapa')">Ver meus módulos →</button>
+  <button class="btn-mapa" onclick="atualizarMapa();Router.go('pg-mapa')">Ver meus módulos →</button>
 </div>
 
 <script>
 'use strict';
-/*
-  ConSySenci.a Rosa — SPA completo
-  © 2026 ConSySenci.a — Todos os direitos reservados
-  
-  MÓDULOS IMPLEMENTADOS:
-    0 — Ligar o celular (long-press power button)
-    1 — Escola de Gestos (arrastar cortina, quick settings, tocar app)
-  
-  SISTEMA:
-    - Desbloqueio progressivo: concluir N libera N+1
-    - Progresso salvo em sessionStorage
-    - FSM por módulo, independente
-    - Router SPA limpo
-*/
 
-/* ════════════════════════════════════════════════
-   ROTEADOR
-════════════════════════════════════════════════ */
-const Router = (() => {
-  let cur = 'pg-mapa';
-  const go = (id) => {
-    document.getElementById(cur)?.classList.remove('active');
-    document.getElementById(id)?.classList.add('active');
-    cur = id;
-  };
-  return { go };
+const Router=(()=>{let c='pg-mapa';const go=id=>{document.getElementById(c)?.classList.remove('active');document.getElementById(id)?.classList.add('active');c=id;};return{go};})();
+
+const Prog=(()=>{
+  const KEY='csca_prog';
+  let e=JSON.parse(sessionStorage.getItem(KEY)||'null')||{concluidos:[]};
+  const concluido=n=>e.concluidos.includes(n);
+  const concluir=n=>{if(!concluido(n))e.concluidos.push(n);sessionStorage.setItem(KEY,JSON.stringify(e));atualizarMapa();};
+  const total=()=>e.concluidos.length;
+  return{concluido,concluir,total};
 })();
 
-/* ════════════════════════════════════════════════
-   PROGRESSO — salvo em sessionStorage
-════════════════════════════════════════════════ */
-const Prog = (() => {
-  const KEY = 'csca_prog';
-  let estado = JSON.parse(sessionStorage.getItem(KEY) || 'null') || { concluidos: [] };
-
-  const concluido = n => estado.concluidos.includes(n);
-  const concluir  = n => {
-    if (!concluido(n)) estado.concluidos.push(n);
-    sessionStorage.setItem(KEY, JSON.stringify(estado));
-    atualizarMapa();
-  };
-  const total = () => estado.concluidos.length;
-  return { concluido, concluir, total };
-})();
-
-/* ════════════════════════════════════════════════
-   MAPA — renderiza estado dos cards
-════════════════════════════════════════════════ */
-function atualizarMapa() {
-  const feitos = [0,1,2,3,4].filter(n => Prog.concluido(n));
-  const total  = feitos.length;
-
-  // Barra de progresso geral
-  document.getElementById('prog-fill').style.width = (total/5*100)+'%';
-  document.getElementById('prog-pct').textContent  = total+' de 5 módulos';
-
-  [0,1,2,3,4].forEach(n => {
-    const card  = document.getElementById('mc-'+n);
-    if (!card) return;
-    const badge = document.getElementById('badge-'+n);
-
-    if (Prog.concluido(n)) {
-      card.className  = 'mod-card feito';
-      if (badge) { badge.className = 'badge b-feito'; badge.textContent = '✓ FEITO'; }
-    } else if (n === 0 || Prog.concluido(n-1)) {
-      // disponível se for o primeiro ou se o anterior foi concluído
-      card.className  = 'mod-card livre';
-      if (badge) { badge.className = 'badge b-novo'; badge.textContent = 'NOVO'; }
-    } else {
-      card.className  = 'mod-card bloq';
-    }
+function atualizarMapa(){
+  const t=[0,1,2,3,4].filter(n=>Prog.concluido(n)).length;
+  document.getElementById('prog-fill').style.width=(t/5*100)+'%';
+  document.getElementById('prog-pct').textContent=t+' de 5 módulos';
+  [0,1,2,3,4].forEach(n=>{
+    const card=document.getElementById('mc-'+n);if(!card)return;
+    const badge=document.getElementById('badge-'+n);
+    if(Prog.concluido(n)){card.className='mod-card feito';if(badge){badge.className='badge b-feito';badge.textContent='✓ FEITO';}}
+    else if(n===0||Prog.concluido(n-1)){card.className='mod-card livre';if(badge){badge.className='badge b-novo';badge.textContent='NOVO';}}
+    else{card.className='mod-card bloq';}
   });
 }
 
-function irMod(n) {
-  if (n > 0 && !Prog.concluido(n-1)) return; // bloqueado
-  if (n === 0) { Router.go('pg-mod0'); M0.init(); return; }
-  if (n === 1) { Router.go('pg-mod1'); M1.init(); return; }
-  // Módulos 2-4: em breve
-  const nomes = ['','','O Teclado Fantasma','Comunicação','Escudo de Prata'];
-  const icons = ['','','⌨️','💬','🛡️'];
-  document.getElementById('cert-ico').textContent = icons[n];
-  document.getElementById('cert-tit').textContent = 'Módulo ' + n + ' — Em breve!';
-  document.getElementById('cert-sub').innerHTML = 'O módulo <strong>' + nomes[n] + '</strong> está sendo preparado com muito carinho. Continue praticando os anteriores!';
+function irMod(n){
+  if(n>0&&!Prog.concluido(n-1))return;
+  if(n===0){Router.go('pg-mod0');M0.init();return;}
+  if(n===1){Router.go('pg-mod1');M1.init();return;}
+  if(n===2){Router.go('pg-mod2');M2.init();return;}
+  const nomes=['','','','Comunicação','Escudo de Prata'];
+  const icons=['','','','💬','🛡️'];
+  document.getElementById('cert-ico').textContent=icons[n];
+  document.getElementById('cert-tit').textContent='Módulo '+n+' — Em breve!';
+  document.getElementById('cert-sub').innerHTML='O módulo <strong>'+nomes[n]+'</strong> está sendo preparado com muito carinho!';
   Router.go('pg-cert');
 }
 
-/* ════════════════════════════════════════════════
-   MÓDULO 0 — LIGAR O CELULAR
-════════════════════════════════════════════════ */
-const M0 = (() => {
-  /* FSM */
-  const S = {OFF:'OFF',PRESSING:'PRESSING',BOOTING:'BOOTING',WELCOME:'WELCOME'};
-  const T = {OFF:['PRESSING'],PRESSING:['OFF','BOOTING'],BOOTING:['WELCOME'],WELCOME:[]};
-  let cur='OFF'; const cbs=new Map();
-  const fsmIs = s => cur===s;
-  const fsmGo = next => {
-    if (!T[cur]?.includes(next)) return false;
-    cur=next; (cbs.get(next)||[]).forEach(fn=>fn()); return true;
-  };
-  const fsmOn = (s,fn) => { if (!cbs.has(s)) cbs.set(s,[]); cbs.get(s).push(fn); };
-
-  /* DOM refs — resolvidas em init */
-  let D=null, fbT=null, msgT=null, bootTs=[];
-
-  const MSGS = {
-    OFF:      {arrow:true,  html:'Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar'},
-    PRESSING: {arrow:false, html:'✅ Isso! Continue <strong>segurando</strong>...'},
-    BOOTING:  {arrow:false, html:'✨ Perfeito! O celular está <strong>ligando</strong>...'},
-    WELCOME:  {arrow:false, html:'🎉 Você <strong>ligou o celular!</strong> Toque em Próximo!'},
-    ERR_FAST: {arrow:true,  html:'⚡ Muito rápido! Toque e <strong>segure firme</strong> por 3 segundos'},
-    ERR_MED:  {arrow:true,  html:'⏱️ Quase! Segure um <strong>pouquinho mais</strong>...'},
-    ERR_LONG: {arrow:true,  html:'👏 Faltou pouco! Segure até a tela <strong>acender</strong>'},
-  };
-
-  const show = el => el?.classList.add('vis');
-  const hide = el => el?.classList.remove('vis');
-
-  const setMsg = (key,delay=0) => {
-    clearTimeout(msgT);
-    const apply = () => { const m=MSGS[key]; if(!m)return; D.itxt.innerHTML=m.html; D.iarr.style.display=m.arrow?'flex':'none'; show(D.instr); };
-    delay>0 ? (msgT=setTimeout(apply,delay)) : apply();
-  };
-
-  const setPwr = cls => { if(!D)return; D.pbtn.className='pbtn '+cls; D.pbtn.tabIndex=cls==='locked'?-1:0; };
-
-  const setLP = p => {
-    if (!D) return;
-    p<=0 ? (hide(D.lpind), D.lpfl.style.height='0%') : (show(D.lpind), D.lpfl.style.height=(p*100)+'%');
-  };
-
-  const showErr = ms => {
-    let key,txt;
-    if      (ms<1000){key='ERR_FAST';txt='Tente segurar por mais tempo';}
-    else if (ms<2500){key='ERR_MED'; txt='Quase! Segure mais um pouquinho';}
-    else             {key='ERR_LONG';txt='Faltou pouco! Tente mais uma vez';}
-    D.pf.classList.remove('haptic'); void D.pf.offsetWidth; D.pf.classList.add('haptic');
-    setTimeout(()=>D.pf?.classList.remove('haptic'),400);
-    D.fb.textContent=txt; show(D.fb);
-    clearTimeout(fbT); fbT=setTimeout(()=>hide(D.fb),2200);
-    setMsg(key);
-  };
-
-  const setFill = pct => { D.bpfill.style.width=pct+'%'; D.bplbl.textContent='Carregando... '+pct+'%'; };
-
-  const runBoot = () => {
-    bootTs.forEach(clearTimeout); bootTs=[];
-    [[0,  ()=>{ hide(D.soff); show(D.sboot); }],
-     [420,()=>{ show(D.blogo); }],
-     [1350,()=>{ show(D.bprog); }],
-     [1650,()=>{ setFill(30); }],
-     [2300,()=>{ setFill(68); }],
-     [3050,()=>{ setFill(100); }],
-     [3650,()=>{ fsmGo(S.WELCOME); hide(D.sboot); setTimeout(()=>show(D.swelc),300); }],
-    ].forEach(([t,fn])=>bootTs.push(setTimeout(fn,t)));
-  };
-
-  const bindFSM = () => {
-    fsmOn(S.PRESSING, ()=>{ setPwr('pressing'); setMsg('PRESSING'); hide(D.fb); });
-    fsmOn(S.OFF,      ()=>{ setPwr('idle');     setMsg('OFF'); });
-    fsmOn(S.BOOTING,  ()=>{ setPwr('locked');   setMsg('BOOTING'); setLP(0); runBoot(); });
-    fsmOn(S.WELCOME,  ()=>{ setPwr('locked');   setMsg('WELCOME',600); });
-  };
-
-  /* Long-press input */
+/* ══ MÓDULO 0 ══ */
+const M0=(()=>{
+  const S={OFF:'OFF',PRESSING:'PRESSING',BOOTING:'BOOTING',WELCOME:'WELCOME'};
+  const T={OFF:['PRESSING'],PRESSING:['OFF','BOOTING'],BOOTING:['WELCOME'],WELCOME:[]};
+  let cur='OFF';const cbs=new Map();
+  const fsmIs=s=>cur===s;
+  const fsmGo=next=>{if(!T[cur]?.includes(next))return false;cur=next;(cbs.get(next)||[]).forEach(fn=>fn());return true;};
+  const fsmOn=(s,fn)=>{if(!cbs.has(s))cbs.set(s,[]);cbs.get(s).push(fn);};
+  let D=null,fbT=null,msgT=null,bootTs=[];
+  const MSGS={OFF:{arrow:true,html:'Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar'},PRESSING:{arrow:false,html:'✅ Isso! Continue <strong>segurando</strong>...'},BOOTING:{arrow:false,html:'✨ Perfeito! O celular está <strong>ligando</strong>...'},WELCOME:{arrow:false,html:'🎉 Você <strong>ligou o celular!</strong> Toque em Próximo!'},ERR_FAST:{arrow:true,html:'⚡ Muito rápido! Toque e <strong>segure firme</strong> por 3 segundos'},ERR_MED:{arrow:true,html:'⏱️ Quase! Segure um <strong>pouquinho mais</strong>...'},ERR_LONG:{arrow:true,html:'👏 Faltou pouco! Segure até a tela <strong>acender</strong>'}};
+  const show=el=>el?.classList.add('vis');const hide=el=>el?.classList.remove('vis');
+  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
+  const setPwr=cls=>{if(!D)return;D.pbtn.className='pbtn '+cls;D.pbtn.tabIndex=cls==='locked'?-1:0;};
+  const setLP=p=>{if(!D)return;p<=0?(hide(D.lpind),D.lpfl.style.height='0%'):(show(D.lpind),D.lpfl.style.height=(p*100)+'%');};
+  const showErr=ms=>{let key,txt;if(ms<1000){key='ERR_FAST';txt='Tente segurar por mais tempo';}else if(ms<2500){key='ERR_MED';txt='Quase! Segure mais um pouquinho';}else{key='ERR_LONG';txt='Faltou pouco! Tente mais uma vez';}D.pf.classList.remove('haptic');void D.pf.offsetWidth;D.pf.classList.add('haptic');setTimeout(()=>D.pf?.classList.remove('haptic'),400);D.fb.textContent=txt;show(D.fb);clearTimeout(fbT);fbT=setTimeout(()=>hide(D.fb),2200);setMsg(key);};
+  const setFill=pct=>{D.bpfill.style.width=pct+'%';D.bplbl.textContent='Carregando... '+pct+'%';};
+  const runBoot=()=>{bootTs.forEach(clearTimeout);bootTs=[];[[0,()=>{hide(D.soff);show(D.sboot);}],[420,()=>{show(D.blogo);}],[1350,()=>{show(D.bprog);}],[1650,()=>{setFill(30);}],[2300,()=>{setFill(68);}],[3050,()=>{setFill(100);}],[3650,()=>{fsmGo(S.WELCOME);hide(D.sboot);setTimeout(()=>show(D.swelc),300);}]].forEach(([t,fn])=>bootTs.push(setTimeout(fn,t)));};
+  const bindFSM=()=>{fsmOn(S.PRESSING,()=>{setPwr('pressing');setMsg('PRESSING');hide(D.fb);});fsmOn(S.OFF,()=>{setPwr('idle');setMsg('OFF');});fsmOn(S.BOOTING,()=>{setPwr('locked');setMsg('BOOTING');setLP(0);runBoot();});fsmOn(S.WELCOME,()=>{setPwr('locked');setMsg('WELCOME',600);});};
   let t0=null,dn=false,raf=null,dbc=false,aptr=null,bel=null;
-
-  const lp_tick = ts => {
-    if (!dn||t0===null) return;
-    const el=ts-t0, pr=Math.min(el/3000,1);
-    setLP(pr);
-    if (el>=3000){lp_done();return;}
-    raf=requestAnimationFrame(lp_tick);
-  };
-  const lp_done  = ()=>{ lp_clean(); fsmGo(S.BOOTING); };
-  const lp_clean = ()=>{
-    dn=false;t0=null;aptr=null;
-    if(raf!==null){cancelAnimationFrame(raf);raf=null;}
-    setLP(0); dbc=true; setTimeout(()=>{dbc=false;},400);
-  };
-  const lp_down = e=>{
-    if(dn||dbc||!fsmIs(S.OFF))return; e.preventDefault();
-    aptr=e.pointerId??null;
-    if(aptr!==null)try{bel.setPointerCapture(aptr);}catch(_){}
-    dn=true;t0=performance.now(); fsmGo(S.PRESSING); raf=requestAnimationFrame(lp_tick);
-  };
-  const lp_up = e=>{
-    if(!dn)return;
-    if(aptr!==null&&e.pointerId!==undefined&&e.pointerId!==aptr)return;
-    const el=performance.now()-t0; lp_clean();
-    if(fsmIs(S.PRESSING)){fsmGo(S.OFF);showErr(el);}
-  };
-
-  const init = () => {
-    // Reset FSM para re-entrada
+  const lp_tick=ts=>{if(!dn||t0===null)return;const el=ts-t0,pr=Math.min(el/3000,1);setLP(pr);if(el>=3000){lp_done();return;}raf=requestAnimationFrame(lp_tick);};
+  const lp_done=()=>{lp_clean();fsmGo(S.BOOTING);};
+  const lp_clean=()=>{dn=false;t0=null;aptr=null;if(raf!==null){cancelAnimationFrame(raf);raf=null;}setLP(0);dbc=true;setTimeout(()=>{dbc=false;},400);};
+  const lp_down=e=>{if(dn||dbc||!fsmIs(S.OFF))return;e.preventDefault();aptr=e.pointerId??null;if(aptr!==null)try{bel.setPointerCapture(aptr);}catch(_){}dn=true;t0=performance.now();fsmGo(S.PRESSING);raf=requestAnimationFrame(lp_tick);};
+  const lp_up=e=>{if(!dn)return;if(aptr!==null&&e.pointerId!==undefined&&e.pointerId!==aptr)return;const el=performance.now()-t0;lp_clean();if(fsmIs(S.PRESSING)){fsmGo(S.OFF);showErr(el);}};
+  const init=()=>{
     cur='OFF';
-
-    D = {
-      pf:     document.getElementById('pf0'),
-      pbtn:   document.getElementById('pbtn0'),
-      soff:   document.getElementById('m0-off'),
-      sboot:  document.getElementById('m0-boot'),
-      swelc:  document.getElementById('m0-welc'),
-      blogo:  document.getElementById('m0-blogo'),
-      bprog:  document.getElementById('m0-bprog'),
-      bpfill: document.getElementById('m0-bpfill'),
-      bplbl:  document.getElementById('m0-bplbl'),
-      fb:     document.getElementById('m0-fb'),
-      lpind:  document.getElementById('lpi0'),
-      lpfl:   document.getElementById('lpf0'),
-      instr:  document.getElementById('instr0'),
-      iarr:   document.getElementById('ia0'),
-      itxt:   document.getElementById('it0'),
-      prox:   document.getElementById('m0-prox'),
-    };
-
-    // Limpa cbs para re-registro
-    cbs.clear();
-    bindFSM();
-
-    // Reset visual
+    D={pf:document.getElementById('pf0'),pbtn:document.getElementById('pbtn0'),soff:document.getElementById('m0-off'),sboot:document.getElementById('m0-boot'),swelc:document.getElementById('m0-welc'),blogo:document.getElementById('m0-blogo'),bprog:document.getElementById('m0-bprog'),bpfill:document.getElementById('m0-bpfill'),bplbl:document.getElementById('m0-bplbl'),fb:document.getElementById('m0-fb'),lpind:document.getElementById('lpi0'),lpfl:document.getElementById('lpf0'),instr:document.getElementById('instr0'),iarr:document.getElementById('ia0'),itxt:document.getElementById('it0'),prox:document.getElementById('m0-prox')};
+    cbs.clear();bindFSM();
     ['vis'].forEach(c=>{[D.soff,D.sboot,D.swelc,D.blogo,D.bprog].forEach(el=>el?.classList.remove(c));});
-    show(D.soff);
-    D.bpfill.style.width='0%'; D.bplbl.textContent='Carregando... 0%';
-    setPwr('idle');
-
-    // Btn próximo
-    D.prox.onclick = () => {
-      D.prox.innerHTML='✅ Concluído!'; D.prox.classList.add('done');
-      Prog.concluir(0);
-      // Certificado
-      document.getElementById('cert-ico').textContent='📦';
-      document.getElementById('cert-tit').textContent='Módulo 0 Concluído!';
-      document.getElementById('cert-sub').innerHTML='Você aprendeu a <strong>ligar o celular</strong>! O primeiro passo da sua jornada digital.';
-      setTimeout(()=>Router.go('pg-cert'),700);
-    };
-
-    // Input
-    bel = D.pbtn;
-    bel.addEventListener('pointerdown',  lp_down, {passive:false});
-    bel.addEventListener('pointerup',    lp_up,   {passive:false});
-    bel.addEventListener('pointerleave', lp_up,   {passive:false});
-    bel.addEventListener('pointercancel',lp_up,   {passive:false});
-    bel.addEventListener('pointermove',  e=>{if(dn)e.preventDefault();},{passive:false});
-    bel.addEventListener('contextmenu',  e=>e.preventDefault());
-    bel.addEventListener('keydown', e=>{
-      if((e.key!=='Enter'&&e.key!==' ')||!fsmIs(S.OFF))return;
-      e.preventDefault();
-      bel.dispatchEvent(new PointerEvent('pointerdown',{pointerId:99,bubbles:true,cancelable:true}));
-      setTimeout(()=>bel.dispatchEvent(new PointerEvent('pointerup',{pointerId:99,bubbles:true,cancelable:true})),3100);
-    });
-
+    show(D.soff);D.bpfill.style.width='0%';D.bplbl.textContent='Carregando... 0%';setPwr('idle');
+    D.prox.onclick=()=>{D.prox.innerHTML='✅ Concluído!';D.prox.classList.add('done');Prog.concluir(0);document.getElementById('cert-ico').textContent='📦';document.getElementById('cert-tit').textContent='Módulo 0 Concluído!';document.getElementById('cert-sub').innerHTML='Você aprendeu a <strong>ligar o celular</strong>! O primeiro passo da sua jornada digital.';setTimeout(()=>Router.go('pg-cert'),700);};
+    bel=D.pbtn;
+    bel.addEventListener('pointerdown',lp_down,{passive:false});bel.addEventListener('pointerup',lp_up,{passive:false});bel.addEventListener('pointerleave',lp_up,{passive:false});bel.addEventListener('pointercancel',lp_up,{passive:false});bel.addEventListener('pointermove',e=>{if(dn)e.preventDefault();},{passive:false});bel.addEventListener('contextmenu',e=>e.preventDefault());
+    bel.addEventListener('keydown',e=>{if((e.key!=='Enter'&&e.key!==' ')||!fsmIs(S.OFF))return;e.preventDefault();bel.dispatchEvent(new PointerEvent('pointerdown',{pointerId:99,bubbles:true,cancelable:true}));setTimeout(()=>bel.dispatchEvent(new PointerEvent('pointerup',{pointerId:99,bubbles:true,cancelable:true})),3100);});
     setTimeout(()=>setMsg('OFF'),400);
   };
-
-  return {init};
+  return{init};
 })();
 
-/* ════════════════════════════════════════════════
-   MÓDULO 1 — ESCOLA DE GESTOS
-════════════════════════════════════════════════ */
-const M1 = (() => {
-  /* Estados do tutorial */
-  const ETAPAS = ['arrastar-meia','arrastar-total','fechar','tocar-app'];
-  let etapa = 0;
-  let cortinaState = 'f'; // f | meia | total
-  let sbDY = null;
-
-  const MSGS = {
-    'arrastar-meia':  {arrow:true,  html:'Coloque o dedo na <strong>barra preta do topo</strong> e arraste para baixo!'},
-    'arrastar-total': {arrow:false, html:'Ótimo! Arraste <strong>mais para baixo</strong> para ver tudo!'},
-    'fechar':         {arrow:false, html:'Perfeito! Agora deslize <strong>para cima</strong> para fechar a cortina.'},
-    'tocar-app':      {arrow:false, html:'Excelente! Agora toque no ícone do <strong>Telefone</strong> que está piscando!'},
-    'concluido':      {arrow:false, html:'🎉 Você abriu o Telefone! <strong>Módulo concluído!</strong>'},
-  };
-
-  let D=null, msgT=null;
-
-  const show = el => el?.classList.add('vis');
-  const hide = el => el?.classList.remove('vis');
-
-  const setMsg = (key,delay=0) => {
-    clearTimeout(msgT);
-    const apply=()=>{
-      const m=MSGS[key]; if(!m)return;
-      D.itxt.innerHTML=m.html;
-      D.iarr.style.display=m.arrow?'flex':'none';
-      show(D.instr);
-    };
-    delay>0?(msgT=setTimeout(apply,delay)):apply();
-  };
-
-  /* Arrastar cortina */
-  const abrirC = s => {
-    const c=document.getElementById('m1-cortina');
-    c.classList.remove('meia','total'); c.classList.add(s);
-    cortinaState=s;
-    document.getElementById('m1-btnlim').style.display='block';
-    if (s==='meia' && etapa===0){
-      etapa=1;
-      document.getElementById('m1-dicasub').style.display='none';
-      setMsg('arrastar-total');
-    } else if (s==='total' && etapa===1){
-      etapa=2;
-      document.getElementById('m1-dicasub').style.display='block';
-      setMsg('fechar');
-    }
-  };
-  const fecharC = () => {
-    const c=document.getElementById('m1-cortina');
-    c.classList.remove('meia','total'); cortinaState='f';
-    if (etapa===2){
-      etapa=3;
-      setMsg('tocar-app');
-      // Destaca ícone telefone
-      document.getElementById('m1-tel').querySelector('.app-img').classList.add('ensin');
-    }
-  };
-
-  const init = () => {
-    etapa=0; cortinaState='f'; sbDY=null;
-
-    D = {
-      pf:    document.getElementById('pf1'),
-      instr: document.getElementById('instr1'),
-      iarr:  document.getElementById('ia1'),
-      itxt:  document.getElementById('it1'),
-    };
-
-    // Reseta cortina
-    const c=document.getElementById('m1-cortina');
-    c.classList.remove('meia','total');
-    document.getElementById('m1-btnlim').style.display='none';
-    document.getElementById('m1-dicasub').style.display='none';
-
-    // Remove destaque anterior
+/* ══ MÓDULO 1 ══ */
+const M1=(()=>{
+  let etapa=0,cortinaState='f',sbDY=null;
+  const MSGS={'arrastar-meia':{arrow:true,html:'Coloque o dedo na <strong>barra preta do topo</strong> e arraste para baixo!'},'arrastar-total':{arrow:false,html:'Ótimo! Arraste <strong>mais para baixo</strong> para ver tudo!'},'fechar':{arrow:false,html:'Perfeito! Agora deslize <strong>para cima</strong> para fechar a cortina.'},'tocar-app':{arrow:false,html:'Excelente! Agora toque no ícone do <strong>Telefone</strong> que está piscando!'},'concluido':{arrow:false,html:'🎉 Você abriu o Telefone! <strong>Módulo concluído!</strong>'}};
+  let D=null,msgT=null;
+  const show=el=>el?.classList.add('vis');const hide=el=>el?.classList.remove('vis');
+  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
+  const abrirC=s=>{const c=document.getElementById('m1-cortina');c.classList.remove('meia','total');c.classList.add(s);cortinaState=s;document.getElementById('m1-btnlim').style.display='block';if(s==='meia'&&etapa===0){etapa=1;document.getElementById('m1-dicasub').style.display='none';setMsg('arrastar-total');}else if(s==='total'&&etapa===1){etapa=2;document.getElementById('m1-dicasub').style.display='block';setMsg('fechar');}};
+  const fecharC=()=>{const c=document.getElementById('m1-cortina');c.classList.remove('meia','total');cortinaState='f';if(etapa===2){etapa=3;setMsg('tocar-app');document.getElementById('m1-tel').querySelector('.app-img').classList.add('ensin');}};
+  const init=()=>{
+    etapa=0;cortinaState='f';sbDY=null;
+    D={pf:document.getElementById('pf1'),instr:document.getElementById('instr1'),iarr:document.getElementById('ia1'),itxt:document.getElementById('it1')};
+    const c=document.getElementById('m1-cortina');c.classList.remove('meia','total');
+    document.getElementById('m1-btnlim').style.display='none';document.getElementById('m1-dicasub').style.display='none';
     document.getElementById('m1-tel')?.querySelector('.app-img')?.classList.remove('ensin');
-
-    // Atualiza relógio
-    const n=new Date();
-    const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
-    const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-    const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-    document.getElementById('m1-relh').textContent=hm;
-    document.getElementById('m1-hora').textContent=hm;
-    document.getElementById('m1-reld').textContent=dias[n.getDay()]+', '+n.getDate()+' de '+meses[n.getMonth()];
-
+    const n=new Date();const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+    const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    document.getElementById('m1-relh').textContent=hm;document.getElementById('m1-hora').textContent=hm;document.getElementById('m1-reld').textContent=dias[n.getDay()]+', '+n.getDate()+' de '+meses[n.getMonth()];
     setTimeout(()=>setMsg('arrastar-meia'),500);
   };
+  window.m1SbDown=e=>{sbDY=e.clientY;};
+  window.m1SbMove=e=>{if(sbDY!==null)e.preventDefault();};
+  window.m1SbUp=e=>{if(sbDY===null)return;const dy=e.clientY-sbDY;sbDY=null;if(dy>28&&cortinaState==='f')abrirC('meia');else if(dy>16&&cortinaState==='meia')abrirC('total');else if(dy<-22&&cortinaState!=='f')fecharC();};
+  window.togQS=id=>document.getElementById(id)?.classList.toggle('on');
+  window.m1LimNotifs=()=>{['m1-n1','m1-n2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='0';el.style.transform='translateX(110%)';setTimeout(()=>el.remove(),300);}});document.getElementById('m1-btnlim').style.display='none';setTimeout(()=>setMsg('fechar'),400);};
+  window.m1ClicarApp=nome=>{if(nome==='Telefone'&&etapa===3){document.getElementById('m1-tel')?.querySelector('.app-img')?.classList.remove('ensin');setMsg('concluido');setTimeout(()=>{Prog.concluir(1);document.getElementById('cert-ico').textContent='👆';document.getElementById('cert-tit').textContent='Módulo 1 Concluído!';document.getElementById('cert-sub').innerHTML='Você aprendeu os <strong>gestos do celular</strong>! Abriu a cortina e tocou nos ícones como um expert.';Router.go('pg-cert');},1400);}};
+  return{init};
+})();
 
-  /* Eventos da SB — expostos globalmente para o HTML */
-  window.m1SbDown = e => { sbDY=e.clientY; };
-  window.m1SbMove = e => { if(sbDY!==null) e.preventDefault(); };
-  window.m1SbUp   = e => {
-    if(sbDY===null) return;
-    const dy=e.clientY-sbDY; sbDY=null;
-    if     (dy>28&&cortinaState==='f')    abrirC('meia');
-    else if(dy>16&&cortinaState==='meia') abrirC('total');
-    else if(dy<-22&&cortinaState!=='f')   fecharC();
+/* ══ MÓDULO 2 — O TECLADO FANTASMA ══ */
+const M2=(()=>{
+  const FRASE='Oi filho tudo bem';
+  const ROWS=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['⌫','z','x','c','v','b','n','m','↵']];
+  const MSGS={
+    0:{arrow:true, html:'Toque no ícone do <strong>WhatsApp</strong> para abrir o aplicativo!'},
+    1:{arrow:false,html:'Ótimo! Agora toque na conversa do seu <strong>filho</strong>!'},
+    2:{arrow:false,html:'Muito bem! Toque na <strong>caixa de mensagem</strong> para digitar!'},
+    3:{arrow:false,html:'O teclado apareceu! Toque nas letras <strong>em verde</strong> na ordem!'},
+    4:{arrow:false,html:'Mensagem escrita! Toque no <strong>botão verde</strong> de enviar!'},
+    5:{arrow:false,html:'🎉 Mensagem enviada! Você aprendeu a <strong>usar o teclado!</strong>'},
   };
+  let etapa=0,typed='',msgT=null,D=null;
 
-  window.togQS = id => document.getElementById(id)?.classList.toggle('on');
-  window.m1QSAcao = tipo => {
-    if(tipo==='lanterna') setMsg('arrastar-total'); // dica contextual
-  };
-  window.m1Brilho = v => {};
-  window.m1LimNotifs = () => {
-    ['m1-n1','m1-n2'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(el){el.style.opacity='0';el.style.transform='translateX(110%)';setTimeout(()=>el.remove(),300);}
+  const show=el=>el?.classList.add('vis');
+  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
+
+  const renderKB=()=>{
+    const container=document.getElementById('m2-vkb-rows');
+    container.innerHTML='';
+    const nextChar=typed.length<FRASE.length?FRASE[typed.length].toLowerCase():null;
+    ROWS.forEach(row=>{
+      const rowEl=document.createElement('div');rowEl.className='vkb-row';
+      row.forEach(ch=>{
+        const btn=document.createElement('button');
+        btn.className='vk';
+        if(ch==='⌫'||ch==='↵')btn.classList.add('action');
+        const isNext=(ch===nextChar)||(ch===' '&&nextChar===' ');
+        if(isNext){btn.classList.add('highlight');const hint=document.createElement('span');hint.className='vk-hint';hint.textContent=ch==='⌫'?'⌫':ch==='↵'?'↵':ch.toUpperCase();btn.appendChild(hint);}
+        btn.appendChild(document.createTextNode(ch==='⌫'?'⌫':ch==='↵'?'↵':ch.toUpperCase()));
+        btn.addEventListener('pointerdown',e=>{e.preventDefault();btn.classList.add('pressed');pressKey(ch);setTimeout(()=>btn.classList.remove('pressed'),140);});
+        rowEl.appendChild(btn);
+      });
+      container.appendChild(rowEl);
     });
-    document.getElementById('m1-btnlim').style.display='none';
-    setTimeout(()=>setMsg('fechar'),400);
+    // Barra de espaço
+    const spaceRow=document.createElement('div');spaceRow.className='vkb-row';
+    const spaceBtn=document.createElement('button');spaceBtn.className='vk space';
+    const isSpaceNext=nextChar===' ';
+    if(isSpaceNext){spaceBtn.classList.add('highlight');const h=document.createElement('span');h.className='vk-hint';h.textContent='espaço';spaceBtn.appendChild(h);}
+    spaceBtn.appendChild(document.createTextNode('espaço'));
+    spaceBtn.addEventListener('pointerdown',e=>{e.preventDefault();spaceBtn.classList.add('pressed');pressKey(' ');setTimeout(()=>spaceBtn.classList.remove('pressed'),140);});
+    spaceRow.appendChild(spaceBtn);container.appendChild(spaceRow);
   };
-  window.m1ClicarApp = nome => {
-    if(nome==='Telefone'&&etapa===3){
-      document.getElementById('m1-tel')?.querySelector('.app-img')?.classList.remove('ensin');
-      setMsg('concluido');
-      setTimeout(()=>{
-        Prog.concluir(1);
-        document.getElementById('cert-ico').textContent='👆';
-        document.getElementById('cert-tit').textContent='Módulo 1 Concluído!';
-        document.getElementById('cert-sub').innerHTML='Você aprendeu os <strong>gestos do celular</strong>! Abriu a cortina e tocou nos ícones como um expert.';
-        Router.go('pg-cert');
-      },1400);
+
+  const renderGuide=()=>{
+    const g=document.getElementById('m2-guide-text');
+    let html='';
+    for(let i=0;i<FRASE.length;i++){
+      const ch=FRASE[i]===' '?'·':FRASE[i];
+      if(i<typed.length)html+=`<span class="tg-char done">${ch}</span>`;
+      else if(i===typed.length)html+=`<span class="tg-char next">${ch}</span>`;
+      else html+=`<span class="tg-char">${ch}</span>`;
+    }
+    g.innerHTML=html;
+  };
+
+  const renderInput=()=>{
+    document.getElementById('m2-text').textContent=typed;
+    document.getElementById('m2-placeholder').style.display=typed.length>0?'none':'';
+    document.getElementById('m2-cursor').style.display=etapa>=3?'inline-block':'none';
+  };
+
+  const pressKey=ch=>{
+    if(etapa!==3)return;
+    if(ch==='⌫'){if(typed.length>0){typed=typed.slice(0,-1);renderInput();renderKB();renderGuide();}return;}
+    if(ch==='↵'){if(typed.trim().length>0)enviarMsg();return;}
+    const esperado=typed.length<FRASE.length?FRASE[typed.length]:null;
+    if(!esperado)return;
+    const nc=ch===' '?' ':ch.toLowerCase();
+    const ne=esperado===' '?' ':esperado.toLowerCase();
+    if(nc===ne){
+      typed+=esperado;renderInput();renderGuide();
+      if(typed.length>=FRASE.length){
+        etapa=4;
+        document.getElementById('m2-send').disabled=false;
+        document.getElementById('m2-send').classList.add('ensin-send');
+        document.getElementById('m2-vkb').classList.remove('open');
+        document.getElementById('m2-guide').style.display='none';
+        document.getElementById('m2-cursor').style.display='none';
+        setMsg(4);
+      }else{renderKB();}
+    }else{
+      const inBox=document.getElementById('m2-input');
+      inBox.classList.remove('haptic');void inBox.offsetWidth;inBox.classList.add('haptic');
+      setTimeout(()=>inBox.classList.remove('haptic'),400);
     }
   };
 
-  return {init};
+  const abrirWhatsApp=()=>{
+    if(etapa!==0)return;etapa=1;
+    const lnch=document.getElementById('m2-launcher');
+    lnch.style.opacity='0';lnch.style.pointerEvents='none';
+    setTimeout(()=>{
+      lnch.style.display='none';
+      const wapp=document.getElementById('m2-wapp');
+      wapp.style.opacity='1';wapp.style.pointerEvents='auto';
+      document.getElementById('m2-lista').style.display='flex';
+      document.getElementById('m2-chat').style.display='none';
+      setMsg(1);
+    },350);
+  };
+
+  const abrirConversa=()=>{
+    if(etapa!==1)return;etapa=2;
+    document.getElementById('m2-lista').style.display='none';
+    const chat=document.getElementById('m2-chat');chat.style.display='flex';
+    setTimeout(()=>{document.getElementById('m2-input').classList.add('ensin-input');setMsg(2);},300);
+  };
+
+  const focarInput=()=>{
+    if(etapa!==2)return;etapa=3;
+    document.getElementById('m2-input').classList.remove('ensin-input');
+    document.getElementById('m2-input').classList.add('focus');
+    setTimeout(()=>{
+      document.getElementById('m2-vkb').classList.add('open');
+      document.getElementById('m2-guide').style.display='flex';
+      renderGuide();renderKB();renderInput();
+      setMsg(3);
+    },400);
+  };
+
+  const voltarLista=()=>{
+    document.getElementById('m2-chat').style.display='none';
+    document.getElementById('m2-lista').style.display='flex';
+    document.getElementById('m2-vkb').classList.remove('open');
+    if(etapa<2)etapa=1;
+  };
+
+  const voltar=()=>{Router.go('pg-mapa');};
+
+  const enviarMsg=()=>{
+    if(etapa!==4)return;etapa=5;
+    document.getElementById('m2-send').classList.remove('ensin-send');
+    document.getElementById('m2-send').disabled=true;
+    document.getElementById('m2-input').classList.remove('focus');
+    const msgs=document.getElementById('m2-msgs');
+    const n=new Date();const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+    const bubble=document.createElement('div');bubble.className='wa-bubble sent';
+    bubble.innerHTML=typed+`<span class="wa-bubble-time">${hm} <span class="wa-tick">✓✓</span></span>`;
+    msgs.appendChild(bubble);msgs.scrollTop=msgs.scrollHeight;
+    typed='';renderInput();
+    setMsg(5);
+    // Resposta automática
+    setTimeout(()=>{
+      document.getElementById('m2-status-filho').textContent='digitando...';
+      const tb=document.createElement('div');tb.className='wa-bubble recv';
+      tb.innerHTML='<div class="wa-typing"><span></span><span></span><span></span></div>';
+      msgs.appendChild(tb);msgs.scrollTop=msgs.scrollHeight;
+      setTimeout(()=>{
+        tb.remove();
+        document.getElementById('m2-status-filho').textContent='online';
+        const resp=document.createElement('div');resp.className='wa-bubble recv';
+        resp.innerHTML='Que ótimo, mãe! 🥰 Você está usando o celular sozinha!<span class="wa-bubble-time">'+hm+'</span>';
+        msgs.appendChild(resp);msgs.scrollTop=msgs.scrollHeight;
+        setTimeout(()=>{
+          Prog.concluir(2);
+          document.getElementById('cert-ico').textContent='⌨️';
+          document.getElementById('cert-tit').textContent='Módulo 2 Concluído!';
+          document.getElementById('cert-sub').innerHTML='Você aprendeu a <strong>digitar no celular</strong> e mandou sua primeira mensagem!';
+          Router.go('pg-cert');
+        },1800);
+      },1600);
+    },1500);
+  };
+
+  const init=()=>{
+    etapa=0;typed='';
+    D={instr:document.getElementById('instr2'),iarr:document.getElementById('ia2'),itxt:document.getElementById('it2')};
+    const n=new Date();const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+    const el=document.getElementById('m2-hora');if(el)el.textContent=hm;
+    // Reset visual
+    const lnch=document.getElementById('m2-launcher');
+    lnch.style.display='flex';lnch.style.opacity='1';lnch.style.pointerEvents='auto';
+    const wapp=document.getElementById('m2-wapp');
+    wapp.style.opacity='0';wapp.style.pointerEvents='none';
+    document.getElementById('m2-lista').style.display='flex';
+    document.getElementById('m2-chat').style.display='none';
+    document.getElementById('m2-vkb').classList.remove('open');
+    document.getElementById('m2-guide').style.display='none';
+    document.getElementById('m2-send').disabled=true;
+    document.getElementById('m2-send').classList.remove('ensin-send');
+    document.getElementById('m2-input').classList.remove('focus','ensin-input');
+    document.getElementById('m2-cursor').style.display='none';
+    document.getElementById('m2-placeholder').style.display='';
+    document.getElementById('m2-text').textContent='';
+    // Limpa balões extras
+    const msgs=document.getElementById('m2-msgs');
+    while(msgs.children.length>2)msgs.lastChild.remove();
+    setTimeout(()=>setMsg(0),400);
+  };
+
+  return{init,abrirWhatsApp,abrirConversa,focarInput,voltarLista,voltar,enviarMsg};
 })();
 
-/* ════════════════════════════════════════════════
-   RELÓGIO GLOBAL
-════════════════════════════════════════════════ */
+/* Relógio */
 (function tick(){
-  const n=new Date();
-  const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
-  ['m1-relh','m1-hora'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=hm;});
+  const n=new Date();const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+  ['m1-relh','m1-hora','m2-hora'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=hm;});
   setTimeout(tick,30000);
 })();
 
-/* ════════════════════════════════════════════════
-   BOOTSTRAP
-════════════════════════════════════════════════ */
+/* Bootstrap */
 (function boot(){
-  const run=()=>{
-    atualizarMapa();
-    // Se já tem progresso salvo, abre o mapa. Caso contrário, vai direto ao módulo 0.
-    if (Prog.total() > 0) {
-      Router.go('pg-mapa');
-    } else {
-      Router.go('pg-mod0');
-      M0.init();
-    }
-  };
-  document.readyState==='loading'
-    ? document.addEventListener('DOMContentLoaded',run)
-    : run();
+  const run=()=>{atualizarMapa();if(Prog.total()>0){Router.go('pg-mapa');}else{Router.go('pg-mod0');M0.init();}};
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',run):run();
 })();
 </script>
 </body>
