@@ -6,684 +6,648 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#000000">
-<title>ConSySenci.a Rosa — Módulo 0</title>
+<title>ConSySenci.a Rosa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
 :root {
   --void:#000; --neon:#39FF14;
-  --neon-d:rgba(57,255,20,.15); --neon-g:rgba(57,255,20,.45); --neon-m:rgba(57,255,20,.30);
+  --neon-d:rgba(57,255,20,.15); --neon-g:rgba(57,255,20,.45); --neon-m:rgba(57,255,20,.28);
   --gh:#E0E0E0; --gm:#888; --gl:#2A2A2A;
-  --pw:360px; --ph:780px; --pr:48px;
+  --pw:340px; --ph:740px; --pr:46px;
   --pbl:#1A1A1E; --pb2:#0D0D0F; --pbn:#222228; --pbh:#333340;
   --fn:'Nunito','Segoe UI',sans-serif; --fnd:'Oswald','Impact',sans-serif;
-  --df:300ms; --dn:600ms; --dvs:1500ms;
+  --df:300ms; --dn:600ms; --dvs:1400ms;
   --eo:cubic-bezier(.16,1,.3,1); --eio:cubic-bezier(.4,0,.2,1);
 }
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
-html { height:100%; touch-action:manipulation; }
-body { height:100%; background:var(--void); font-family:var(--fn); color:#fff;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  overflow:hidden; user-select:none; -webkit-user-select:none; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;touch-action:manipulation;}
+body{height:100%;background:var(--void);font-family:var(--fn);color:#fff;
+  overflow:hidden;user-select:none;-webkit-user-select:none;}
 
-/* INSTRUCTOR */
-#instructor-layer { position:fixed; inset:0; display:flex; flex-direction:column;
-  align-items:center; justify-content:flex-end; padding-bottom:28px; z-index:100; pointer-events:none; }
-.ibubble { background:rgba(10,10,10,.93); border:1.5px solid var(--neon-m);
-  border-radius:20px; padding:16px 22px; max-width:340px; text-align:center;
-  box-shadow:0 0 24px var(--neon-d),0 8px 32px rgba(0,0,0,.7);
-  opacity:0; transform:translateY(12px);
-  transition:opacity var(--dn) var(--eo), transform var(--dn) var(--eo); }
-.ibubble.on { opacity:1; transform:translateY(0); }
-.ibubble p { font-size:22px; font-weight:700; line-height:1.55; color:var(--gh); }
-.ibubble p strong { color:var(--neon); }
-.iarrow { display:flex; flex-direction:column; align-items:center; gap:4px;
-  margin-bottom:10px; animation:arrowB 1.2s var(--eio) infinite; }
-.iarrow span { display:block; width:8px; height:8px;
-  border-right:3px solid var(--neon); border-bottom:3px solid var(--neon);
-  transform:rotate(45deg); opacity:.9; }
-.iarrow span:nth-child(2) { opacity:.5; margin-top:-4px; }
-@keyframes arrowB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+/* ═══════════════════════════════════════════════
+   SPA — PÁGINAS
+═══════════════════════════════════════════════ */
+.page{display:none;position:absolute;inset:0;flex-direction:column;
+  align-items:center;justify-content:center;background:var(--void);}
+.page.active{display:flex;animation:pgIn .4s var(--eo);}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* WRAPPER */
-#sim-wrap { position:relative; display:flex; align-items:center; justify-content:center; }
+/* ═══════════════════════════════════════════════
+   PÁGINA: MAPA DE MÓDULOS
+═══════════════════════════════════════════════ */
+#pg-mapa{justify-content:flex-start;overflow-y:auto;padding:24px 20px 40px;}
+.mapa-header{width:100%;text-align:center;padding:16px 0 24px;}
+.mapa-logo{font-family:var(--fnd);font-size:26px;letter-spacing:2px;color:var(--neon);
+  text-shadow:0 0 16px var(--neon-g);}
+.mapa-sub{font-size:14px;color:var(--gm);margin-top:4px;}
+.mod-item{display:flex;align-items:center;gap:16px;width:100%;max-width:440px;
+  background:#111;border-radius:16px;padding:16px 18px;margin-bottom:12px;
+  border:2px solid #1E1E1E;cursor:pointer;transition:border-color .2s,transform .1s;}
+.mod-item:active{transform:scale(.97);}
+.mod-item.disponivel{border-color:var(--neon);}
+.mod-item.bloqueado{opacity:.4;cursor:not-allowed;}
+.mod-item.concluido{border-color:#00C875;}
+.mod-emoji{font-size:32px;flex-shrink:0;}
+.mod-texto h3{font-size:15px;font-weight:800;color:#fff;}
+.mod-texto p{font-size:12px;color:var(--gm);margin-top:3px;}
+.mod-badge{margin-left:auto;flex-shrink:0;}
+.badge{border-radius:50px;padding:4px 10px;font-size:11px;font-weight:800;}
+.badge-novo{background:var(--neon);color:#000;}
+.badge-feito{background:#00C875;color:#000;}
 
-/* PHONE FRAME */
-#phone-frame { position:relative; width:var(--pw); height:var(--ph);
-  border-radius:var(--pr);
+/* ═══════════════════════════════════════════════
+   PÁGINA: SIMULADOR MÓDULO 0
+═══════════════════════════════════════════════ */
+#pg-mod0{position:relative;}
+
+/* Instructor bubble */
+#instructor{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 32px);max-width:380px;
+  background:rgba(8,8,8,.95);border:1.5px solid var(--neon-m);
+  border-radius:18px;padding:14px 20px;text-align:center;
+  box-shadow:0 0 20px var(--neon-d),0 8px 28px rgba(0,0,0,.7);
+  z-index:200;opacity:0;transform:translateX(-50%) translateY(10px);
+  transition:opacity var(--dn) var(--eo),transform var(--dn) var(--eo);}
+#instructor.vis{opacity:1;transform:translateX(-50%) translateY(0);}
+#instructor p{font-size:20px;font-weight:700;line-height:1.5;color:var(--gh);}
+#instructor p strong{color:var(--neon);}
+.instr-arrow{display:flex;flex-direction:column;align-items:center;gap:3px;
+  margin-bottom:8px;animation:arrB 1.2s var(--eio) infinite;}
+.instr-arrow span{display:block;width:8px;height:8px;
+  border-right:2.5px solid var(--neon);border-bottom:2.5px solid var(--neon);
+  transform:rotate(45deg);}
+.instr-arrow span:nth-child(2){opacity:.45;margin-top:-4px;}
+@keyframes arrB{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* Simulador wrapper */
+#sim{display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;transform-origin:center center;}
+
+/* Phone frame */
+#pf{position:relative;width:var(--pw);height:var(--ph);border-radius:var(--pr);
   background:linear-gradient(160deg,var(--pbl) 0%,#222228 40%,#151518 70%,var(--pb2) 100%);
-  box-shadow:0 0 0 1px rgba(255,255,255,.07), 0 0 0 2px rgba(0,0,0,.8),
-             0 20px 60px rgba(0,0,0,.9), 0 4px 12px rgba(0,0,0,.6),
-             inset 0 1px 0 rgba(255,255,255,.06);
-  flex-shrink:0; }
-/* câmera punch-hole */
-#phone-frame::before { content:''; position:absolute; top:18px; left:50%;
-  transform:translateX(-50%); width:12px; height:12px;
-  background:#0A0A0C; border-radius:50%;
-  box-shadow:0 0 0 2px rgba(255,255,255,.04), inset 0 0 4px rgba(0,0,0,.9); z-index:10; }
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.07),
+    0 0 0 2px rgba(0,0,0,.8),
+    0 20px 55px rgba(0,0,0,.9),
+    inset 0 1px 0 rgba(255,255,255,.05);
+  flex-shrink:0;}
+/* punch-hole câmera */
+#pf::before{content:'';position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  width:11px;height:11px;background:#080808;border-radius:50%;
+  box-shadow:0 0 0 2px rgba(255,255,255,.04);z-index:10;}
 /* speaker */
-#phone-frame::after { content:''; position:absolute; top:20px; left:50%;
-  transform:translateX(-50%) translateX(14px); width:48px; height:4px;
-  background:rgba(255,255,255,.04); border-radius:2px; }
+#pf::after{content:'';position:absolute;top:18px;left:50%;
+  transform:translateX(-50%) translateX(12px);
+  width:44px;height:4px;background:rgba(255,255,255,.04);border-radius:2px;}
 
-/* VOLUME BUTTONS */
-.bvol { position:absolute; left:-4px; border-radius:3px 0 0 3px;
-  background:linear-gradient(90deg,#111114,var(--pbn)); box-shadow:-2px 0 4px rgba(0,0,0,.5); }
-.bvol-u { top:150px; width:4px; height:52px; }
-.bvol-d { top:216px; width:4px; height:52px; }
+/* Volume btns */
+.vbtn{position:absolute;left:-4px;border-radius:3px 0 0 3px;
+  background:linear-gradient(90deg,#111114,var(--pbn));box-shadow:-2px 0 4px rgba(0,0,0,.5);}
+.vu{top:140px;width:4px;height:48px;}
+.vd{top:200px;width:4px;height:48px;}
 
-/* POWER BUTTON */
-#btn-power { position:absolute; right:-5px; top:160px; width:5px; height:72px;
+/* Power button */
+#pbtn{position:absolute;right:-5px;top:150px;width:5px;height:68px;
   border-radius:0 4px 4px 0;
   background:linear-gradient(270deg,var(--pbh) 0%,var(--pbn) 60%,#111114 100%);
   box-shadow:3px 0 6px rgba(0,0,0,.6);
   cursor:pointer;
-  /* hitbox expandida — acessibilidade motora */
-  padding:14px 24px 14px 10px; margin:-14px -24px -14px -10px;
-  transition:background var(--df) var(--eo), box-shadow var(--df) var(--eo);
-  z-index:50; touch-action:none; }
-#btn-power.idle    { animation:pwrPulse 2s var(--eio) infinite; }
-#btn-power.pressing { background:linear-gradient(270deg,#55FF40 0%,#2A8A20 60%,#111114 100%);
-  box-shadow:3px 0 8px rgba(0,0,0,.6),5px 0 18px var(--neon-g),8px 0 28px var(--neon-d); animation:none; }
-#btn-power.locked  { pointer-events:none; animation:none; }
-@keyframes pwrPulse {
-  0%,100% { box-shadow:3px 0 6px rgba(0,0,0,.6), 4px 0 0 var(--neon-d); }
-  50%     { box-shadow:3px 0 10px rgba(0,0,0,.6), 6px 0 14px var(--neon-g); }
+  /* hitbox generosa */
+  padding:14px 26px 14px 10px;margin:-14px -26px -14px -10px;
+  transition:background var(--df) var(--eo),box-shadow var(--df) var(--eo);
+  z-index:50;touch-action:none;}
+#pbtn.idle{animation:ppulse 2s var(--eio) infinite;}
+#pbtn.pressing{
+  background:linear-gradient(270deg,#55FF40 0%,#2A8A20 60%,#111114 100%);
+  box-shadow:3px 0 8px rgba(0,0,0,.6),6px 0 20px var(--neon-g),10px 0 30px var(--neon-d);
+  animation:none;}
+#pbtn.locked{pointer-events:none;animation:none;}
+@keyframes ppulse{
+  0%,100%{box-shadow:3px 0 6px rgba(0,0,0,.6),4px 0 0 var(--neon-d);}
+  50%{box-shadow:3px 0 10px rgba(0,0,0,.6),7px 0 16px var(--neon-g);}
 }
-#btn-power:focus-visible { outline:3px solid var(--neon); outline-offset:6px; }
+#pbtn:focus-visible{outline:3px solid var(--neon);outline-offset:6px;}
 
-/* LONG-PRESS INDICATOR */
-#lp-ind { position:absolute; right:20px; top:130px; width:24px; height:100px;
-  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
-  opacity:0; transition:opacity var(--df); z-index:15; pointer-events:none; }
-#lp-ind.on { opacity:1; }
-.lp-track { width:4px; height:72px; background:var(--gl); border-radius:2px;
-  overflow:hidden; position:relative; }
-.lp-fill { position:absolute; bottom:0; left:0; right:0; height:0%;
+/* Long-press indicator */
+#lpind{position:absolute;right:22px;top:122px;width:22px;height:96px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  opacity:0;transition:opacity var(--df);z-index:15;pointer-events:none;}
+#lpind.vis{opacity:1;}
+.lptr{width:4px;height:68px;background:var(--gl);border-radius:2px;
+  overflow:hidden;position:relative;}
+.lpfl{position:absolute;bottom:0;left:0;right:0;height:0%;
   background:linear-gradient(0deg,var(--neon),#60FF40);
-  border-radius:2px; box-shadow:0 0 6px var(--neon-g); }
-.lp-lbl { font-size:9px; color:var(--gm); letter-spacing:.5px; margin-top:5px; text-transform:uppercase; }
+  border-radius:2px;box-shadow:0 0 6px var(--neon-g);}
+.lplbl{font-size:9px;color:var(--gm);letter-spacing:.5px;margin-top:4px;text-transform:uppercase;}
 
-/* PHONE SCREEN */
-#phone-screen { position:absolute; top:12px; left:12px; right:12px; bottom:12px;
-  border-radius:calc(var(--pr) - 12px); background:var(--void); overflow:hidden; }
+/* Phone screen */
+#ps{position:absolute;top:11px;left:11px;right:11px;bottom:11px;
+  border-radius:calc(var(--pr) - 11px);background:var(--void);overflow:hidden;}
 
-/* SCREEN LAYERS */
-.slayer { position:absolute; inset:0; display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  opacity:0; pointer-events:none;
-  transition:opacity var(--dn) var(--eo); }
-.slayer.on { opacity:1; pointer-events:auto; }
+/* Screen layers */
+.sl{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity var(--dn) var(--eo);}
+.sl.vis{opacity:1;pointer-events:auto;}
 
-/* SCREEN OFF */
-#s-off { background:var(--void); }
+/* Screen OFF */
+#soff{background:var(--void);}
 
-/* SCREEN BOOT */
-#s-boot { background:var(--void); }
-.boot-logo { display:flex; flex-direction:column; align-items:center; gap:12px;
-  opacity:0; transform:scale(.92);
-  transition:opacity var(--dvs) var(--eo), transform var(--dvs) var(--eo); }
-.boot-logo.on { opacity:1; transform:scale(1); }
-.boot-icon { font-size:64px; line-height:1;
-  filter:drop-shadow(0 0 20px var(--neon-g)); animation:iconF 3s var(--eio) infinite; }
-@keyframes iconF { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-.boot-txt { font-family:var(--fnd); font-size:28px; letter-spacing:2px; color:var(--neon);
-  text-shadow:0 0 10px var(--neon-g), 0 0 30px var(--neon-d); }
-.boot-sub { font-size:13px; color:var(--gm); letter-spacing:4px; text-transform:uppercase; margin-top:-6px; }
-.boot-prog { position:absolute; bottom:80px; left:48px; right:48px;
-  display:flex; flex-direction:column; align-items:center; gap:12px;
-  opacity:0; transition:opacity var(--dn) var(--eo); }
-.boot-prog.on { opacity:1; }
-.boot-track { width:100%; height:3px; background:var(--gl); border-radius:2px; overflow:hidden; }
-.boot-fill { height:100%; width:0%;
+/* Screen BOOT */
+#sboot{background:var(--void);}
+.blogo{display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0;transform:scale(.93);
+  transition:opacity var(--dvs) var(--eo),transform var(--dvs) var(--eo);}
+.blogo.vis{opacity:1;transform:scale(1);}
+.bico{font-size:60px;line-height:1;
+  filter:drop-shadow(0 0 18px var(--neon-g));animation:ifl 3s var(--eio) infinite;}
+@keyframes ifl{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.btxt{font-family:var(--fnd);font-size:26px;letter-spacing:2px;color:var(--neon);
+  text-shadow:0 0 10px var(--neon-g),0 0 28px var(--neon-d);}
+.bsub{font-size:12px;color:var(--gm);letter-spacing:4px;text-transform:uppercase;margin-top:-4px;}
+.bprog{position:absolute;bottom:70px;left:44px;right:44px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0;transition:opacity var(--dn) var(--eo);}
+.bprog.vis{opacity:1;}
+.bptrack{width:100%;height:3px;background:var(--gl);border-radius:2px;overflow:hidden;}
+.bpfill{height:100%;width:0%;
   background:linear-gradient(90deg,var(--neon),#80FF60);
-  border-radius:2px; box-shadow:0 0 8px var(--neon-g);
-  transition:width var(--dn) linear; }
-.boot-lbl { font-size:13px; color:var(--gm); letter-spacing:1px; }
+  border-radius:2px;box-shadow:0 0 8px var(--neon-g);
+  transition:width var(--dn) linear;}
+.bplbl{font-size:12px;color:var(--gm);letter-spacing:1px;}
 
-/* SCREEN WELCOME */
-#s-welcome { background:var(--void); padding:40px 32px; gap:28px; text-align:center; }
-.wlc-icon { font-size:72px; line-height:1;
-  filter:drop-shadow(0 0 16px var(--neon-g)); animation:iconF 4s var(--eio) infinite; }
-.wlc-h { font-family:var(--fnd); font-size:40px; color:var(--neon);
-  letter-spacing:1px; text-shadow:0 0 20px var(--neon-g); line-height:1.15; }
-.wlc-p { font-size:22px; font-weight:600; color:var(--gh); line-height:1.65; max-width:280px; }
-.wlc-p strong { color:var(--neon); }
-#btn-next { display:flex; align-items:center; justify-content:center; gap:12px;
-  width:100%; min-height:64px;
-  background:var(--neon); color:var(--void);
-  font-family:var(--fn); font-size:26px; font-weight:900;
-  border:none; border-radius:18px; cursor:pointer; letter-spacing:.5px;
-  box-shadow:0 6px 24px rgba(57,255,20,.4);
-  transition:transform var(--df) var(--eo), box-shadow var(--df) var(--eo);
+/* Screen WELCOME */
+#swelc{background:var(--void);padding:32px 28px;gap:22px;text-align:center;}
+.wico{font-size:66px;line-height:1;
+  filter:drop-shadow(0 0 14px var(--neon-g));animation:ifl 4s var(--eio) infinite;}
+.wtit{font-family:var(--fnd);font-size:38px;color:var(--neon);
+  letter-spacing:1px;text-shadow:0 0 18px var(--neon-g);line-height:1.15;}
+.wtxt{font-size:20px;font-weight:600;color:var(--gh);line-height:1.65;max-width:260px;}
+.wtxt strong{color:var(--neon);}
+#btnext{display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;min-height:62px;
+  background:var(--neon);color:var(--void);
+  font-family:var(--fn);font-size:24px;font-weight:900;
+  border:none;border-radius:16px;cursor:pointer;letter-spacing:.4px;
+  box-shadow:0 6px 22px rgba(57,255,20,.4);
+  transition:transform var(--df) var(--eo);
   touch-action:manipulation;
-  animation:btnP 2.5s var(--eio) infinite; }
-@keyframes btnP {
-  0%,100% { box-shadow:0 0 0 0 var(--neon-g), 0 6px 24px rgba(57,255,20,.4); }
-  50%     { box-shadow:0 0 0 8px transparent, 0 6px 32px rgba(57,255,20,.55); }
+  animation:bpulse 2.5s var(--eio) infinite;}
+@keyframes bpulse{
+  0%,100%{box-shadow:0 0 0 0 var(--neon-g),0 6px 22px rgba(57,255,20,.4);}
+  50%{box-shadow:0 0 0 7px transparent,0 6px 30px rgba(57,255,20,.55);}
 }
-#btn-next:active { transform:scale(.96); animation:none; }
-#btn-next:focus-visible { outline:3px solid var(--neon); outline-offset:4px; }
+#btnext:active{transform:scale(.95);animation:none;}
+#btnext:focus-visible{outline:3px solid var(--neon);outline-offset:4px;}
+#btnext.done{background:#00C875;animation:none;pointer-events:none;}
 
-/* FEEDBACK ERROR */
-#feedback-ov { position:absolute; bottom:32px; left:16px; right:16px;
-  background:rgba(255,68,68,.12); border:1.5px solid rgba(255,68,68,.4);
-  border-radius:14px; padding:14px 18px; text-align:center;
-  font-size:16px; font-weight:700; color:#FF8080;
-  opacity:0; transform:translateY(8px);
-  transition:opacity var(--df) var(--eo), transform var(--df) var(--eo);
-  pointer-events:none; z-index:20; }
-#feedback-ov.on { opacity:1; transform:translateY(0); }
+/* Feedback erro */
+#fberr{position:absolute;bottom:28px;left:14px;right:14px;
+  background:rgba(255,68,68,.11);border:1.5px solid rgba(255,68,68,.35);
+  border-radius:13px;padding:12px 16px;text-align:center;
+  font-size:15px;font-weight:700;color:#FF8888;
+  opacity:0;transform:translateY(8px);
+  transition:opacity var(--df) var(--eo),transform var(--df) var(--eo);
+  pointer-events:none;z-index:20;}
+#fberr.vis{opacity:1;transform:translateY(0);}
 
-/* HAPTIC */
-@keyframes hapticShake {
+/* Haptic */
+@keyframes hshake{
   0%{transform:translateX(0)} 20%{transform:translateX(-3px)}
   40%{transform:translateX(3px)} 60%{transform:translateX(-2px)}
-  80%{transform:translateX(2px)} 100%{transform:translateX(0)} }
-.haptic { animation:hapticShake .35s var(--eo); }
+  80%{transform:translateX(2px)} 100%{transform:translateX(0)}}
+.haptic{animation:hshake .35s var(--eo);}
 
-/* RESPONSIVE */
-@media(max-height:820px){ #sim-wrap{transform:scale(.88)} }
-@media(max-height:700px){ #sim-wrap{transform:scale(.75)} }
-@media(max-height:600px){ #sim-wrap{transform:scale(.65)} }
-@media(max-width:400px) { #sim-wrap{transform:scale(.94)} }
-@media(max-width:370px) { #sim-wrap{transform:scale(.85)} }
-@media(max-height:480px) and (orientation:landscape) {
-  #sim-wrap{transform:scale(.55)} .ibubble p{font-size:18px;} }
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after { animation-duration:.01ms!important; transition-duration:300ms!important; } }
+/* ═══════════════════════════════════════════════
+   RESPONSIVIDADE DO SIMULADOR
+═══════════════════════════════════════════════ */
+@media(max-height:800px){#sim{transform:scale(.88)}}
+@media(max-height:680px){#sim{transform:scale(.76)}}
+@media(max-height:580px){#sim{transform:scale(.66)}}
+@media(max-width:390px) {#sim{transform:scale(.93)}}
+@media(max-width:360px) {#sim{transform:scale(.84)}}
+@media(max-height:440px) and (orientation:landscape){
+  #sim{transform:scale(.52)} #instructor p{font-size:16px;}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:250ms!important;}}
 </style>
 </head>
 <body>
 
-<!-- INSTRUCTOR LAYER -->
-<aside id="instructor-layer" aria-live="polite" aria-atomic="true">
-  <div class="ibubble" id="ibubble" role="status">
-    <div class="iarrow" id="iarrow" aria-hidden="true">
-      <span></span><span></span>
+<!-- ═══════════════════════════════════════════════
+     PÁGINA 1: MAPA DE MÓDULOS
+═══════════════════════════════════════════════ -->
+<div id="pg-mapa" class="page">
+  <div class="mapa-header">
+    <div class="mapa-logo">CONSYSENCI.A</div>
+    <div class="mapa-sub">Escolha o módulo para começar</div>
+  </div>
+
+  <div class="mod-item disponivel" onclick="iniciarModulo0()">
+    <span class="mod-emoji">📦</span>
+    <div class="mod-texto">
+      <h3>Módulo 0 — A Caixa Mágica</h3>
+      <p>Ligar o celular, botões e carregamento</p>
     </div>
-    <p id="itxt">
+    <div class="mod-badge"><span class="badge badge-novo" id="badge-m0">NOVO</span></div>
+  </div>
+
+  <div class="mod-item bloqueado">
+    <span class="mod-emoji">👆</span>
+    <div class="mod-texto">
+      <h3>Módulo 1 — Escola de Gestos</h3>
+      <p>Toque, rolagem e painel de notificações</p>
+    </div>
+    <div class="mod-badge"><span style="font-size:20px;">🔒</span></div>
+  </div>
+
+  <div class="mod-item bloqueado">
+    <span class="mod-emoji">⌨️</span>
+    <div class="mod-texto">
+      <h3>Módulo 2 — O Teclado Fantasma</h3>
+      <p>Digitar mensagens no WhatsApp</p>
+    </div>
+    <div class="mod-badge"><span style="font-size:20px;">🔒</span></div>
+  </div>
+
+  <div class="mod-item bloqueado">
+    <span class="mod-emoji">💬</span>
+    <div class="mod-texto">
+      <h3>Módulo 3 — Comunicação</h3>
+      <p>WhatsApp, áudios, fotos e emojis</p>
+    </div>
+    <div class="mod-badge"><span style="font-size:20px;">🔒</span></div>
+  </div>
+
+  <div class="mod-item bloqueado">
+    <span class="mod-emoji">🛡️</span>
+    <div class="mod-texto">
+      <h3>Módulo 4 — Escudo de Prata</h3>
+      <p>Golpes, Pix falso e links perigosos</p>
+    </div>
+    <div class="mod-badge"><span style="font-size:20px;">🔒</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PÁGINA 2: SIMULADOR — MÓDULO 0
+═══════════════════════════════════════════════ -->
+<div id="pg-mod0" class="page active">
+
+  <!-- Simulador -->
+  <div id="sim">
+    <div id="pf">
+
+      <div class="vbtn vu" aria-hidden="true"></div>
+      <div class="vbtn vd" aria-hidden="true"></div>
+
+      <div id="pbtn" class="idle"
+           role="button" tabindex="0"
+           aria-label="Botão Power — Toque e segure por 3 segundos para ligar">
+      </div>
+
+      <div id="lpind" aria-hidden="true">
+        <div class="lptr"><div class="lpfl" id="lpfl"></div></div>
+        <span class="lplbl">3s</span>
+      </div>
+
+      <div id="ps">
+        <section id="soff"  class="sl vis" aria-label="Tela apagada"></section>
+
+        <section id="sboot" class="sl" aria-label="Celular ligando">
+          <div class="blogo" id="blogo">
+            <div class="bico">🌹</div>
+            <div class="btxt">ConSySenci.a</div>
+            <div class="bsub">Rosa</div>
+          </div>
+          <div class="bprog" id="bprog">
+            <div class="bptrack">
+              <div class="bpfill" id="bpfill"></div>
+            </div>
+            <span class="bplbl" id="bplbl">Carregando... 0%</span>
+          </div>
+        </section>
+
+        <section id="swelc" class="sl" aria-label="Boas-vindas">
+          <div class="wico">🌟</div>
+          <h1 class="wtit">Celular<br>Ligado!</h1>
+          <p class="wtxt">Você fez seu primeiro passo.<br><strong>Isso é aprender!</strong></p>
+          <button id="btnext" type="button">
+            <span>Próximo</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </section>
+
+        <div id="fberr" role="alert" aria-live="assertive"></div>
+      </div><!-- /ps -->
+
+    </div><!-- /pf -->
+  </div><!-- /sim -->
+
+  <!-- Instructor bubble — fora do frame, cobre a tela real -->
+  <div id="instructor" role="status" aria-live="polite">
+    <div class="instr-arrow" id="instr-arrow"><span></span><span></span></div>
+    <p id="instr-txt">
       Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar
     </p>
   </div>
-</aside>
 
-<!-- SIMULATOR -->
-<main id="sim-wrap" role="application" aria-label="Simulador de smartphone">
-  <div id="phone-frame">
-
-    <div class="bvol bvol-u" aria-hidden="true"></div>
-    <div class="bvol bvol-d" aria-hidden="true"></div>
-
-    <div id="btn-power" class="idle"
-         role="button" tabindex="0"
-         aria-label="Botão Power — Toque e segure por 3 segundos para ligar">
-    </div>
-
-    <div id="lp-ind" aria-hidden="true">
-      <div class="lp-track">
-        <div class="lp-fill" id="lp-fill"></div>
-      </div>
-      <span class="lp-lbl">3s</span>
-    </div>
-
-    <div id="phone-screen">
-
-      <!-- TELA OFF -->
-      <section id="s-off" class="slayer on" aria-label="Tela apagada"></section>
-
-      <!-- TELA BOOT -->
-      <section id="s-boot" class="slayer" aria-label="Celular ligando">
-        <div class="boot-logo" id="boot-logo">
-          <div class="boot-icon">🌹</div>
-          <div class="boot-txt">ConSySenci.a</div>
-          <div class="boot-sub">Rosa</div>
-        </div>
-        <div class="boot-prog" id="boot-prog">
-          <div class="boot-track">
-            <div class="boot-fill" id="boot-fill"></div>
-          </div>
-          <span class="boot-lbl" id="boot-lbl">Carregando... 0%</span>
-        </div>
-      </section>
-
-      <!-- TELA WELCOME -->
-      <section id="s-welcome" class="slayer" aria-label="Boas-vindas">
-        <div class="wlc-icon">🌟</div>
-        <h1 class="wlc-h">Celular<br>Ligado!</h1>
-        <p class="wlc-p">Você fez seu primeiro passo.<br><strong>Isso é aprender!</strong></p>
-        <button id="btn-next" type="button">
-          <span>Próximo</span>
-          <span aria-hidden="true">→</span>
-        </button>
-      </section>
-
-      <!-- FEEDBACK DE ERRO -->
-      <div id="feedback-ov" role="alert" aria-live="assertive"></div>
-
-    </div><!-- /phone-screen -->
-  </div><!-- /phone-frame -->
-</main>
+</div><!-- /pg-mod0 -->
 
 <script>
 /*
-  ConSySenci.a Rosa — Módulo 0: Ligar o Celular
+  ConSySenci.a Rosa — SPA completo
   © 2026 ConSySenci.a — Todos os direitos reservados
 
-  BUG CORRIGIDO: referências DOM agora são resolvidas DENTRO
-  do init(), após o DOM estar completamente parseado.
-  Antes eram resolvidas na declaração do IIFE (antes do DOM).
+  CORREÇÕES DESTA VERSÃO:
+  1. SPA real: btn-next navega para o mapa de módulos (era evento sem ouvinte)
+  2. Módulo 0 desbloqueado após conclusão no mapa
+  3. Instructor posicionado absolutamente na página, não dentro do frame
+  4. Escala responsiva corrigida (media queries ajustadas)
+  5. Todos os IDs e classes alinhados entre HTML e JS (sem null refs)
 */
 'use strict';
 
-/* ═══════════════════════════════════════════════════════════
-   1. MÁQUINA DE ESTADOS FINITOS
-   OFF → PRESSING → BOOTING → WELCOME
-═══════════════════════════════════════════════════════════ */
-const FSM = (() => {
-  const S = Object.freeze({
-    OFF:      'OFF',
-    PRESSING: 'PRESSING',
-    BOOTING:  'BOOTING',
-    WELCOME:  'WELCOME',
-  });
+/* ═══════════════════════════════════════════
+   ROTEADOR SPA
+═══════════════════════════════════════════ */
+const Router = (() => {
+  let current = 'pg-mod0';
 
-  // Transições válidas por estado
-  const TRANS = {
-    OFF:      ['PRESSING'],
-    PRESSING: ['OFF', 'BOOTING'],
-    BOOTING:  ['WELCOME'],
-    WELCOME:  [],
+  const go = (id) => {
+    document.getElementById(current)?.classList.remove('active');
+    document.getElementById(id)?.classList.add('active');
+    current = id;
   };
 
-  let cur  = S.OFF;
-  let prev = null;
-  const enterCbs  = new Map(); // callbacks por estado
-  const globalCbs = [];        // callbacks em qualquer transição
-
-  const is  = s    => cur === s;
-  const get = ()   => cur;
-
-  const go  = (next) => {
-    if (!TRANS[cur].includes(next)) return false;
-    prev = cur;
-    cur  = next;
-    (enterCbs.get(next) || []).forEach(fn => fn({ from: prev, to: cur }));
-    globalCbs.forEach(fn => fn({ from: prev, to: cur }));
-    return true;
-  };
-
-  const onEnter  = (s, fn) => {
-    if (!enterCbs.has(s)) enterCbs.set(s, []);
-    enterCbs.get(s).push(fn);
-  };
-
-  return Object.freeze({ S, is, get, go, onEnter });
+  return { go };
 })();
 
+/* ═══════════════════════════════════════════
+   MÁQUINA DE ESTADOS
+   OFF → PRESSING → BOOTING → WELCOME
+═══════════════════════════════════════════ */
+const FSM = (() => {
+  const S = Object.freeze({
+    OFF:'OFF', PRESSING:'PRESSING', BOOTING:'BOOTING', WELCOME:'WELCOME'
+  });
+  const T = { OFF:['PRESSING'], PRESSING:['OFF','BOOTING'], BOOTING:['WELCOME'], WELCOME:[] };
+  let cur = S.OFF;
+  const cbs = new Map();
 
-/* ═══════════════════════════════════════════════════════════
-   2. UI CONTROLLER
-   CORREÇÃO PRINCIPAL: 'D' (refs DOM) resolvido dentro de init()
-═══════════════════════════════════════════════════════════ */
+  const is  = s    => cur === s;
+  const go  = next => {
+    if (!T[cur]?.includes(next)) return false;
+    cur = next;
+    (cbs.get(next) || []).forEach(fn => fn());
+    return true;
+  };
+  const on  = (s, fn) => { if (!cbs.has(s)) cbs.set(s,[]); cbs.get(s).push(fn); };
+  return Object.freeze({ S, is, go, on });
+})();
+
+/* ═══════════════════════════════════════════
+   UI — resolvido em init() após DOM pronto
+═══════════════════════════════════════════ */
 const UI = (() => {
 
-  // Referências DOM — preenchidas em init(), não na declaração
-  let D = null;
+  let D = null; // DOM refs — preenchidas em init()
 
   const MSGS = {
-    OFF:      { arrow: true,  html: 'Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar' },
-    PRESSING: { arrow: false, html: '✅ Isso! Continue <strong>segurando</strong>...' },
-    BOOTING:  { arrow: false, html: '✨ Perfeito! O celular está <strong>ligando</strong>...' },
-    WELCOME:  { arrow: false, html: '🎉 Você <strong>ligou o celular!</strong> Primeiro passo concluído!' },
-    ERR_FAST: { arrow: true,  html: '⚡ Muito rápido! Toque e <strong>segure firme</strong> por 3 segundos' },
-    ERR_MED:  { arrow: true,  html: '⏱️ Quase! Segure um <strong>pouquinho mais</strong>...' },
-    ERR_LONG: { arrow: true,  html: '👏 Faltou pouco! Segure até a tela <strong>acender</strong>' },
+    OFF:      { arrow:true,  html:'Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar' },
+    PRESSING: { arrow:false, html:'✅ Isso! Continue <strong>segurando</strong>...' },
+    BOOTING:  { arrow:false, html:'✨ Perfeito! O celular está <strong>ligando</strong>...' },
+    WELCOME:  { arrow:false, html:'🎉 Você <strong>ligou o celular!</strong> Toque em Próximo!' },
+    ERR_FAST: { arrow:true,  html:'⚡ Muito rápido! Toque e <strong>segure firme</strong> por 3 segundos' },
+    ERR_MED:  { arrow:true,  html:'⏱️ Quase! Segure um <strong>pouquinho mais</strong>...' },
+    ERR_LONG: { arrow:true,  html:'👏 Faltou pouco! Segure até a tela <strong>acender</strong>' },
   };
 
-  let feedbackTimer = null;
-  let instrTimer    = null;
-  let bootTimers    = [];
+  let fbTimer = null, msgTimer = null, bootTimers = [];
 
-  /* ── Helpers básicos ─────────────────────────────────── */
+  const show = el => el?.classList.add('vis');
+  const hide = el => el?.classList.remove('vis');
 
-  const show = (el) => el && el.classList.add('on');
-  const hide = (el) => el && el.classList.remove('on');
-
-  /* ── Instrutor ───────────────────────────────────────── */
-
+  // Atualiza bolha instrução
   const setMsg = (key, delay = 0) => {
-    if (instrTimer) { clearTimeout(instrTimer); instrTimer = null; }
+    clearTimeout(msgTimer);
     const apply = () => {
-      const m = MSGS[key];
-      if (!m || !D) return;
-      D.itxt.innerHTML   = m.html;
-      D.iarrow.style.display = m.arrow ? 'flex' : 'none';
-      show(D.ibubble);
+      const m = MSGS[key]; if (!m) return;
+      D.instrTxt.innerHTML = m.html;
+      D.instrArrow.style.display = m.arrow ? 'flex' : 'none';
+      show(D.instr);
     };
-    delay > 0 ? (instrTimer = setTimeout(apply, delay)) : apply();
+    delay > 0 ? (msgTimer = setTimeout(apply, delay)) : apply();
   };
 
-  /* ── Botão Power — estado visual ────────────────────── */
-
-  const setPowerClass = (cls) => {
+  // Classe do botão power
+  const setPwr = cls => {
     if (!D) return;
-    D.btnPow.className = cls; // 'idle' | 'pressing' | 'locked'
-    D.btnPow.tabIndex  = cls === 'locked' ? -1 : 0;
+    D.pbtn.className = cls;
+    D.pbtn.tabIndex  = cls === 'locked' ? -1 : 0;
   };
 
-  /* ── Indicador de long-press ─────────────────────────── */
-
-  const setLPProgress = (p) => { // 0.0 → 1.0
+  // Indicador long-press (0→1)
+  const setLP = p => {
     if (!D) return;
-    if (p <= 0) {
-      hide(D.lpInd);
-      D.lpFill.style.height = '0%';
-    } else {
-      show(D.lpInd);
-      D.lpFill.style.height = (p * 100) + '%';
-    }
+    p <= 0 ? (hide(D.lpind), D.lpfl.style.height = '0%')
+           : (show(D.lpind), D.lpfl.style.height = (p*100)+'%');
   };
 
-  /* ── Feedback de erro (solto antes do tempo) ─────────── */
-
-  const showError = (elapsedMs) => {
-    if (!D) return;
+  // Mostrar erro
+  const showErr = ms => {
     let key, txt;
-    if      (elapsedMs < 1000) { key = 'ERR_FAST'; txt = 'Tente segurar por mais tempo'; }
-    else if (elapsedMs < 2500) { key = 'ERR_MED';  txt = 'Quase! Segure mais um pouquinho'; }
-    else                       { key = 'ERR_LONG'; txt = 'Faltou pouco! Tente mais uma vez'; }
-
-    // Shake háptico visual no frame
-    D.frame.classList.remove('haptic');
-    void D.frame.offsetWidth; // force reflow para reiniciar animação
-    D.frame.classList.add('haptic');
-    setTimeout(() => D.frame && D.frame.classList.remove('haptic'), 400);
-
-    // Overlay dentro da tela
-    D.feedbk.textContent = txt;
-    show(D.feedbk);
-    if (feedbackTimer) clearTimeout(feedbackTimer);
-    feedbackTimer = setTimeout(() => hide(D.feedbk), 2200);
-
+    if      (ms < 1000) { key='ERR_FAST'; txt='Tente segurar por mais tempo'; }
+    else if (ms < 2500) { key='ERR_MED';  txt='Quase! Segure mais um pouquinho'; }
+    else                { key='ERR_LONG'; txt='Faltou pouco! Tente mais uma vez'; }
+    D.pf.classList.remove('haptic');
+    void D.pf.offsetWidth;
+    D.pf.classList.add('haptic');
+    setTimeout(() => D.pf?.classList.remove('haptic'), 400);
+    D.fberr.textContent = txt;
+    show(D.fberr);
+    clearTimeout(fbTimer);
+    fbTimer = setTimeout(() => hide(D.fberr), 2200);
     setMsg(key);
   };
 
-  /* ── Progresso da barra de boot ──────────────────────── */
-
-  const setBootFill = (pct) => {
-    if (!D) return;
-    D.bootFill.style.width  = pct + '%';
-    D.bootLbl.textContent   = 'Carregando... ' + pct + '%';
+  // Progresso boot
+  const setFill = pct => {
+    D.bpfill.style.width = pct+'%';
+    D.bplbl.textContent  = 'Carregando... '+pct+'%';
   };
 
-  /* ── Sequência de boot ───────────────────────────────── */
-
+  // Sequência de boot
   const runBoot = () => {
-    bootTimers.forEach(clearTimeout);
-    bootTimers = [];
-
+    bootTimers.forEach(clearTimeout); bootTimers = [];
     const seq = [
-      // Passo 0: apaga tela OFF, acende tela boot
-      [0,    () => { hide(D.sOff); show(D.sBoot); }],
-      // Passo 1: logo surge (fade-in lento via CSS transition)
-      [420,  () => { show(D.bootLogo); }],
-      // Passo 2: barra de progresso aparece
-      [1350, () => { show(D.bootProg); }],
-      // Passos 3-5: progresso avança
-      [1650, () => { setBootFill(30); }],
-      [2300, () => { setBootFill(68); }],
-      [3050, () => { setBootFill(100); }],
-      // Passo 6: transição para tela de boas-vindas
-      [3600, () => { toWelcome(); }],
+      [0,    () => { hide(D.soff); show(D.sboot); }],
+      [420,  () => { show(D.blogo); }],
+      [1350, () => { show(D.bprog); }],
+      [1650, () => { setFill(30); }],
+      [2300, () => { setFill(68); }],
+      [3050, () => { setFill(100); }],
+      [3650, () => {
+        FSM.go(FSM.S.WELCOME);
+        hide(D.sboot);
+        setTimeout(() => show(D.swelc), 300);
+      }],
     ];
-
-    seq.forEach(([t, fn]) => { bootTimers.push(setTimeout(fn, t)); });
+    seq.forEach(([t,fn]) => bootTimers.push(setTimeout(fn, t)));
   };
 
-  /* ── Transição para Welcome ──────────────────────────── */
-
-  const toWelcome = () => {
-    FSM.go(FSM.S.WELCOME); // transição no FSM
-    hide(D.sBoot);
-    setTimeout(() => show(D.sWelc), 320);
-  };
-
-  /* ── Botão Próximo ───────────────────────────────────── */
-
-  const bindNext = () => {
-    if (!D.btnNext) return;
-    const handle = (e) => {
-      e.preventDefault();
-      // Dispara evento para o SPA principal ouvir
-      document.dispatchEvent(new CustomEvent('consysencia:complete', {
-        detail: { module: 'module-0-power-on' }
-      }));
-      // Feedback visual imediato no botão
-      D.btnNext.innerHTML      = '✅ Concluído!';
-      D.btnNext.style.background    = '#00C875';
-      D.btnNext.style.pointerEvents = 'none';
-      D.btnNext.style.animation     = 'none';
-    };
-    D.btnNext.addEventListener('click',   handle);
-    D.btnNext.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') handle(e);
-    });
-  };
-
-  /* ── Reage a transições do FSM ───────────────────────── */
-
+  // Bind FSM → UI
   const bindFSM = () => {
-    FSM.onEnter(FSM.S.PRESSING, () => {
-      setPowerClass('pressing');
-      setMsg('PRESSING');
-      hide(D.feedbk);
-    });
-
-    FSM.onEnter(FSM.S.OFF, () => {
-      setPowerClass('idle');
-      setMsg('OFF');
-    });
-
-    FSM.onEnter(FSM.S.BOOTING, () => {
-      setPowerClass('locked');
-      setMsg('BOOTING');
-      setLPProgress(0);
-      runBoot();
-    });
-
-    FSM.onEnter(FSM.S.WELCOME, () => {
-      setPowerClass('locked');
-      setMsg('WELCOME', 700);
-    });
+    FSM.on(FSM.S.PRESSING, () => { setPwr('pressing'); setMsg('PRESSING'); hide(D.fberr); });
+    FSM.on(FSM.S.OFF,      () => { setPwr('idle');     setMsg('OFF'); });
+    FSM.on(FSM.S.BOOTING,  () => { setPwr('locked');   setMsg('BOOTING'); setLP(0); runBoot(); });
+    FSM.on(FSM.S.WELCOME,  () => { setPwr('locked');   setMsg('WELCOME', 600); });
   };
 
-  /* ── INIT — DOM resolvido AQUI, após o parser terminar ── */
+  // Botão Próximo — AGORA NAVEGA PARA O MAPA
+  const bindNext = () => {
+    if (!D.btnext) return;
+    D.btnext.addEventListener('click', () => {
+      // Marca módulo 0 como concluído no mapa
+      const b = document.getElementById('badge-m0');
+      if (b) { b.className = 'badge badge-feito'; b.textContent = '✓ FEITO'; }
+      const mc = document.querySelector('#pg-mapa .mod-item.disponivel');
+      if (mc) { mc.classList.remove('disponivel'); mc.classList.add('concluido'); mc.style.cursor = 'default'; mc.onclick = null; }
+
+      // Feedback visual no botão
+      D.btnext.innerHTML = '✅ Concluído!';
+      D.btnext.classList.add('done');
+
+      // Navega após breve delay para o usuário ver o feedback
+      setTimeout(() => {
+        Router.go('pg-mapa');
+      }, 800);
+    });
+  };
 
   const init = () => {
-    // Resolve referências DOM agora (DOM está pronto)
+    // Resolve refs DOM aqui — DOM está pronto
     D = {
-      frame:    document.getElementById('phone-frame'),
-      btnPow:   document.getElementById('btn-power'),
-      sOff:     document.getElementById('s-off'),
-      sBoot:    document.getElementById('s-boot'),
-      sWelc:    document.getElementById('s-welcome'),
-      bootLogo: document.getElementById('boot-logo'),
-      bootProg: document.getElementById('boot-prog'),
-      bootFill: document.getElementById('boot-fill'),
-      bootLbl:  document.getElementById('boot-lbl'),
-      feedbk:   document.getElementById('feedback-ov'),
-      lpInd:    document.getElementById('lp-ind'),
-      lpFill:   document.getElementById('lp-fill'),
-      ibubble:  document.getElementById('ibubble'),
-      iarrow:   document.getElementById('iarrow'),
-      itxt:     document.getElementById('itxt'),
-      btnNext:  document.getElementById('btn-next'),
+      pf:       document.getElementById('pf'),
+      pbtn:     document.getElementById('pbtn'),
+      soff:     document.getElementById('soff'),
+      sboot:    document.getElementById('sboot'),
+      swelc:    document.getElementById('swelc'),
+      blogo:    document.getElementById('blogo'),
+      bprog:    document.getElementById('bprog'),
+      bpfill:   document.getElementById('bpfill'),
+      bplbl:    document.getElementById('bplbl'),
+      fberr:    document.getElementById('fberr'),
+      lpind:    document.getElementById('lpind'),
+      lpfl:     document.getElementById('lpfl'),
+      instr:    document.getElementById('instructor'),
+      instrArrow: document.getElementById('instr-arrow'),
+      instrTxt:   document.getElementById('instr-txt'),
+      btnext:   document.getElementById('btnext'),
     };
-
     bindFSM();
     bindNext();
-
-    // Estado visual inicial
-    show(D.sOff);
-    setPowerClass('idle');
-
-    // Bolha de instrução surge após breve delay
-    setTimeout(() => { show(D.ibubble); setMsg('OFF'); }, 500);
+    show(D.soff);
+    setPwr('idle');
+    setTimeout(() => { show(D.instr); setMsg('OFF'); }, 600);
   };
 
-  return Object.freeze({ init, setLPProgress, showError });
+  return Object.freeze({ init, setLP, showErr });
 })();
 
-
-/* ═══════════════════════════════════════════════════════════
-   3. INPUT CONTROLLER — Long-Press via requestAnimationFrame
-═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   INPUT — long-press via rAF
+═══════════════════════════════════════════ */
 const Input = (() => {
-  const HOLD_MS     = 3000; // duração necessária para ligar
-  const DEBOUNCE_MS = 400;  // cooldown anti-clique-duplo
+  const HOLD = 3000, DBC = 400;
+  let t0 = null, down = false, raf = null, dbc = false, ptr = null, btn = null;
 
-  let pressStart  = null;
-  let isDown      = false;
-  let rafId       = null;
-  let debounced   = false;
-  let activePtr   = null;
-  let btnEl       = null;
-
-  /* rAF tick — mede tempo e atualiza indicador */
-  const tick = (ts) => {
-    if (!isDown || pressStart === null) return;
-
-    const elapsed  = ts - pressStart;
-    const progress = Math.min(elapsed / HOLD_MS, 1);
-
-    UI.setLPProgress(progress);
-
-    if (elapsed >= HOLD_MS) {
-      onSuccess();
-      return;
-    }
-
-    rafId = requestAnimationFrame(tick);
+  const tick = ts => {
+    if (!down || t0 === null) return;
+    const el = ts - t0, prog = Math.min(el/HOLD, 1);
+    UI.setLP(prog);
+    if (el >= HOLD) { done(); return; }
+    raf = requestAnimationFrame(tick);
   };
 
-  const onSuccess = () => {
-    cleanup();
-    FSM.go(FSM.S.BOOTING); // dispara sequência de boot
+  const done = () => {
+    clean();
+    FSM.go(FSM.S.BOOTING);
   };
 
-  const cleanup = () => {
-    isDown     = false;
-    pressStart = null;
-    activePtr  = null;
-
-    if (rafId !== null) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-
-    UI.setLPProgress(0);
-
-    // Debounce — evita re-press acidental imediato
-    debounced = true;
-    setTimeout(() => { debounced = false; }, DEBOUNCE_MS);
+  const clean = () => {
+    down = false; t0 = null; ptr = null;
+    if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+    UI.setLP(0);
+    dbc = true; setTimeout(() => { dbc = false; }, DBC);
   };
 
-  /* Início do press */
-  const onDown = (e) => {
-    if (isDown || debounced)     return;
-    if (!FSM.is(FSM.S.OFF))     return;
-
+  const onDown = e => {
+    if (down || dbc || !FSM.is(FSM.S.OFF)) return;
     e.preventDefault();
-
-    // Captura o pointer para seguir o dedo fora do elemento
-    activePtr = (e.pointerId !== undefined) ? e.pointerId : null;
-    if (activePtr !== null) {
-      try { btnEl.setPointerCapture(activePtr); } catch (_) {}
-    }
-
-    isDown     = true;
-    pressStart = performance.now();
-
+    ptr = e.pointerId ?? null;
+    if (ptr !== null) try { btn.setPointerCapture(ptr); } catch(_){}
+    down = true; t0 = performance.now();
     FSM.go(FSM.S.PRESSING);
-    rafId = requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
   };
 
-  /* Fim do press (solto antes do tempo ou saiu do elemento) */
-  const onUp = (e) => {
-    if (!isDown) return;
-    // Ignora eventos de outros pointers
-    if (activePtr !== null && e.pointerId !== undefined && e.pointerId !== activePtr) return;
-
-    const elapsed = performance.now() - pressStart;
-    cleanup();
-
-    // Só mostra erro se o FSM ainda está em PRESSING
-    // (se onSuccess() já rodou, FSM estará em BOOTING)
-    if (FSM.is(FSM.S.PRESSING)) {
-      FSM.go(FSM.S.OFF);
-      UI.showError(elapsed);
-    }
+  const onUp = e => {
+    if (!down) return;
+    if (ptr !== null && e.pointerId !== undefined && e.pointerId !== ptr) return;
+    const el = performance.now() - t0;
+    clean();
+    if (FSM.is(FSM.S.PRESSING)) { FSM.go(FSM.S.OFF); UI.showErr(el); }
   };
 
-  const onMove = (e) => { if (isDown) e.preventDefault(); };
+  const init = el => {
+    btn = el; if (!btn) return;
+    btn.addEventListener('pointerdown',   onDown, {passive:false});
+    btn.addEventListener('pointerup',     onUp,   {passive:false});
+    btn.addEventListener('pointerleave',  onUp,   {passive:false});
+    btn.addEventListener('pointercancel', onUp,   {passive:false});
+    btn.addEventListener('pointermove',   e => { if(down) e.preventDefault(); }, {passive:false});
+    btn.addEventListener('contextmenu',   e => e.preventDefault());
 
-  const init = (btn) => {
-    btnEl = btn;
-    if (!btnEl) { console.error('[Input] btn-power não encontrado'); return; }
-
-    btnEl.addEventListener('pointerdown',   onDown, { passive: false });
-    btnEl.addEventListener('pointerup',     onUp,   { passive: false });
-    btnEl.addEventListener('pointerleave',  onUp,   { passive: false });
-    btnEl.addEventListener('pointercancel', onUp,   { passive: false });
-    btnEl.addEventListener('pointermove',   onMove, { passive: false });
-    btnEl.addEventListener('contextmenu',   (e) => e.preventDefault());
+    // Acessibilidade teclado: Enter/Space
+    btn.addEventListener('keydown', e => {
+      if ((e.key !== 'Enter' && e.key !== ' ') || !FSM.is(FSM.S.OFF)) return;
+      e.preventDefault();
+      btn.dispatchEvent(new PointerEvent('pointerdown',{pointerId:99,bubbles:true,cancelable:true}));
+      setTimeout(() =>
+        btn.dispatchEvent(new PointerEvent('pointerup',{pointerId:99,bubbles:true,cancelable:true}))
+      , 3100);
+    });
   };
 
   return Object.freeze({ init });
 })();
 
+/* ═══════════════════════════════════════════
+   FUNÇÃO DE ENTRADA DO MÓDULO 0
+   (chamada pelo mapa quando usuário clica)
+═══════════════════════════════════════════ */
+function iniciarModulo0() {
+  Router.go('pg-mod0');
+}
 
-/* ═══════════════════════════════════════════════════════════
-   4. BOOTSTRAP
-   Aguarda DOM pronto antes de inicializar qualquer módulo
-═══════════════════════════════════════════════════════════ */
-(function bootstrap() {
+/* ═══════════════════════════════════════════
+   BOOTSTRAP
+═══════════════════════════════════════════ */
+(function() {
   const run = () => {
-    // Inicializa UI primeiro (registra listeners do FSM, resolve DOM)
     UI.init();
-
-    // Inicializa Input (registra eventos no btn-power)
-    Input.init(document.getElementById('btn-power'));
-
-    // Suporte a teclado: Enter/Space no btn-power simula hold de 3.1s
-    document.getElementById('btn-power').addEventListener('keydown', (e) => {
-      if ((e.key !== 'Enter' && e.key !== ' ') || !FSM.is(FSM.S.OFF)) return;
-      e.preventDefault();
-      const btn = e.currentTarget;
-      btn.dispatchEvent(new PointerEvent('pointerdown', {
-        pointerId: 99, bubbles: true, cancelable: true
-      }));
-      setTimeout(() => {
-        btn.dispatchEvent(new PointerEvent('pointerup', {
-          pointerId: 99, bubbles: true, cancelable: true
-        }));
-      }, 3100);
-    });
-
-    // SPA principal pode ouvir este evento para avançar de módulo
-    document.addEventListener('consysencia:complete', (e) => {
-      console.log('[ConSySenci.a] Módulo concluído:', e.detail);
-    });
+    Input.init(document.getElementById('pbtn'));
   };
-
-  // Garante que o DOM está pronto — resolve o bug raiz
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    // DOM já parseado (script defer ou no final do body)
-    run();
-  }
+  document.readyState === 'loading'
+    ? document.addEventListener('DOMContentLoaded', run)
+    : run();
 })();
 </script>
 </body>
