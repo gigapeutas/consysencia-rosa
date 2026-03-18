@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ConSySenci.a Rosa - Módulo 0</title>
+    <title>ConSySenci.a Rosa - A Caixa Mágica</title>
     <style>
         :root {
             --rosa-forte: #D81B60;
+            --rosa-claro: #F8BBD0;
             --rosa-fundo: #FCE4EC;
             --texto-escuro: #1C2833;
             --botao-verde: #2ECC71;
+            --botao-azul: #3498DB;
         }
 
         * {
@@ -17,6 +19,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Remove aquele brilho azul feio ao clicar no Android */
         }
 
         body {
@@ -33,63 +36,93 @@
 
         /* O Personagem "Rosa" */
         .rosa-guia {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             background: radial-gradient(circle, #FF80AB, var(--rosa-forte));
             border-radius: 50% 50% 10% 50%;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4);
-            animation: respirar 3s infinite ease-in-out;
-            display: none; /* Escondido até o usuário iniciar */
+            animation: respirar 3.5s infinite ease-in-out;
+            display: none;
         }
 
         @keyframes respirar {
             0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.05) translateY(-10px); }
+            50% { transform: scale(1.08) translateY(-8px); }
         }
 
         .caixa-texto {
             background-color: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 35px 25px;
+            border-radius: 24px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
             max-width: 600px;
             width: 100%;
-            margin-bottom: 40px;
-            border-left: 10px solid var(--rosa-forte);
+            margin-bottom: 30px;
+            border-left: 12px solid var(--rosa-forte);
         }
 
         h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
+            font-size: 34px;
+            margin-bottom: 25px;
             color: var(--rosa-forte);
         }
 
         p {
-            font-size: 26px; /* Letra gigante para acessibilidade */
-            line-height: 1.5;
+            font-size: 28px; 
+            line-height: 1.4;
+            color: #333;
+        }
+
+        .indicador-progresso {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Área de Botões */
+        .area-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
         }
 
         button {
-            background-color: var(--botao-verde);
-            color: white;
             border: none;
-            padding: 25px 40px;
-            font-size: 28px;
+            padding: 25px 20px;
+            font-size: 26px;
             font-weight: bold;
             border-radius: 50px;
-            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
             cursor: pointer;
             width: 100%;
-            max-width: 400px;
-            transition: transform 0.2s;
+            transition: transform 0.2s, background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         button:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
-        /* Esconde elementos para criar a transição de telas */
+        .btn-principal {
+            background-color: var(--botao-verde);
+            color: white;
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-secundario {
+            background-color: #E0E0E0;
+            color: #333;
+            font-size: 22px;
+            padding: 20px;
+        }
+
         .escondido {
             display: none !important;
         }
@@ -99,52 +132,80 @@
 
     <div id="tela-inicio" class="caixa-texto">
         <h1>Bem-vindo(a)!</h1>
-        <p>Para começarmos, por favor, toque no botão verde abaixo. Ele vai ligar a minha voz.</p>
+        <p>Para começarmos, toque no botão verde abaixo. Ele vai ligar a minha voz.</p>
         <br>
-        <button onclick="iniciarAula()">COMEÇAR</button>
+        <button class="btn-principal" onclick="iniciarAula()">COMEÇAR AULA</button>
     </div>
 
     <div id="rosa-icone" class="rosa-guia"></div>
     
+    <div id="indicador" class="indicador-progresso">Passo 1 de 5</div>
+
     <div id="tela-aula" class="caixa-texto escondido">
         <p id="texto-aula">Carregando...</p>
     </div>
 
-    <button id="botao-proximo" class="escondido" onclick="proximoPasso()">ENTENDI, PRÓXIMO</button>
+    <div id="area-controles" class="area-botoes escondido">
+        <button class="btn-principal" onclick="proximoPasso()">ENTENDI, PRÓXIMO ➔</button>
+        <button class="btn-secundario" onclick="repetirAudio()">🔊 Ouvir de novo</button>
+    </div>
 
     <script>
-        // Array com os passos do Módulo 0
         const roteiro = [
             "Olá! Eu sou a Rosa. Eu moro aqui dentro para ajudar você. Não tenha medo, nada do que você apertar aqui vai quebrar o seu aparelho. Eu protejo você.",
             "Primeiro, vamos olhar para o aparelho que está na sua mão. Ele é feito de plástico e vidro. Essa parte de vidro que acende é como se fosse a janela da sua casa. É por aqui que vamos ver o mundo.",
-            "A parte de trás, onde tem as bolinhas, são as câmeras. Elas são os olhos do aparelho. Evite colocar o dedo nelas para não embaçar a visão dele.",
-            "Você percebeu que às vezes ele esquenta um pouquinho? Isso é normal! Igual a gente quando faz uma caminhada, ele trabalha e gera calor. Só não deixe ele abafado embaixo do travesseiro.",
-            "Para ele ter energia, ele precisa comer. O cabo de carregar é a comidinha dele. Use sempre o cabo que veio na caixa, é a comida mais saudável para a bateria não viciar."
+            "A parte de trás, onde tem as bolinhas, são as câmeras. Elas são os olhos do aparelho. Evite colocar o dedo nelas para não embaçar a visão.",
+            "Você percebeu que às vezes ele esquenta um pouquinho? Isso é normal! Igual a gente quando faz uma caminhada, ele trabalha e gera calor. Só não deixe ele abafado embaixo de cobertas.",
+            "Para ele ter energia, ele precisa comer. O cabo de carregar é a comidinha dele. Use sempre o cabo que veio na caixa, é a refeição mais saudável para a bateria durar muito."
         ];
 
         let passoAtual = 0;
+        let vozEscolhida = null;
+
+        // Captura a melhor voz disponível no sistema
+        function carregarVozes() {
+            const vozes = window.speechSynthesis.getVoices();
+            vozEscolhida = vozes.find(voz => voz.lang === 'pt-BR' && voz.name.includes('Google')) 
+                      || vozes.find(voz => voz.lang === 'pt-BR' && (voz.name.includes('Luciana') || voz.name.includes('Francisca')))
+                      || vozes.find(voz => voz.lang.includes('pt-BR')) 
+                      || vozes[0];
+        }
+
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = carregarVozes;
+        } else {
+            carregarVozes();
+        }
 
         function falar(texto) {
-            // Cancela falas anteriores para não encavalar
             window.speechSynthesis.cancel(); 
-            
-            const synth = window.speechSynthesis;
             const utterThis = new SpeechSynthesisUtterance(texto);
+            
+            if (vozEscolhida) { utterThis.voice = vozEscolhida; }
+            
             utterThis.lang = 'pt-BR';
-            utterThis.rate = 0.85; // Voz um pouco mais lenta
-            utterThis.pitch = 1.1; // Tom levemente mais agudo/acolhedor
-            synth.speak(utterThis);
+            utterThis.rate = 0.95; 
+            utterThis.pitch = 1.15; 
+            
+            window.speechSynthesis.speak(utterThis);
         }
 
         function iniciarAula() {
-            // Esconde a tela inicial e mostra a interface da aula
             document.getElementById('tela-inicio').classList.add('escondido');
             document.getElementById('rosa-icone').style.display = 'block';
             document.getElementById('tela-aula').classList.remove('escondido');
-            document.getElementById('botao-proximo').classList.remove('escondido');
+            document.getElementById('area-controles').classList.remove('escondido');
+            document.getElementById('indicador').style.display = 'block';
             
-            // Inicia o primeiro passo
             atualizarTela();
+        }
+
+        function repetirAudio() {
+            if(passoAtual < roteiro.length) {
+                falar(roteiro[passoAtual]);
+            } else {
+                falar("Parabéns! Você completou esta lição.");
+            }
         }
 
         function proximoPasso() {
@@ -152,15 +213,18 @@
             if (passoAtual < roteiro.length) {
                 atualizarTela();
             } else {
-                document.getElementById('texto-aula').innerHTML = "<b>Parabéns!</b> Você completou o primeiro passo. Você já conhece a Caixa Mágica!";
-                document.getElementById('botao-proximo').classList.add('escondido');
-                falar("Parabéns! Você completou o primeiro passo. Você já conhece a Caixa Mágica!");
+                // Fim do módulo
+                document.getElementById('texto-aula').innerHTML = "<b>Muito bem!</b><br><br>Você completou o primeiro passo. Você já conhece a Caixa Mágica!";
+                document.getElementById('area-controles').classList.add('escondido');
+                document.getElementById('indicador').style.display = 'none';
+                falar("Muito bem! Você completou o primeiro passo. Você já conhece a Caixa Mágica!");
             }
         }
 
         function atualizarTela() {
             const texto = roteiro[passoAtual];
             document.getElementById('texto-aula').innerText = texto;
+            document.getElementById('indicador').innerText = `Passo ${passoAtual + 1} de ${roteiro.length}`;
             falar(texto);
         }
     </script>
