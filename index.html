@@ -113,8 +113,7 @@
 
         p { font-size: 26px; line-height: 1.4; color: #333; }
         h1 { font-size: 32px; color: var(--rosa-forte); margin-bottom: 20px; }
-        h2 { font-size: 28px; color: var(--rosa-forte); margin-bottom: 20px; text-align: center;}
-
+        
         .rodape-fixo {
             position: fixed;
             bottom: 0;
@@ -171,10 +170,10 @@
 
     <div id="tela-inicio" class="area-central">
         <div class="caixa-texto" style="border-left: none;">
-            <h1>Bem-vindo(a)!</h1>
-            <p>Toque no botão verde abaixo para ligar a minha voz e começarmos.</p>
+            <h1 id="titulo-inicio">Bem-vindo(a)!</h1>
+            <p id="msg-inicio">Toque no botão verde abaixo para ligar a minha voz e começarmos.</p>
             <br>
-            <button class="btn-principal" onclick="iniciarAula()">COMEÇAR</button>
+            <button id="btn-start" class="btn-principal" onclick="iniciarAula()">COMEÇAR</button>
         </div>
     </div>
 
@@ -192,7 +191,7 @@
 
     <div id="area-quiz" class="area-central escondido">
         <div class="caixa-texto" style="border-left-color: #3498DB;">
-            <h2>Jogo da Memória</h2>
+            <h2 style="font-size: 28px; color: #D81B60; margin-bottom: 20px;">Jogo da Memória</h2>
             <p id="texto-pergunta">Pergunta vai aqui...</p>
             <div id="botoes-sim-nao" class="area-botoes-quiz">
                 <button class="btn-sim" onclick="responder(true)">SIM</button>
@@ -231,6 +230,20 @@
         let vozEscolhida = null;
         let modoQuiz = false;
 
+        // VERIFICA MEMÓRIA AO CARREGAR
+        window.onload = function() {
+            const progresso = localStorage.getItem('progressoRosa');
+            if (progresso === '1') {
+                document.getElementById('titulo-inicio').innerText = "Que bom ver você de novo!";
+                document.getElementById('msg-inicio').innerText = "Você já conhece a Caixa Mágica. Vamos continuar para a Escola de Gestos?";
+                document.getElementById('btn-start').innerText = "CONTINUAR PARA OS GESTOS";
+                document.getElementById('btn-start').onclick = function() {
+                    window.location.href = '/gestos/';
+                };
+            }
+            carregarVozes();
+        };
+
         function carregarVozes() {
             const vozes = window.speechSynthesis.getVoices();
             vozEscolhida = vozes.find(voz => voz.lang === 'pt-BR' && voz.name.includes('Google')) 
@@ -240,7 +253,7 @@
 
         if (speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = carregarVozes;
-        } else { carregarVozes(); }
+        }
 
         function falar(texto, aoTerminar) {
             window.speechSynthesis.cancel(); 
@@ -249,7 +262,7 @@
             utterThis.lang = 'pt-BR';
             utterThis.rate = 0.95; 
             utterThis.pitch = 1.15; 
-            utterThis.onend = function(event) { if(aoTerminar) aoTerminar(); };
+            utterThis.onend = function() { if(aoTerminar) aoTerminar(); };
             window.speechSynthesis.speak(utterThis);
         }
 
@@ -313,18 +326,29 @@
         }
 
         function mostrarMedalha() {
+            // SALVA PROGRESSO NA MEMÓRIA DO CELULAR
+            localStorage.setItem('progressoRosa', '1');
+            
             document.getElementById('indicador').innerText = "Vitória!";
             document.getElementById('botoes-sim-nao').classList.add('escondido');
             document.getElementById('texto-pergunta').classList.add('escondido');
             document.getElementById('area-medalha').classList.remove('escondido');
-            falar("Parabéns! Você é um campeão. Acabou de ganhar a medalha da caixa mágica. Compartilhe com sua família!");
+            
+            const msgFinal = "Parabéns! Você ganhou a medalha da caixa mágica. Agora, envie para sua família no WhatsApp e depois clique no link da mensagem para voltarmos e aprendermos a Escola de Gestos!";
+            falar(msgFinal);
         }
 
         function compartilharVitoriaWhatsApp() {
-            const texto = 'Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. Vem aprender você também: ';
-            const linkSite = 'https://rosa.consysencia.com/?v=5'; 
-            const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(texto + linkSite)}`;
+            const linkSite = 'https://rosa.consysencia.com'; 
+            const texto = `Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa no projeto ConSySenci.a Rosa. \n\nMeu próximo passo é a Escola de Gestos! \n\nClique no link abaixo para continuar aprendendo comigo: \n${linkSite}`;
+            
+            const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(texto)}`;
             window.open(urlWhatsApp, '_blank');
+            
+            // Pequeno atraso para dar tempo de enviar e depois trocar de página
+            setTimeout(() => {
+                window.location.href = '/gestos/';
+            }, 3000);
         }
     </script>
 </body>
