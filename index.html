@@ -730,6 +730,59 @@ input[type=range].sl-bri::-webkit-slider-thumb {
 /* Ajustes finos para telas muito estreitas */
 @media(max-width: 390px)  { .sim-wrap { transform: scale(.88) translateY(-5%); } }
 @media(max-width: 360px)  { .sim-wrap { transform: scale(.80) translateY(-6%); } }
+
+/* ════════════════════════════════════════════
+   FÍSICA DO TOQUE — Ripple/Escala universal
+════════════════════════════════════════════ */
+.nb-btn,
+.app-ic,
+.qs-pill,
+.btn-prox,
+.btn-mapa,
+.btn-lim,
+.wa-send,
+.wa-back,
+.vk,
+#m0-prox,
+.mod-card.livre,
+.mod-card.feito {
+  transition: transform 100ms ease, opacity 100ms ease;
+}
+.nb-btn:active,
+.app-ic:active,
+.qs-pill:active,
+.btn-prox:active,
+.btn-mapa:active,
+.btn-lim:active,
+.wa-send:active,
+.wa-back:active,
+.vk:active,
+#m0-prox:active,
+.mod-card.livre:active,
+.mod-card.feito:active {
+  transform: scale(0.95);
+}
+
+/* ════════════════════════════════════════════
+   LUZ GUIA — .foco-rosa (Rosa Nair #D81B60)
+   Aplicada no botão power do Módulo 0
+════════════════════════════════════════════ */
+.foco-rosa {
+  animation: pulsaRosa 1.6s ease-in-out infinite;
+}
+@keyframes pulsaRosa {
+  0%,100% {
+    box-shadow: 3px 0 6px rgba(0,0,0,.6),
+                5px 0 0 rgba(216,27,96,.3),
+                8px 0 18px rgba(216,27,96,.5);
+  }
+  50% {
+    box-shadow: 3px 0 8px rgba(0,0,0,.6),
+                6px 0 0 rgba(216,27,96,.6),
+                12px 0 28px rgba(216,27,96,.8);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -749,10 +802,10 @@ input[type=range].sl-bri::-webkit-slider-thumb {
 <div id="pg-mod0" class="page pg-sim">
   <div class="sim-wrap"><div class="pf" id="pf0">
     <div class="vb vb-u"></div><div class="vb vb-d"></div>
-    <div id="pbtn0" class="pbtn idle" tabindex="0"></div>
+    <div id="pbtn0" class="pbtn idle foco-rosa" tabindex="0"></div>
     <div class="lpind" id="lpi0"><div class="lptr"><div class="lpfl" id="lpf0"></div></div><span class="lplb">3s</span></div>
     <div class="ps" id="ps0">
-      <div class="sb"><span id="m0-hora">--:--</span><div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div></div>
+      <div class="sb"><span id="m0-hora">--:--</span><div class="sb-icons"><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4 2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></span><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="14"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4zM13 18h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg></span></div></div>
       <div class="tela">
         <div id="m0-off"  class="sl vis" style="background:#000;"></div>
         <div id="m0-boot" class="sl" style="background:#000;">
@@ -767,7 +820,7 @@ input[type=range].sl-bri::-webkit-slider-thumb {
         </div>
         <div class="fberr" id="m0-fb"></div>
       </div>
-      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')">←</button><button class="nb-btn">⬤</button><button class="nb-btn">⬜</button></div>
+      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/></svg></button></div>
     </div>
   </div></div>
   <div class="instructor vis" id="instr0"><div class="iarrow" id="ia0"><span></span><span></span></div><p id="it0">Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar</p></div>
@@ -779,23 +832,23 @@ input[type=range].sl-bri::-webkit-slider-thumb {
     <div class="vb vb-u"></div><div class="vb vb-d"></div>
     <div class="pbtn locked"></div>
     <div class="ps" id="ps1">
-      <div class="sb" id="m1-sb"><span id="m1-hora">10:30</span><div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div></div>
+      <div class="sb" id="m1-sb"><span id="m1-hora">10:30</span><div class="sb-icons"><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4 2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></span><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="14"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4zM13 18h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg></span></div></div>
       <div class="tela" id="m1-tela" style="overflow:visible;">
         <div class="cortina" id="m1-cortina">
           <div class="cortina-cab">
             <div class="qs-grid">
-              <button class="qs-pill on" id="qs-wifi"  onclick="togQS('qs-wifi')"> <span class="qi">📶</span><span class="qn">Wi-Fi<br>Ativo</span></button>
-              <button class="qs-pill on" id="qs-dados" onclick="togQS('qs-dados')"><span class="qi">📡</span><span class="qn">Dados</span></button>
-              <button class="qs-pill"   id="qs-lan"    onclick="togQS('qs-lan')">  <span class="qi">🔦</span><span class="qn">Lanterna</span></button>
-              <button class="qs-pill"   id="qs-aviao"  onclick="togQS('qs-aviao')"><span class="qi">✈️</span><span class="qn">Modo Avião</span></button>
-              <button class="qs-pill on" id="qs-bt"    onclick="togQS('qs-bt')">  <span class="qi">📘</span><span class="qn">Bluetooth</span></button>
-              <button class="qs-pill"   id="qs-nr"     onclick="togQS('qs-nr')">  <span class="qi">🔕</span><span class="qn">Não perturbe</span></button>
+              <button class="qs-pill on" id="qs-wifi"  onclick="togQS('qs-wifi')"> <span class="qi"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4 2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></span><span class="qn">Wi-Fi<br>Ativo</span></button>
+              <button class="qs-pill on" id="qs-dados" onclick="togQS('qs-dados')"><span class="qi"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M1 7h4v13H1zm6-4h4v17H7zm6 9h4v8h-4zm6-5h4v13h-4z"/></svg></span><span class="qn">Dados</span></button>
+              <button class="qs-pill"   id="qs-lan"    onclick="togQS('qs-lan')">  <span class="qi"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span><span class="qn">Lanterna</span></button>
+              <button class="qs-pill"   id="qs-aviao"  onclick="togQS('qs-aviao')"><span class="qi"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg></span><span class="qn">Modo Avião</span></button>
+              <button class="qs-pill on" id="qs-bt"    onclick="togQS('qs-bt')">  <span class="qi"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.71 7.71 12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg></span><span class="qn">Bluetooth</span></button>
+              <button class="qs-pill"   id="qs-nr"     onclick="togQS('qs-nr')">  <span class="qi"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zM4.27 3 3 4.27l3.32 3.32C6.12 8.46 6 9.21 6 10v1H4v2h2v1l-2 2v1h14.73l1 1L21 16.73 4.27 3z"/></svg></span><span class="qn">Não perturbe</span></button>
             </div>
             <div class="br-row"><span class="br-ico">🌑</span><input type="range" class="sl-bri" min="5" max="100" value="75"><span class="br-ico">☀️</span></div>
           </div>
           <div class="notif-area" id="m1-notifs">
-            <div class="notif" id="m1-n1"><div class="notif-ico">💬</div><div class="notif-body"><strong>Filho</strong><span>Oi! Tudo bem? 😊</span></div><span class="notif-time">agora</span></div>
-            <div class="notif" id="m1-n2"><div class="notif-ico" style="background:#1A73E8;">📧</div><div class="notif-body"><strong>Gmail</strong><span>Sua fatura chegou.</span></div><span class="notif-time">5 min</span></div>
+            <div class="notif" id="m1-n1"><div class="notif-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div><div class="notif-body"><strong>Filho</strong><span>Oi! Tudo bem? 😊</span></div><span class="notif-time">agora</span></div>
+            <div class="notif" id="m1-n2"><div class="notif-ico" style="background:#1A73E8;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div><div class="notif-body"><strong>Gmail</strong><span>Sua fatura chegou.</span></div><span class="notif-time">5 min</span></div>
           </div>
           <div class="cortina-rod"><button class="btn-lim" id="m1-btnlim" style="display:none;" onclick="m1LimNotifs()">Limpar tudo</button></div>
           <p class="dica-sub" id="m1-dicasub" style="display:none;">▲ Deslize para cima para fechar</p>
@@ -806,7 +859,7 @@ input[type=range].sl-bri::-webkit-slider-thumb {
             <div class="app-ic" id="m1-tel" onclick="m1ClicarApp('Telefone')"><div class="app-img ic-tel"><svg viewBox="0 0 24 24" fill="white"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div><span class="app-lbl">Telefone</span></div>
             <div class="app-ic"><div class="app-img ic-cam"><svg viewBox="0 0 24 24" fill="white"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></div><span class="app-lbl">Câmera</span></div>
             <div class="app-ic"><div class="app-img ic-zap"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.06-1.38C8.42 21.5 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.64 13.36c-.2.56-1.16 1.08-1.6 1.14-.44.06-.44.32-2.76-.6-2.76-1.06-4.52-3.86-4.66-4.04-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.06 1-2.34.26-.28.56-.34.74-.34h.54c.18 0 .42-.06.66.5.24.58.82 2 .9 2.14.08.14.12.3.02.48-.1.18-.16.3-.3.46-.16.16-.32.36-.46.48-.16.14-.32.3-.14.6.18.3.82 1.34 1.76 2.18 1.2 1.06 2.2 1.4 2.52 1.56.3.14.48.1.66-.08.18-.18.76-.88.96-1.18.2-.3.4-.26.66-.16.28.1 1.74.82 2.04.96.3.16.5.22.56.34.08.1.08.64-.12 1.2z"/></svg></div><span class="app-lbl">WhatsApp</span></div>
-            <div class="app-ic"><div class="app-img ic-chr"><span style="font-size:22px;">🌐</span></div><span class="app-lbl">Chrome</span></div>
+            <div class="app-ic"><div class="app-img ic-chr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="4" fill="#4285F4"/><path d="M12 8a4 4 0 0 1 3.46 2H20a8 8 0 1 0 .01 4H15.46A4 4 0 0 1 12 16a4 4 0 0 1 0-8z" fill="#EA4335"/><path d="M12 8a4 4 0 0 1 3.46 2H20A8 8 0 0 0 4.42 9.5l2.6 4.5A4 4 0 0 1 12 8z" fill="#FBBC05"/><path d="M12 16a4 4 0 0 1-3.98-3.5L5.42 17A8 8 0 0 0 20 14h-4.54A4 4 0 0 1 12 16z" fill="#34A853"/></svg></div><span class="app-lbl">Chrome</span></div>
             <div class="app-ic"><div class="app-img ic-map"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg></div><span class="app-lbl">Maps</span></div>
             <div class="app-ic"><div class="app-img ic-gal"><svg viewBox="0 0 24 24" fill="white"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div><span class="app-lbl">Galeria</span></div>
             <div class="app-ic"><div class="app-img ic-yt"><svg viewBox="0 0 24 24" fill="white"><path d="M19.59 7a2.56 2.56 0 0 0-1.8-1.81C16.27 5 12 5 12 5s-4.27 0-5.79.19A2.56 2.56 0 0 0 4.41 7 26.86 26.86 0 0 0 4.21 12a26.86 26.86 0 0 0 .2 5 2.56 2.56 0 0 0 1.8 1.81C7.73 19 12 19 12 19s4.27 0 5.79-.19a2.56 2.56 0 0 0 1.8-1.81 26.86 26.86 0 0 0 .2-5 26.86 26.86 0 0 0-.2-5zM10 15V9l5.2 3z"/></svg></div><span class="app-lbl">YouTube</span></div>
@@ -816,12 +869,12 @@ input[type=range].sl-bri::-webkit-slider-thumb {
             <div class="app-ic" onclick="m1ClicarApp('Telefone')" style="gap:0;"><div class="app-img ic-tel" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="white" style="width:20px;height:20px;"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div></div>
             <div class="app-ic" style="gap:0;"><div class="app-img ic-cam" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="white" style="width:20px;height:20px;"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></div></div>
             <div class="app-ic" style="gap:0;"><div class="app-img ic-zap" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="white" style="width:20px;height:20px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.06-1.38C8.42 21.5 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.64 13.36c-.2.56-1.16 1.08-1.6 1.14-.44.06-.44.32-2.76-.6-2.76-1.06-4.52-3.86-4.66-4.04-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.06 1-2.34.26-.28.56-.34.74-.34h.54c.18 0 .42-.06.66.5.24.58.82 2 .9 2.14.08.14.12.3.02.48-.1.18-.16.3-.3.46-.16.16-.32.36-.46.48-.16.14-.32.3-.14.6.18.3.82 1.34 1.76 2.18 1.2 1.06 2.2 1.4 2.52 1.56.3.14.48.1.66-.08.18-.18.76-.88.96-1.18.2-.3.4-.26.66-.16.28.1 1.74.82 2.04.96.3.16.5.22.56.34.08.1.08.64-.12 1.2z"/></svg></div></div>
-            <div class="app-ic" style="gap:0;"><div class="app-img ic-chr" style="width:44px;height:44px;"><span style="font-size:20px;">🌐</span></div></div>
+            <div class="app-ic" style="gap:0;"><div class="app-img ic-chr" style="width:44px;height:44px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="4" fill="#4285F4"/><path d="M12 8a4 4 0 0 1 3.46 2H20a8 8 0 1 0 .01 4H15.46A4 4 0 0 1 12 16a4 4 0 0 1 0-8z" fill="#EA4335"/><path d="M12 8a4 4 0 0 1 3.46 2H20A8 8 0 0 0 4.42 9.5l2.6 4.5A4 4 0 0 1 12 8z" fill="#FBBC05"/><path d="M12 16a4 4 0 0 1-3.98-3.5L5.42 17A8 8 0 0 0 20 14h-4.54A4 4 0 0 1 12 16z" fill="#34A853"/></svg></div></div>
           </div>
         </div>
       
       </div>
-      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')">←</button><button class="nb-btn">⬤</button><button class="nb-btn">⬜</button></div>
+      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/></svg></button></div>
     </div>
   </div></div>
   <div class="instructor" id="instr1"><div class="iarrow" id="ia1" style="display:none;"><span></span><span></span></div><p id="it1">Arraste o dedo de <strong>cima para baixo</strong> em qualquer lugar da tela!</p></div>
@@ -833,7 +886,7 @@ input[type=range].sl-bri::-webkit-slider-thumb {
     <div class="vb vb-u"></div><div class="vb vb-d"></div>
     <div class="pbtn locked"></div>
     <div class="ps" id="ps2">
-      <div class="sb"><span id="m2-hora">10:30</span><div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div></div>
+      <div class="sb"><span id="m2-hora">10:30</span><div class="sb-icons"><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4 2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></span><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="14"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4zM13 18h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg></span></div></div>
       <!-- LAUNCHER M2 -->
       <div id="m2-launcher" class="tela" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px;background:#0A1628;transition:opacity .35s;">
         <div style="font-size:40px;">📱</div>
@@ -855,20 +908,20 @@ input[type=range].sl-bri::-webkit-slider-thumb {
         </div>
         <div style="flex:1;overflow-y:auto;background:var(--wbg);min-height:0;">
           <div onclick="M2.abrirConversa()" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--wdv);cursor:pointer;background:rgba(0,168,132,.06);border-left:3px solid var(--neon);animation:pe 1s ease-in-out infinite alternate;">
-            <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#FF8A65,#E64A19);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👦</div>
+            <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#FF8A65,#E64A19);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
             <div style="flex:1;min-width:0;"><div style="display:flex;justify-content:space-between;"><strong style="font-size:14px;color:#E9EDEF;">Filho 💙</strong><span style="font-size:11px;color:var(--wg);">agora</span></div><div style="font-size:12px;color:#8696A0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Oi mãe! Tudo bem? 😊</div></div>
             <div style="width:20px;height:20px;border-radius:50%;background:var(--wg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#000;flex-shrink:0;">1</div>
           </div>
-          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--wdv);opacity:.4;"><div style="width:46px;height:46px;border-radius:50%;background:#546E7A;display:flex;align-items:center;justify-content:center;font-size:20px;">👩</div><div style="flex:1;"><div style="font-size:14px;color:#E9EDEF;">Vizinha Maria</div><div style="font-size:12px;color:#8696A0;">Boa tarde!</div></div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--wdv);opacity:.4;"><div style="width:46px;height:46px;border-radius:50%;background:#546E7A;display:flex;align-items:center;justify-content:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div><div style="flex:1;"><div style="font-size:14px;color:#E9EDEF;">Vizinha Maria</div><div style="font-size:12px;color:#8696A0;">Boa tarde!</div></div></div>
         </div>
       </div>
       <!-- CHAT M2 — usa chat-flex: flex column que preenche 100% da .tela -->
       <div id="m2-chat" class="tela chat" style="display:none;">
           <div class="wa-header">
-            <span class="wa-back" onclick="M2.voltarLista()">←</span>
-            <div class="wa-avatar">👦</div>
+            <span class="wa-back" onclick="M2.voltarLista()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></span>
+            <div class="wa-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
             <div class="wa-info"><div class="wa-name">Filho 💙</div><div id="m2-status" class="wa-status">online</div></div>
-            <div class="wa-actions"><span>📞</span><span>⋮</span></div>
+            <div class="wa-actions"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
           </div>
           <div class="typing-guide" id="m2-guide" style="display:none;"><span class="tg-label">Digite:</span><div class="tg-text" id="m2-guide-text"></div></div>
           <div class="wa-msgs" id="m2-msgs">
@@ -885,7 +938,7 @@ input[type=range].sl-bri::-webkit-slider-thumb {
           </div>
           <div class="vkb" id="m2-vkb"><div class="vkb-rows" id="m2-vkb-rows"></div></div>
       </div>
-      <div class="nav-bar"><button class="nb-btn" onclick="M2.voltar()">←</button><button class="nb-btn">⬤</button><button class="nb-btn">⬜</button></div>
+      <div class="nav-bar"><button class="nb-btn" onclick="M2.voltar()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/></svg></button></div>
     </div>
   </div></div>
   <div class="instructor" id="instr2"><div class="iarrow" id="ia2"><span></span><span></span></div><p id="it2">Toque no ícone do <strong>WhatsApp</strong> para abrir!</p></div>
@@ -897,13 +950,13 @@ input[type=range].sl-bri::-webkit-slider-thumb {
     <div class="vb vb-u"></div><div class="vb vb-d"></div>
     <div class="pbtn locked"></div>
     <div class="ps" id="ps3">
-      <div class="sb"><span id="m3-hora">10:30</span><div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div></div>
+      <div class="sb"><span id="m3-hora">10:30</span><div class="sb-icons"><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4 2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></span><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="14"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4zM13 18h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg></span></div></div>
       <div id="m3-chat" class="tela chat">
           <div class="wa-header" style="flex-shrink:0;">
-            <span class="wa-back" onclick="Router.go('pg-mapa')">←</span>
-            <div class="wa-avatar">👦</div>
+            <span class="wa-back" onclick="Router.go('pg-mapa')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></span>
+            <div class="wa-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
             <div class="wa-info"><div class="wa-name">Filho 💙</div><div class="wa-status" id="m3-status">online</div></div>
-            <div class="wa-actions"><span>📞</span><span>⋮</span></div>
+            <div class="wa-actions"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
           </div>
           <!-- barra de progresso -->
           <div style="background:var(--wtb);padding:8px 12px;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--wdv);flex-shrink:0;">
@@ -922,14 +975,14 @@ input[type=range].sl-bri::-webkit-slider-thumb {
           </div>
           <!-- barra de input normal -->
           <div id="m3-bar-n" class="wa-input-bar" style="flex-shrink:0;">
-            <button id="m3-btn-emoji" onclick="M3.abrirEmoji()" style="background:none;border:none;font-size:22px;cursor:pointer;padding:4px;color:#8696A0;">😊</button>
+            <button id="m3-btn-emoji" onclick="M3.abrirEmoji()" style="background:none;border:none;cursor:pointer;padding:4px;color:#8696A0;display:flex;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg></button>
             <div style="flex:1;background:#2A3942;border-radius:22px;padding:9px 14px;font-size:13px;color:#8696A0;font-family:var(--fn);">Mensagem</div>
-            <button id="m3-btn-clip" onclick="M3.abrirCamera()" style="background:none;border:none;font-size:22px;cursor:pointer;padding:4px;color:#8696A0;">📎</button>
-            <button id="m3-btn-mic" onclick="M3.iniciarAudio()" style="width:42px;height:42px;border-radius:50%;background:var(--wg);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;">🎤</button>
+            <button id="m3-btn-clip" onclick="M3.abrirCamera()" style="background:none;border:none;cursor:pointer;padding:4px;color:#8696A0;display:flex;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg></button>
+            <button id="m3-btn-mic" onclick="M3.iniciarAudio()" style="width:42px;height:42px;border-radius:50%;background:var(--wg);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/></svg></button>
           </div>
           <!-- gravando áudio -->
           <div id="m3-bar-a" style="display:none;flex-shrink:0;align-items:center;gap:10px;padding:10px 14px;background:rgba(0,168,132,.08);border-top:1px solid var(--wdv);">
-            <button onclick="M3.cancelarAudio()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#FF5555;">🗑️</button>
+            <button onclick="M3.cancelarAudio()" style="background:none;border:none;cursor:pointer;color:#FF5555;display:flex;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
             <div style="flex:1;display:flex;align-items:center;gap:8px;">
               <div style="width:10px;height:10px;border-radius:50%;background:#FF4444;animation:recPulse .8s ease-in-out infinite alternate;flex-shrink:0;"></div>
               <div id="m3-onda" style="flex:1;height:28px;display:flex;align-items:center;gap:2px;overflow:hidden;"></div>
@@ -950,12 +1003,12 @@ input[type=range].sl-bri::-webkit-slider-thumb {
             </div>
             <div style="display:flex;align-items:center;justify-content:space-around;padding:8px;background:#111;flex-shrink:0;">
               <button onclick="M3.fecharCamera()" style="background:none;border:2px solid #555;border-radius:50%;width:34px;height:34px;color:#aaa;font-size:15px;cursor:pointer;">✕</button>
-              <button onclick="M3.tirarFoto()" style="width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid #ccc;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 0 3px var(--neon),0 0 14px var(--neon-g);animation:pe 1s ease-in-out infinite alternate;">📷</button>
+              <button onclick="M3.tirarFoto()" style="width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid #ccc;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px var(--neon),0 0 14px var(--neon-g);animation:pe 1s ease-in-out infinite alternate;color:#333;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></button>
               <div style="width:34px;"></div>
             </div>
           </div>
       </div>
-      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')">←</button><button class="nb-btn">⬤</button><button class="nb-btn">⬜</button></div>
+      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/></svg></button></div>
     </div>
   </div></div>
   <div class="instructor" id="instr3"><div class="iarrow" id="ia3"><span></span><span></span></div><p id="it3">Toque no <strong>microfone 🎤</strong> para gravar um áudio!</p></div>
@@ -967,13 +1020,13 @@ input[type=range].sl-bri::-webkit-slider-thumb {
     <div class="vb vb-u"></div><div class="vb vb-d"></div>
     <div class="pbtn locked"></div>
     <div class="ps" id="ps4">
-      <div class="sb"><span id="m4-hora">10:30</span><div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div></div>
+      <div class="sb"><span id="m4-hora">10:30</span><div class="sb-icons"><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4 2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></span><span class="sb-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="14"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4zM13 18h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg></span></div></div>
       <div id="m4-chat" class="tela chat">
           <div class="wa-header" style="flex-shrink:0;">
-            <span class="wa-back" onclick="Router.go('pg-mapa')">←</span>
-            <div class="wa-avatar">👦</div>
+            <span class="wa-back" onclick="Router.go('pg-mapa')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></span>
+            <div class="wa-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
             <div class="wa-info"><div class="wa-name">Filho 💙</div><div class="wa-status" id="m4-status">online</div></div>
-            <div class="wa-actions"><span>📞</span><span>⋮</span></div>
+            <div class="wa-actions"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
           </div>
           <div style="background:var(--wtb);padding:8px 12px;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--wdv);flex-shrink:0;">
             <div class="m4-step active" id="m4-dot-0">⚠️</div>
@@ -989,11 +1042,11 @@ input[type=range].sl-bri::-webkit-slider-thumb {
           </div>
           <div class="wa-input-bar" style="flex-shrink:0;">
             <div style="flex:1;background:#2A3942;border-radius:22px;padding:9px 14px;font-size:13px;color:#8696A0;font-family:var(--fn);">Mensagem</div>
-            <div style="width:42px;height:42px;border-radius:50%;background:#2A3942;display:flex;align-items:center;justify-content:center;opacity:.4;font-size:18px;">🎤</div>
+            <div style="width:42px;height:42px;border-radius:50%;background:#2A3942;display:flex;align-items:center;justify-content:center;opacity:.4;color:#8696A0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/></svg></div>
           </div>
         <div id="m4-overlay" class="m4-alerta" style="display:none;"></div>
       </div>
-      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')">←</button><button class="nb-btn">⬤</button><button class="nb-btn">⬜</button></div>
+      <div class="nav-bar"><button class="nb-btn" onclick="Router.go('pg-mapa')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/></svg></button><button class="nb-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/></svg></button></div>
     </div>
   </div></div>
   <div class="instructor" id="instr4"><div class="iarrow" id="ia4"><span></span><span></span></div><p id="it4">Leia a mensagem do filho com atenção!</p></div>
@@ -1036,13 +1089,27 @@ function atualizarMapa(){
 }
 function irMod(n){
   if(n>0&&!Prog.concluido(n-1))return;
+  // DESBLOQUEIO DE AUTOPLAY — disparo silencioso na 1ª interação do usuário
+  // Navegadores mobile bloqueiam áudio sem gesto. Este speak('') vazio,
+  // disparado pelo clique no card, "destrava" o motor de voz para as telas seguintes.
+  if(window.speechSynthesis){
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
+  }
   if(n===0){Router.go('pg-mod0');M0.init();return;}
   if(n===1){Router.go('pg-mod1');M1.init();return;}
   if(n===2){Router.go('pg-mod2');M2.init();return;}
   if(n===3){Router.go('pg-mod3');M3.init();return;}
   if(n===4){Router.go('pg-mod4');M4.init();return;}
 }
-const cert=(ico,tit,sub)=>{document.getElementById('cert-ico').textContent=ico;document.getElementById('cert-tit').textContent=tit;document.getElementById('cert-sub').innerHTML=sub;Router.go('pg-cert');};
+const cert=(ico,tit,sub)=>{
+  document.getElementById('cert-ico').textContent=ico;
+  document.getElementById('cert-tit').textContent=tit;
+  document.getElementById('cert-sub').innerHTML=sub;
+  Router.go('pg-cert');
+  // VOZ: anuncia a conclusão do módulo
+  window.falar(tit + '. ' + sub);
+};
 const getHM=()=>{const n=new Date();return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');};
 </script>
 <script>
@@ -1060,7 +1127,10 @@ const M0=(()=>{
   let D=null,fbT=null,msgT=null,bootTs=[];
   const MSGS={OFF:{arrow:true,html:'Toque e <strong>segure</strong> o botão lateral por <strong>3 segundos</strong> para ligar'},PRESSING:{arrow:false,html:'✅ Isso! Continue <strong>segurando</strong>...'},BOOTING:{arrow:false,html:'✨ O celular está <strong>ligando</strong>...'},WELCOME:{arrow:false,html:'🎉 Você <strong>ligou o celular!</strong> Toque em Próximo!'},ERR_FAST:{arrow:true,html:'⚡ Muito rápido! Segure por <strong>3 segundos</strong>'},ERR_MED:{arrow:true,html:'⏱️ Quase! Segure um <strong>pouquinho mais</strong>'},ERR_LONG:{arrow:true,html:'👏 Faltou pouco! Segure até a tela <strong>acender</strong>'}};
   const show=el=>el?.classList.add('vis');const hide=el=>el?.classList.remove('vis');
-  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
+  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);
+    // VOZ: lê a instrução em voz alta ao exibir na tela
+    window.falar(m.html);
+  };delay>0?(msgT=setTimeout(apply,delay)):apply();};
   const setPwr=cls=>{if(!D)return;D.pbtn.className='pbtn '+cls;D.pbtn.tabIndex=cls==='locked'?-1:0;};
   const setLP=p=>{if(!D)return;p<=0?(hide(D.lpind),D.lpfl.style.height='0%'):(show(D.lpind),D.lpfl.style.height=(p*100)+'%');};
   const showErr=ms=>{let key,txt;if(ms<1000){key='ERR_FAST';txt='Tente segurar mais';}else if(ms<2500){key='ERR_MED';txt='Quase! Mais um pouco';}else{key='ERR_LONG';txt='Faltou pouco! Tente de novo';}D.pf.classList.remove('haptic');void D.pf.offsetWidth;D.pf.classList.add('haptic');setTimeout(()=>D.pf?.classList.remove('haptic'),400);D.fb.textContent=txt;show(D.fb);clearTimeout(fbT);fbT=setTimeout(()=>hide(D.fb),2200);setMsg(key);};
@@ -1103,7 +1173,14 @@ const M1=(()=>{
   const show=el=>el?.classList.add('vis');
   const setMsg=(key,delay=0)=>{
     clearTimeout(msgT);
-    const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};
+    const apply=()=>{
+      const m=MSGS[key];if(!m)return;
+      D.itxt.innerHTML=m.html;
+      D.iarr.style.display=m.arrow?'flex':'none';
+      show(D.instr);
+      // VOZ: lê a instrução em voz alta ao exibir na tela
+      window.falar(m.html);
+    };
     delay>0?(msgT=setTimeout(apply,delay)):apply();
   };
 
@@ -1217,7 +1294,18 @@ const M1=(()=>{
     setTimeout(()=>setMsg('arrastar-meia'),500);
   };
 
-  window.togQS=id=>document.getElementById(id)?.classList.toggle('on');
+  window.togQS=id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.classList.toggle('on');
+    // Voz integrada: Modo Avião
+    if(id==='qs-aviao'){
+      const on=el.classList.contains('on');
+      if(on){
+        falar('Opa! O avião desligou sua internet. Veja que o sinal sumiu lá em cima.');
+      }
+    }
+  };
   window.m1LimNotifs=()=>{
     ['m1-n1','m1-n2'].forEach(id=>{
       const el=document.getElementById(id);
@@ -1244,7 +1332,10 @@ const M2=(()=>{
   const MSGS={0:{arrow:true,html:'Toque no ícone do <strong>WhatsApp</strong> para abrir!'},1:{arrow:false,html:'Ótimo! Toque na conversa do seu <strong>filho</strong>!'},2:{arrow:false,html:'Muito bem! Toque na <strong>caixa de mensagem</strong>!'},3:{arrow:false,html:'Toque nas letras <strong>em verde</strong> na ordem!'},4:{arrow:false,html:'Mensagem pronta! Toque no <strong>botão verde</strong> de enviar!'},5:{arrow:false,html:'🎉 Você aprendeu a <strong>usar o teclado!</strong>'}};
   let etapa=0,typed='',msgT=null,D=null;
   const show=el=>el?.classList.add('vis');
-  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
+  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);
+    // VOZ: lê a instrução em voz alta ao exibir na tela
+    window.falar(m.html);
+  };delay>0?(msgT=setTimeout(apply,delay)):apply();};
   const renderKB=()=>{
     const c=document.getElementById('m2-vkb-rows');c.innerHTML='';
     const nx=typed.length<FRASE.length?FRASE[typed.length].toLowerCase():null;
@@ -1324,7 +1415,10 @@ const M3=(()=>{
   let etapa=0,audioSeg=0,audioT=null,msgT=null,D=null;
   const MSGS={0:{arrow:true,html:'Toque no <strong>microfone 🎤</strong> para gravar um áudio!'},'0b':{arrow:false,html:'🎤 Gravando! Toque no <strong>botão verde</strong> para enviar!'},1:{arrow:false,html:'Ótimo! Toque no <strong>clipe 📎</strong> para enviar uma foto!'},'1b':{arrow:false,html:'📷 Toque no <strong>botão de foto</strong> para tirar!'},2:{arrow:false,html:'Incrível! Toque no <strong>emoji 😊</strong> para enviar um coração!'},3:{arrow:false,html:'Seu filho mandou uma foto! Toque nela para <strong>abrir!</strong>'},4:{arrow:false,html:'🎉 Você aprendeu tudo! <strong>Módulo concluído!</strong>'}};
   const show=el=>el?.classList.add('vis');
-  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
+  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);
+    // VOZ: lê a instrução em voz alta ao exibir na tela
+    window.falar(m.html);
+  };delay>0?(msgT=setTimeout(apply,delay)):apply();};
   const setEV=(n)=>{[0,1,2,3].forEach(i=>{const d=document.getElementById('m3-dot-'+i);if(!d)return;d.className=i<n?'m3-step-dot done':i===n?'m3-step-dot active':'m3-step-dot';});['m3-pb0','m3-pb1','m3-pb2'].forEach((id,i)=>{const el=document.getElementById(id);if(el)el.style.width=i<n?'100%':'0%';});};
   const addB=(html,tipo)=>{const msgs=document.getElementById('m3-msgs');const d=document.createElement('div');d.className='wa-bubble '+tipo;d.innerHTML=html+`<span class="wa-bubble-time">${getHM()}${tipo==='sent'?' <span class="wa-tick">✓✓</span>':''}</span>`;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;};
   const filhoDigita=(cb,delay=1400)=>{document.getElementById('m3-status').textContent='digitando...';const msgs=document.getElementById('m3-msgs');const tb=document.createElement('div');tb.className='wa-typing-bbl';tb.innerHTML='<span></span><span></span><span></span>';msgs.appendChild(tb);msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{tb.remove();document.getElementById('m3-status').textContent='online';cb();},delay);};
@@ -1379,28 +1473,47 @@ const M4=(()=>{
     3:{arrow:false,html:'🎉 Você está <strong>protegida!</strong> Módulo concluído!'},
   };
   const show=el=>el?.classList.add('vis');
-  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
+  const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);
+    // VOZ: lê a instrução em voz alta ao exibir na tela
+    window.falar(m.html);
+  };delay>0?(msgT=setTimeout(apply,delay)):apply();};
   const setEV=(n)=>{[0,1,2,3].forEach(i=>{const d=document.getElementById('m4-dot-'+i);if(!d)return;d.className=i<n?'m4-step done':i===n?'m4-step active':'m4-step';});['m4-pb0','m4-pb1','m4-pb2'].forEach((id,i)=>{const el=document.getElementById(id);if(el)el.style.width=i<n?'100%':'0%';});};
   const addRecv=(html)=>{const msgs=document.getElementById('m4-msgs');const d=document.createElement('div');d.className='wa-bubble recv';d.innerHTML=html+`<span class="wa-bubble-time">${getHM()}</span>`;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;};
-  const showOverlay=(html)=>{const ov=document.getElementById('m4-overlay');ov.innerHTML=html;ov.style.display='flex';};
+  const showOverlay=(html)=>{
+    const ov=document.getElementById('m4-overlay');
+    ov.innerHTML=html;
+    ov.style.display='flex';
+    // VOZ: extrai o texto do alerta (h3 + p) e lê em voz alta
+    // Usa um elemento temporário para parsear o HTML e obter só o texto limpo
+    const tmp=document.createElement('div');
+    tmp.innerHTML=html;
+    const h3=tmp.querySelector('h3')?.textContent||'';
+    const p =tmp.querySelector('p')?.textContent||'';
+    window.falar(h3 + '. ' + p);
+  };
   const hideOverlay=()=>{document.getElementById('m4-overlay').style.display='none';};
 
   // ── CENÁRIO 0: Mensagem suspeita de número desconhecido ──
   const cen0=()=>{
     etapa=0;setEV(0);
-    addRecv(`<div style="font-size:11px;color:#FF5555;font-weight:700;margin-bottom:4px;">+55 11 99999-0000 — Desconhecido</div>Parabéns! Você ganhou um <strong>PRÊMIO</strong> de R$5.000! Clique aqui para resgatar agora: <span style="color:#5aa;text-decoration:underline;">bit.ly/premio-falso</span>`);
+    // 2500ms: idoso vê a mensagem chegar antes de qualquer instrução
     setTimeout(()=>{
-      setMsg(0);
+      addRecv(`<div style="font-size:11px;color:#FF5555;font-weight:700;margin-bottom:4px;">+55 11 99999-0000 — Desconhecido</div>Parabéns! Você ganhou um <strong>PRÊMIO</strong> de R$5.000! Clique aqui para resgatar agora: <span style="color:#5aa;text-decoration:underline;">bit.ly/premio-falso</span>`);
+      // 3000ms depois da mensagem: Rosa lê a instrução em voz alta
       setTimeout(()=>{
-        showOverlay(`
-          <div class="m4-alerta-box">
-            <span class="m4-badge-perigo">⚠️ GOLPE!</span>
-            <h3>Mensagem suspeita!</h3>
-            <p>Mensagens de <strong>números desconhecidos</strong> prometendo prêmios são golpes. Nunca toque no link!</p>
-            <button class="m4-btn-ok" onclick="M4.proxCenario()">✅ Entendi! Não vou tocar</button>
-          </div>`);
-      },2200);
-    },600);
+        setMsg(0);
+        // 8000ms depois da instrução: alerta aparece — Rosa já terminou de falar
+        setTimeout(()=>{
+          showOverlay(`
+            <div class="m4-alerta-box">
+              <span class="m4-badge-perigo">⚠️ GOLPE!</span>
+              <h3>Mensagem suspeita!</h3>
+              <p>Mensagens de <strong>números desconhecidos</strong> prometendo prêmios são golpes. Nunca toque no link!</p>
+              <button class="m4-btn-ok" onclick="M4.proxCenario()">✅ Entendi! Não vou tocar</button>
+            </div>`);
+        },8000);
+      },3000);
+    },2500);
   };
 
   // ── CENÁRIO 1: Link falso de banco ──
@@ -1408,19 +1521,24 @@ const M4=(()=>{
     etapa=1;setEV(1);hideOverlay();
     const msgs=document.getElementById('m4-msgs');
     const sep=document.createElement('div');sep.className='wa-date-sep';sep.innerHTML='<span>Situação 2 de 3</span>';msgs.appendChild(sep);
-    addRecv(`<div style="font-size:11px;color:#FF5555;font-weight:700;margin-bottom:4px;">BANCO FALSO</div>Sua conta foi <strong>bloqueada</strong>! Atualize seus dados agora: <span style="color:#5aa;text-decoration:underline;">www.banco-seguro-br.xyz/atualizar</span> — Urgente!`);
+    // 2500ms: mensagem chega, idoso tem tempo de ler
     setTimeout(()=>{
-      setMsg(0);
+      addRecv(`<div style="font-size:11px;color:#FF5555;font-weight:700;margin-bottom:4px;">BANCO FALSO</div>Sua conta foi <strong>bloqueada</strong>! Atualize seus dados agora: <span style="color:#5aa;text-decoration:underline;">www.banco-seguro-br.xyz/atualizar</span> — Urgente!`);
+      // 3000ms depois: Rosa lê a instrução
       setTimeout(()=>{
-        showOverlay(`
-          <div class="m4-alerta-box">
-            <span class="m4-badge-perigo">🔗 LINK FALSO!</span>
-            <h3>Endereço suspeito!</h3>
-            <p>O banco verdadeiro nunca manda links por WhatsApp. Endereços com <strong>.xyz</strong> ou palavras como "seguro-br" são falsos!</p>
-            <button class="m4-btn-ok" onclick="M4.proxCenario()">✅ Nunca vou clicar!</button>
-          </div>`);
-      },2200);
-    },600);
+        setMsg(0);
+        // 8000ms depois: alerta aparece após Rosa terminar
+        setTimeout(()=>{
+          showOverlay(`
+            <div class="m4-alerta-box">
+              <span class="m4-badge-perigo">🔗 LINK FALSO!</span>
+              <h3>Endereço suspeito!</h3>
+              <p>O banco verdadeiro nunca manda links por WhatsApp. Endereços com <strong>.xyz</strong> ou palavras como "seguro-br" são falsos!</p>
+              <button class="m4-btn-ok" onclick="M4.proxCenario()">✅ Nunca vou clicar!</button>
+            </div>`);
+        },8000);
+      },3000);
+    },2500);
   };
 
   // ── CENÁRIO 2: Pix falso ──
@@ -1428,19 +1546,24 @@ const M4=(()=>{
     etapa=2;setEV(2);hideOverlay();
     const msgs=document.getElementById('m4-msgs');
     const sep=document.createElement('div');sep.className='wa-date-sep';sep.innerHTML='<span>Situação 3 de 3</span>';msgs.appendChild(sep);
-    addRecv(`<div style="font-size:11px;color:#FF5555;font-weight:700;margin-bottom:4px;">Central Pix (FALSO)</div>Você recebeu um Pix de R$1.500! Para liberar o valor, envie sua <strong>senha do banco</strong> por aqui. Rápido, expira em 10 minutos!`);
+    // 2500ms: mensagem chega, idoso tem tempo de ler
     setTimeout(()=>{
-      setMsg(2);
+      addRecv(`<div style="font-size:11px;color:#FF5555;font-weight:700;margin-bottom:4px;">Central Pix (FALSO)</div>Você recebeu um Pix de R$1.500! Para liberar o valor, envie sua <strong>senha do banco</strong> por aqui. Rápido, expira em 10 minutos!`);
+      // 3000ms depois: Rosa lê a instrução
       setTimeout(()=>{
-        showOverlay(`
-          <div class="m4-alerta-box">
-            <span class="m4-badge-perigo">💸 PIX FALSO!</span>
-            <h3>Nunca dê sua senha!</h3>
-            <p>Bancos <strong>nunca</strong> pedem senha, código ou confirmação por WhatsApp. Se pedir, é golpe!</p>
-            <button class="m4-btn-ok" onclick="M4.proxCenario()">✅ Minha senha é só minha!</button>
-          </div>`);
-      },2200);
-    },600);
+        setMsg(2);
+        // 8000ms depois: alerta aparece após Rosa terminar
+        setTimeout(()=>{
+          showOverlay(`
+            <div class="m4-alerta-box">
+              <span class="m4-badge-perigo">💸 PIX FALSO!</span>
+              <h3>Nunca dê sua senha!</h3>
+              <p>Bancos <strong>nunca</strong> pedem senha, código ou confirmação por WhatsApp. Se pedir, é golpe!</p>
+              <button class="m4-btn-ok" onclick="M4.proxCenario()">✅ Minha senha é só minha!</button>
+            </div>`);
+        },8000);
+      },3000);
+    },2500);
   };
 
   // ── CENÁRIO 3: Conclusão ──
@@ -1451,7 +1574,8 @@ const M4=(()=>{
     // Filho envia mensagem parabenizando
     const d=document.createElement('div');d.className='wa-bubble recv';d.innerHTML='Mãe, você aprendeu tudo! Agora sei que você está segura na internet! 🛡️💙<span class="wa-bubble-time">'+getHM()+'</span>';msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
     setMsg(3);
-    setTimeout(()=>{Prog.concluir(4);cert('🛡️','Módulo 4 Concluído!','Você aprendeu a se <strong>proteger de golpes</strong>! Parabéns, você completou todos os módulos! 🏆');},2500);
+    // 6000ms: Rosa termina de ler a mensagem antes de ir para o certificado
+    setTimeout(()=>{Prog.concluir(4);cert('🛡️','Módulo 4 Concluído!','Você aprendeu a se <strong>proteger de golpes</strong>! Parabéns, você completou todos os módulos!');},6000);
   };
 
   const proxCenario=()=>{
@@ -1473,13 +1597,60 @@ const M4=(()=>{
     setTimeout(()=>{
       const d=document.createElement('div');d.className='wa-bubble recv';d.innerHTML='Mãe, preciso te contar sobre alguns golpes que andam acontecendo... Vou te mostrar como se proteger! 🛡️<span class="wa-bubble-time">'+getHM()+'</span>';document.getElementById('m4-msgs').appendChild(d);d.scrollIntoView();
       setMsg(0);
-      setTimeout(cen0,2000);
-    },600);
+      // 5000ms: Rosa lê a instrução introdutória inteira antes do primeiro cenário
+      setTimeout(cen0,5000);
+    },800);
   };
   return{init,proxCenario};
 })();
 </script>
 <script>
+
+/* ══ VOZ — A 'Rosa' ══════════════════════════════════════════════
+   Função global robusta de TTS com 3 proteções:
+   1. Anti-fila-presa:  cancel() sempre antes de falar
+   2. Filtro HTML:      limpa tags <...> antes de passar ao Utterance
+   3. Seleção de voz:   prioriza Google pt-BR se disponível
+═══════════════════════════════════════════════════════════════════ */
+window.falar = function(texto) {
+  if (!window.speechSynthesis) return;
+
+  // PROTEÇÃO 1 — Anti-fila-presa: cancela o que estiver tocando
+  window.speechSynthesis.cancel();
+
+  // PROTEÇÃO 2 — Filtro HTML + Emojis: remove tags E caracteres emoji
+  // antes de passar ao Utterance, evitando leitura de código e nomes de emoji
+  const textoLimpo = String(texto)
+    .replace(/<[^>]*>/g, '')          // remove tags HTML (<strong>, <span>…)
+    .replace(/\p{Emoji}/gu, '')       // remove todos os emojis (Unicode property)
+    .replace(/\s{2,}/g, ' ')          // colapsa espaços duplos deixados pelos emojis
+    .trim();
+  if (!textoLimpo) return;
+
+  const u = new SpeechSynthesisUtterance(textoLimpo);
+
+  // CONFIGURAÇÃO pedagógica
+  u.lang  = 'pt-BR';
+  u.rate  = 0.85;   // cadência confortável para idosos
+  u.pitch = 1.0;
+
+  // PROTEÇÃO 3 — Seleção de voz: tenta Google pt-BR primeiro
+  const vozes = window.speechSynthesis.getVoices();
+  const voz =
+    vozes.find(v => v.lang === 'pt-BR' && v.name.toLowerCase().includes('google')) ||
+    vozes.find(v => v.lang === 'pt-BR') ||
+    vozes.find(v => v.lang.startsWith('pt'));
+  if (voz) u.voice = voz;
+
+  window.speechSynthesis.speak(u);
+};
+
+// Pré-carrega as vozes assim que o browser as tiver disponíveis
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.addEventListener('voiceschanged', () => window.speechSynthesis.getVoices());
+}
+
 /* ══ RELÓGIO ══ */
 (function tick(){
   const hm=getHM();
