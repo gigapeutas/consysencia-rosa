@@ -12,36 +12,33 @@
             --bg-grafite: #121212; 
             --card-slate: #1E293B; 
             --texto-marfim: #F8F9FA; 
-            --rosa-nair: #D81B60; /* A cor de destaque e homenagem */
-            --btn-proximo: #2ECC71; /* Único botão colorido na navegação */
+            --rosa-nair: #D81B60; 
+            --btn-proximo: #2ECC71; 
+            --gold-accent: #F1C40F;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; font-family: 'Open Sans', Arial, sans-serif; }
         
         body { background-color: var(--bg-grafite); color: var(--texto-marfim); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* ARQUITETURA SPA (Página Única) */
+        /* ARQUITETURA SPA */
         .tela { display: none; flex-direction: column; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: var(--bg-grafite); animation: fadeIn 0.4s ease-in-out; }
         .tela.ativa { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* LAYOUT BASE (CARDS) */
-        .cabecalho { display: flex; align-items: center; justify-content: space-between; padding: 20px; }
+        /* LAYOUT BASE */
+        .cabecalho { display: flex; align-items: center; justify-content: space-between; padding: 20px; z-index: 50; }
         
-        /* A NOVA FACE UNISSEX PREMIUM DO SISTEMA */
         .avatar-rosa { 
-            width: 65px; 
-            height: 65px; 
-            background-image: url('avatar.png'); /* Caminho para a imagem local na raiz */
-            background-size: cover;
-            background-position: center; 
+            width: 65px; height: 65px; 
+            background-image: url('avatar.png'); 
+            background-size: cover; background-position: center; 
             border-radius: 50%; 
             box-shadow: 0 0 20px rgba(216, 27, 96, 0.4); 
             border: 2px solid var(--rosa-nair);
             animation: pulsar 4s infinite ease-in-out;
             flex-shrink: 0;
         }
-
         @keyframes pulsar {
             0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(216, 27, 96, 0.3); }
             50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(216, 27, 96, 0.6); }
@@ -55,7 +52,6 @@
         h1 { font-size: 28px; color: var(--rosa-nair); margin-bottom: 15px; }
         p { font-size: 22px; line-height: 1.5; color: var(--texto-marfim); }
 
-        /* ÁREA INFERIOR (BOTÃO PRÓXIMO EM DESTAQUE) */
         .rodape { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, #000); display: flex; justify-content: center; z-index: 100; }
         .btn-destaque { background-color: var(--btn-proximo); color: #000; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; max-width: 500px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: transform 0.1s; }
         .btn-destaque:active { transform: scale(0.95); }
@@ -63,19 +59,34 @@
         .medalha-icone { font-size: 80px; text-shadow: 0 0 20px var(--rosa-nair); margin-bottom: 20px; animation: pulo 1s ease-out; }
         @keyframes pulo { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        /* =========================================
-           ESTILOS ESPECÍFICOS: SIMULADOR DE GESTOS 
-           ========================================= */
+        /* SIMULADOR DE CELULAR (GERAL) */
         .tela-celular { flex: 1; background: #1C2833; position: relative; display: flex; flex-direction: column; border-radius: 30px 30px 0 0; overflow: hidden; margin-top: 10px; box-shadow: 0 -10px 20px rgba(0,0,0,0.5); }
         .status-bar { height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; background: rgba(0,0,0,0.3); font-size: 14px; cursor: ns-resize; z-index: 40; }
-        #cortina { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 30; transition: top 0.4s ease-out; padding-top: 60px; }
-        .notificacao { background: var(--card-slate); margin: 10px 15px; padding: 15px; border-radius: 10px; border-left: 4px solid var(--btn-proximo); }
         
+        /* MÓDULO 1: GESTOS */
+        #cortina { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 50; transition: top 0.4s ease-out; padding-top: 60px; }
+        .notificacao { background: var(--card-slate); margin: 10px 15px; padding: 15px; border-radius: 10px; border-left: 4px solid var(--btn-proximo); }
         .grid-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 40px 20px; }
         .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; }
-        
         .icon-box { width: 68px; height: 68px; border-radius: 22%; background-color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.1s; overflow: hidden; }
         .bg-telefone { background-color: #4285F4; }
+
+        /* MÓDULO 2: CÂMERA */
+        .visor-camera { flex: 1; background: url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600&auto=format&fit=crop') center/cover; position: relative; transition: filter 0.5s ease, background 0.5s ease; display: flex; align-items: center; justify-content: center; }
+        .em-desfoque { filter: blur(8px); }
+        .alvo-foco { width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.8); border-radius: 50%; position: absolute; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; }
+        
+        .barra-superior-camera { position: absolute; top: 0; width: 100%; padding: 15px; display: flex; justify-content: space-between; background: linear-gradient(rgba(0,0,0,0.6), transparent); z-index: 10; }
+        .btn-icone-camera { color: white; font-size: 28px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .flash-ativo { color: var(--gold-accent); }
+
+        .controles-camera { height: 120px; background: #000; display: flex; justify-content: space-around; align-items: center; padding: 0 20px; }
+        .btn-galeria { width: 50px; height: 50px; border-radius: 8px; border: 2px solid #333; background-color: #222; background-size: cover; background-position: center; transition: transform 0.1s; }
+        .btn-disparo { width: 70px; height: 70px; border-radius: 50%; background-color: white; border: 4px solid #ddd; outline: 3px solid white; outline-offset: 2px; transition: transform 0.1s, background-color 0.1s; }
+        .btn-disparo:active { transform: scale(0.9); background-color: #eee; }
+        .btn-virar { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; justify-content: center; align-items: center; color: white; transition: transform 0.1s; }
+        
+        .flash-tela { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; z-index: 100; pointer-events: none; transition: opacity 0.1s ease-out; }
     </style>
 </head>
 <body>
@@ -142,11 +153,7 @@
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/whatsapp.png'); background-size: cover;"></div><span>WhatsApp</span></div>
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/chrome.png'); background-size: cover;"></div><span>Chrome</span></div>
                 <div class="app-item">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 512 512" width="48" height="48">
-                            <circle cx="256" cy="256" r="236" fill="#f2f2f2"/><circle cx="256" cy="256" r="140" fill="#5f6368"/><circle cx="256" cy="256" r="50" fill="#a0a0a0"/>
-                        </svg>
-                    </div>
+                    <div class="icon-box"><svg viewBox="0 0 512 512" width="48" height="48"><circle cx="256" cy="256" r="236" fill="#f2f2f2"/><circle cx="256" cy="256" r="140" fill="#5f6368"/><circle cx="256" cy="256" r="50" fill="#a0a0a0"/></svg></div>
                     <span>Câmera</span>
                 </div>
             </div>
@@ -164,15 +171,52 @@
         <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo2()">IR PARA A CÂMERA ➔</button></div>
     </div>
 
-    <div id="tela-camera" class="tela">
+    <div id="tela-camera-intro" class="tela">
         <div class="conteudo-central">
             <div class="avatar-rosa" style="width: 100px; height: 100px; margin-bottom: 30px;"></div>
             <div class="card">
                 <h1>A Visão do Celular</h1>
-                <p>Chegou a hora de registrar momentos. Em breve, vamos aprender a usar as câmeras mágicas do aparelho.</p>
+                <p>Chegou a hora de registrar momentos. Vamos aprender a usar as câmeras mágicas do aparelho.</p>
             </div>
         </div>
-        <div class="rodape"><button class="btn-destaque" style="background-color: var(--rosa-nair); color: white;" onclick="alert('Módulo 2 em construção!')">EM BREVE</button></div>
+        <div class="rodape"><button class="btn-destaque" onclick="iniciarSimuladorCamera()">COMEÇAR TREINO ➔</button></div>
+    </div>
+
+    <div id="tela-camera-simulador" class="tela">
+        <div class="cabecalho" style="padding: 10px 20px; background: var(--bg-grafite);">
+            <div class="avatar-rosa" style="width: 40px; height: 40px;"></div>
+            <p id="texto-guia-camera" style="font-size: 16px; margin-left: 15px; text-align: left; flex: 1; font-weight: bold;">A imagem está embaçada. Dê um toque no meio da tela para focar.</p>
+        </div>
+
+        <div class="tela-celular" style="margin-top: 0; border-radius: 0;">
+            <div class="visor-camera em-desfoque" id="visor-cam" onclick="acaoFocar(event)">
+                <div class="barra-superior-camera">
+                    <span class="material-symbols-outlined btn-icone-camera">settings</span>
+                    <span class="material-symbols-outlined btn-icone-camera" id="btn-flash" onclick="acaoFlash(event)">flash_off</span>
+                </div>
+                <div class="alvo-foco" id="alvo-foco"></div>
+                <div class="flash-tela" id="flash-animacao"></div>
+            </div>
+
+            <div class="controles-camera">
+                <div class="btn-galeria" id="btn-galeria" onclick="acaoGaleria(event)"></div>
+                <div class="btn-disparo" id="btn-disparo" onclick="acaoDisparo(event)"></div>
+                <div class="btn-virar" id="btn-virar" onclick="acaoVirar(event)">
+                    <span class="material-symbols-outlined" style="font-size: 28px;">cameraswitch</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-medalha-2" class="tela">
+        <div class="conteudo-central">
+            <div class="medalha-icone">📸</div>
+            <div class="card">
+                <h1>Fotógrafa Oficial</h1>
+                <p>Você focou, ligou a luz e tirou a foto perfeita. A Galeria é toda sua!</p>
+            </div>
+        </div>
+        <div class="rodape"><button class="btn-destaque" style="background-color: var(--rosa-nair); color: white;" onclick="alert('Módulo 3: Galeria e Whatsapp em breve!')">FINALIZAR TREINO ➔</button></div>
     </div>
 
     <script>
@@ -189,13 +233,10 @@
             window.speechSynthesis.cancel();
             let u = new SpeechSynthesisUtterance(texto);
             u.lang = 'pt-BR';
-            u.rate = 0.85; // Velocidade de bebê, calma e didática
-            
-            // Força a voz mais natural em Androids
+            u.rate = 0.85; 
             let vozes = window.speechSynthesis.getVoices();
             let vozNatural = vozes.find(v => v.lang.includes('pt-BR') && v.name.includes('Google'));
             if(vozNatural) u.voice = vozNatural;
-
             window.speechSynthesis.speak(u);
         }
         function repetirFala() { falar(textoAtualParaRepetir); }
@@ -203,29 +244,22 @@
 
         // --- MÓDULO 0: CAIXA MÁGICA ---
         const roteiroMod0 = [
-            "O vidro da frente é a janela do celular. Trate com carinho.",
+            "Olá! Se não me ouvir direito, é só dar um toquinho no alto-falante lá em cima que eu repito. O vidro da frente é a janela do celular. Trate com carinho.",
             "Atrás estão as câmeras, os olhos dele. Evite colocar o dedo lá para a foto não ficar embaçada.",
             "O cabo de carregar é a comidinha dele. Conecte sempre com cuidado."
         ];
         let passoMod0 = 0;
 
-        function iniciarModulo0() {
-            mostrarTela('tela-aula');
-            passoMod0 = 0;
-            atualizarAulaMod0();
-        }
-
+        function iniciarModulo0() { mostrarTela('tela-aula'); passoMod0 = 0; atualizarAulaMod0(); }
         function atualizarAulaMod0() {
             document.getElementById('texto-aula').innerText = roteiroMod0[passoMod0];
             document.getElementById('contador-passos').innerText = `Passo ${passoMod0 + 1}/3`;
             falar(roteiroMod0[passoMod0]);
         }
-
         function proximoPassoAula() {
             passoMod0++;
-            if(passoMod0 < roteiroMod0.length) {
-                atualizarAulaMod0();
-            } else {
+            if(passoMod0 < roteiroMod0.length) { atualizarAulaMod0(); } 
+            else {
                 mostrarTela('tela-medalha-0');
                 falar("Parabéns! Você ganhou a sua primeira medalha. Clique no botão verde abaixo para irmos para a aula de gestos.");
                 if (navigator.vibrate) navigator.vibrate([100, 100, 200]);
@@ -234,10 +268,8 @@
 
         // --- MÓDULO 1: GESTOS BÁSICOS ---
         let licaoGestos = 1;
-
         function iniciarModulo1() {
-            mostrarTela('tela-gestos');
-            licaoGestos = 1;
+            mostrarTela('tela-gestos'); licaoGestos = 1;
             document.getElementById('texto-guia-gestos').innerText = "Toque rápido no ícone azul do Telefone.";
             falar("Vamos treinar os dedos. Dê um toque bem rapidinho no ícone azul do Telefone.");
         }
@@ -260,19 +292,15 @@
             }
         }
 
-        let inicioY = 0;
-        const barra = document.getElementById('barra-status');
+        let inicioY = 0; const barra = document.getElementById('barra-status');
         barra.ontouchstart = (e) => { inicioY = e.touches[0].clientY; };
         barra.ontouchend = (e) => {
             if(licaoGestos !== 2) return;
-            let fimY = e.changedTouches[0].clientY;
-            if ((fimY - inicioY) > 50) { 
+            if ((e.changedTouches[0].clientY - inicioY) > 50) { 
                 document.getElementById('cortina').style.top = "0"; 
                 falar("Isso mesmo! Você abriu os avisos. Toque na tela para fechar."); 
                 if (navigator.vibrate) navigator.vibrate(50);
-            } else { 
-                falar("Tem que colocar o dedo lá em cima e arrastar para baixo sem soltar."); 
-            }
+            } else { falar("Tem que colocar o dedo lá em cima e arrastar para baixo sem soltar."); }
         };
 
         function fecharCortina() { 
@@ -284,10 +312,86 @@
             }, 500);
         }
 
-        // --- MÓDULO 2: PREPARAÇÃO ---
-        function iniciarModulo2() {
-            mostrarTela('tela-camera');
-            falar("Chegou a hora de registrar os momentos. No próximo treinamento vamos aprender a tirar fotos perfeitas.");
+        // --- MÓDULO 2: CÂMERA ---
+        let licaoCamera = 1;
+        
+        function iniciarModulo2() { mostrarTela('tela-camera-intro'); falar("Chegou a hora de registrar os momentos. Toque em começar treino."); }
+        
+        function iniciarSimuladorCamera() {
+            mostrarTela('tela-camera-simulador');
+            licaoCamera = 1;
+            document.getElementById('texto-guia-camera').innerText = "A imagem está embaçada. Dê um toque no meio da tela para focar.";
+            falar("A imagem está embaçada porque a câmera precisa dos seus óculos. Dê um toque no meio da tela para ela focar.");
+        }
+
+        function acaoFocar(e) {
+            if (licaoCamera !== 1) return;
+            const alvo = document.getElementById('alvo-foco');
+            alvo.style.left = (e.clientX - 40) + 'px'; alvo.style.top = (e.clientY - 40) + 'px';
+            alvo.style.opacity = '1'; alvo.style.transform = 'scale(1.2)';
+            
+            setTimeout(() => { alvo.style.transform = 'scale(1)'; document.getElementById('visor-cam').classList.remove('em-desfoque'); if (navigator.vibrate) navigator.vibrate(50); }, 300);
+            setTimeout(() => { alvo.style.opacity = '0'; }, 1000);
+
+            licaoCamera = 2;
+            document.getElementById('texto-guia-camera').innerText = "Toque no ícone do raio lá em cima para ligar o flash.";
+            falar("Ficou nítido! Mas está meio escuro. Toque no ícone do raiozinho lá no topo para ligar o flash, que é a luzinha do celular.");
+        }
+
+        function acaoFlash(e) {
+            e.stopPropagation(); // Evita focar sem querer
+            if (licaoCamera !== 2) { if(licaoCamera > 2) alternarFlash(); return; }
+            
+            alternarFlash();
+            licaoCamera = 3;
+            document.getElementById('texto-guia-camera').innerText = "Toque rápido no botão grande e redondo para tirar a foto.";
+            falar("Luz ligada! Agora posicione a mão com firmeza, sem o dedo na lente, e dê um toque rápido no botão branco grande lá embaixo para tirar a foto.");
+        }
+
+        function alternarFlash() {
+            const btnFlash = document.getElementById('btn-flash');
+            if(btnFlash.innerText === 'flash_off') { btnFlash.innerText = 'flash_on'; btnFlash.classList.add('flash-ativo'); if(navigator.vibrate) navigator.vibrate(30); } 
+            else { btnFlash.innerText = 'flash_off'; btnFlash.classList.remove('flash-ativo'); }
+        }
+
+        function acaoDisparo(e) {
+            e.stopPropagation();
+            if (licaoCamera < 3) return;
+            if (licaoCamera === 3) {
+                // Efeito do flash
+                const anim = document.getElementById('flash-animacao');
+                anim.style.opacity = '1';
+                setTimeout(() => anim.style.opacity = '0', 150);
+                if (navigator.vibrate) navigator.vibrate(100);
+
+                // Coloca a foto na galeria
+                document.getElementById('btn-galeria').style.backgroundImage = "url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=100&auto=format&fit=crop')";
+                
+                licaoCamera = 4;
+                document.getElementById('texto-guia-camera').innerText = "Toque no botão de virar a câmera (setas girando).";
+                falar("Pronto, foto tirada! E para tirar uma foto sua? Toque naquele botão com as setinhas girando para ligar a câmera da frente.");
+            }
+        }
+
+        function acaoVirar(e) {
+            e.stopPropagation();
+            if (licaoCamera !== 4) return;
+            
+            // Simula virar a câmera trocando o fundo
+            document.getElementById('visor-cam').style.background = "url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop') center/cover";
+            if (navigator.vibrate) navigator.vibrate(50);
+
+            licaoCamera = 5;
+            document.getElementById('texto-guia-camera').innerText = "A foto foi para o quadradinho inferior. Toque nele para abrir a Galeria.";
+            falar("Olha você aí! Agora, a maior dúvida: para onde foi a foto que tiramos antes? Ela sempre fica guardada naquele quadradinho pequeno no canto inferior. Toque nele para ver a Galeria.");
+        }
+
+        function acaoGaleria(e) {
+            e.stopPropagation();
+            if (licaoCamera !== 5) return;
+            mostrarTela('tela-medalha-2');
+            falar("Perfeito! Você achou a foto. Parabéns por concluir o treino de Câmera, você ganhou a medalha de Fotógrafa Oficial.");
+            if (navigator.vibrate) navigator.vibrate([100, 100, 200, 100, 300]);
         }
     </script>
 </body>
