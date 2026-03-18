@@ -8,17 +8,16 @@
     
     <style>
         :root { 
-            /* PALETA MINIMALISTA DE ALTO CONTRASTE */
             --bg-grafite: #121212; 
             --card-slate: #1E293B; 
             --texto-marfim: #F8F9FA; 
             --rosa-nair: #D81B60; 
             --btn-proximo: #2ECC71; 
             --gold-accent: #F1C40F;
+            --zap-dark: #128C7E;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; font-family: 'Open Sans', Arial, sans-serif; }
-        
         body { background-color: var(--bg-grafite); color: var(--texto-marfim); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
         /* ARQUITETURA SPA */
@@ -28,7 +27,6 @@
 
         /* LAYOUT BASE */
         .cabecalho { display: flex; align-items: center; justify-content: space-between; padding: 20px; z-index: 50; }
-        
         .avatar-rosa { 
             width: 65px; height: 65px; 
             background-image: url('avatar.png'); 
@@ -39,54 +37,65 @@
             animation: pulsar 4s infinite ease-in-out;
             flex-shrink: 0;
         }
-        @keyframes pulsar {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(216, 27, 96, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(216, 27, 96, 0.6); }
-        }
-
+        @keyframes pulsar { 0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(216, 27, 96, 0.3); } 50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(216, 27, 96, 0.6); } }
         .btn-ouvir { background: transparent; border: 2px solid var(--rosa-nair); color: var(--rosa-nair); border-radius: 50%; width: 55px; height: 55px; font-size: 26px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
 
         .conteudo-central { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; padding-bottom: 100px; text-align: center; }
         .card { background-color: var(--card-slate); padding: 30px 20px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-left: 6px solid var(--rosa-nair); }
-        
         h1 { font-size: 28px; color: var(--rosa-nair); margin-bottom: 15px; }
         p { font-size: 22px; line-height: 1.5; color: var(--texto-marfim); }
 
         .rodape { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, #000); display: flex; justify-content: center; z-index: 100; }
         .btn-destaque { background-color: var(--btn-proximo); color: #000; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; max-width: 500px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: transform 0.1s; }
         .btn-destaque:active { transform: scale(0.95); }
-
         .medalha-icone { font-size: 80px; text-shadow: 0 0 20px var(--rosa-nair); margin-bottom: 20px; animation: pulo 1s ease-out; }
         @keyframes pulo { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        /* SIMULADOR DE CELULAR (GERAL) */
+        /* SIMULADOR DE CELULAR GERAL */
         .tela-celular { flex: 1; background: #1C2833; position: relative; display: flex; flex-direction: column; border-radius: 30px 30px 0 0; overflow: hidden; margin-top: 10px; box-shadow: 0 -10px 20px rgba(0,0,0,0.5); }
-        .status-bar { height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; background: rgba(0,0,0,0.3); font-size: 14px; cursor: ns-resize; z-index: 40; }
+        .status-bar { height: 30px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; background: rgba(0,0,0,0.3); font-size: 13px; cursor: ns-resize; z-index: 40; }
         
-        /* MÓDULO 1: GESTOS */
+        /* GESTOS */
         #cortina { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 50; transition: top 0.4s ease-out; padding-top: 60px; }
         .notificacao { background: var(--card-slate); margin: 10px 15px; padding: 15px; border-radius: 10px; border-left: 4px solid var(--btn-proximo); }
         .grid-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 40px 20px; }
         .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; }
         .icon-box { width: 68px; height: 68px; border-radius: 22%; background-color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.1s; overflow: hidden; }
-        .bg-telefone { background-color: #4285F4; }
 
-        /* MÓDULO 2: CÂMERA */
-        .visor-camera { flex: 1; background: url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600&auto=format&fit=crop') center/cover; position: relative; transition: filter 0.5s ease, background 0.5s ease; display: flex; align-items: center; justify-content: center; }
+        /* CÂMERA */
+        .visor-camera { flex: 1; background: url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=600&auto=format&fit=crop') center/cover; position: relative; transition: filter 0.5s ease; display: flex; align-items: center; justify-content: center; }
         .em-desfoque { filter: blur(8px); }
         .alvo-foco { width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.8); border-radius: 50%; position: absolute; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; }
-        
         .barra-superior-camera { position: absolute; top: 0; width: 100%; padding: 15px; display: flex; justify-content: space-between; background: linear-gradient(rgba(0,0,0,0.6), transparent); z-index: 10; }
         .btn-icone-camera { color: white; font-size: 28px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .flash-ativo { color: var(--gold-accent); }
-
         .controles-camera { height: 120px; background: #000; display: flex; justify-content: space-around; align-items: center; padding: 0 20px; }
         .btn-galeria { width: 50px; height: 50px; border-radius: 8px; border: 2px solid #333; background-color: #222; background-size: cover; background-position: center; transition: transform 0.1s; }
-        .btn-disparo { width: 70px; height: 70px; border-radius: 50%; background-color: white; border: 4px solid #ddd; outline: 3px solid white; outline-offset: 2px; transition: transform 0.1s, background-color 0.1s; }
-        .btn-disparo:active { transform: scale(0.9); background-color: #eee; }
-        .btn-virar { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; justify-content: center; align-items: center; color: white; transition: transform 0.1s; }
-        
+        .btn-disparo { width: 70px; height: 70px; border-radius: 50%; background-color: white; border: 4px solid #ddd; outline: 3px solid white; outline-offset: 2px; transition: transform 0.1s; }
+        .btn-disparo:active { transform: scale(0.9); }
         .flash-tela { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; z-index: 100; pointer-events: none; transition: opacity 0.1s ease-out; }
+
+        /* MÓDULO 3: GALERIA E WHATSAPP */
+        .tela-foto-cheia { flex: 1; background: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop') center/cover; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        .barra-inferior-galeria { background: rgba(0,0,0,0.8); padding: 15px 30px; display: flex; justify-content: space-around; align-items: center; }
+        .btn-compartilhar { display: flex; flex-direction: column; align-items: center; gap: 5px; color: white; cursor: pointer; transition: transform 0.1s; }
+        .btn-compartilhar:active { transform: scale(0.9); color: var(--gold-accent); }
+        
+        .menu-compartilhar { position: absolute; bottom: -100%; left: 0; width: 100%; background: #222; border-radius: 20px 20px 0 0; padding: 20px; transition: bottom 0.3s ease-out; z-index: 60; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+        .app-share-list { display: flex; gap: 20px; margin-top: 15px; overflow-x: auto; padding-bottom: 10px; }
+        .share-item { display: flex; flex-direction: column; align-items: center; gap: 8px; color: white; font-size: 12px; cursor: pointer; }
+
+        .tela-whatsapp { flex: 1; background: #0B141A; display: flex; flex-direction: column; }
+        .zap-header { background: #1F2C34; padding: 15px; display: flex; align-items: center; gap: 15px; color: white; font-weight: bold; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .zap-contato { display: flex; align-items: center; gap: 15px; padding: 15px; border-bottom: 1px solid #2A3942; cursor: pointer; }
+        .zap-avatar { width: 50px; height: 50px; border-radius: 50%; background: #ccc; background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop'); background-size: cover; }
+        .zap-chat-area { flex: 1; background: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
+        .balao-foto { background: #005C4B; padding: 5px; border-radius: 10px; align-self: flex-end; width: 200px; }
+        .balao-foto img { width: 100%; border-radius: 8px; }
+        .zap-input-area { background: #1F2C34; padding: 10px; display: flex; align-items: center; gap: 10px; }
+        .zap-input-falso { flex: 1; background: #2A3942; border-radius: 20px; padding: 10px 15px; color: #8696A0; font-size: 14px; }
+        .zap-btn-enviar { background: var(--btn-proximo); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; cursor: pointer; transition: transform 0.1s; }
+        .zap-btn-enviar:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -108,19 +117,14 @@
             <span style="font-weight: bold; color: var(--rosa-nair); font-size: 20px;" id="contador-passos">Passo 1/3</span>
             <button class="btn-ouvir" onclick="repetirFala()">🔊</button>
         </div>
-        <div class="conteudo-central">
-            <div class="card"><p id="texto-aula">Carregando...</p></div>
-        </div>
+        <div class="conteudo-central"><div class="card"><p id="texto-aula">Carregando...</p></div></div>
         <div class="rodape"><button class="btn-destaque" onclick="proximoPassoAula()">ENTENDI ➔</button></div>
     </div>
 
     <div id="tela-medalha-0" class="tela">
         <div class="conteudo-central">
             <div class="medalha-icone">🥇</div>
-            <div class="card">
-                <h1>Primeira Vitória!</h1>
-                <p>Você perdeu o medo da Caixa Mágica. Esta é a sua Medalha de Curiosidade.</p>
-            </div>
+            <div class="card"><h1>Primeira Vitória!</h1><p>Você perdeu o medo da Caixa Mágica. Esta é a sua Medalha de Curiosidade.</p></div>
         </div>
         <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo1()">IR PARA GESTOS ➔</button></div>
     </div>
@@ -128,112 +132,122 @@
     <div id="tela-gestos" class="tela">
         <div class="cabecalho" style="padding-bottom: 10px;">
             <div class="avatar-rosa" style="width: 50px; height: 50px;"></div>
-            <p id="texto-guia-gestos" style="font-size: 18px; margin-left: 15px; text-align: left; flex: 1; font-weight: bold;">Toque rápido no Telefone.</p>
+            <p id="texto-guia-gestos" style="font-size: 18px; margin-left: 15px; flex: 1; font-weight: bold;">Toque rápido no Telefone.</p>
         </div>
-        
         <div class="tela-celular">
-            <div class="status-bar" id="barra-status">
-                <span>10:30</span>
-                <div style="display: flex; gap: 5px;"><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div>
-            </div>
-
+            <div class="status-bar" id="barra-status"><span>10:30</span><div style="display: flex; gap: 5px;"><span class="material-symbols-outlined">wifi</span><span class="material-symbols-outlined">battery_full</span></div></div>
             <div id="cortina" onclick="fecharCortina()">
-                <div class="notificacao">
-                    <h3 style="color: var(--btn-proximo); margin-bottom: 5px; font-size: 18px;">WhatsApp</h3>
-                    <p style="font-size: 16px;">Filho: "Tudo bem por aí? Já está dominando o aparelho?"</p>
-                </div>
-                <p style="text-align: center; margin-top: 30px; font-size: 16px; color: #888;">(Toque na tela para fechar)</p>
+                <div class="notificacao"><h3 style="color: var(--btn-proximo); margin-bottom: 5px;">WhatsApp</h3><p>Filho: "Tudo bem por aí?"</p></div>
+                <p style="text-align: center; margin-top: 30px; color: #888;">(Toque na tela para fechar)</p>
             </div>
-
             <div class="grid-apps">
-                <div class="app-item" onpointerdown="iniciarTap(event)" onpointerup="finalizarTap(event, 'Telefone')">
-                    <div class="icon-box bg-telefone"><svg viewBox="0 0 24 24" fill="white" width="36" height="36"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
-                    <span>Telefone</span>
-                </div>
+                <div class="app-item" onpointerdown="iniciarTap(event)" onpointerup="finalizarTap(event, 'Telefone')"><div class="icon-box bg-telefone"><svg viewBox="0 0 24 24" fill="white" width="36" height="36"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div><span>Telefone</span></div>
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/whatsapp.png'); background-size: cover;"></div><span>WhatsApp</span></div>
                 <div class="app-item"><div class="icon-box" style="background-image: url('icons/chrome.png'); background-size: cover;"></div><span>Chrome</span></div>
-                <div class="app-item">
-                    <div class="icon-box"><svg viewBox="0 0 512 512" width="48" height="48"><circle cx="256" cy="256" r="236" fill="#f2f2f2"/><circle cx="256" cy="256" r="140" fill="#5f6368"/><circle cx="256" cy="256" r="50" fill="#a0a0a0"/></svg></div>
-                    <span>Câmera</span>
-                </div>
+                <div class="app-item"><div class="icon-box"><svg viewBox="0 0 512 512" width="48" height="48"><circle cx="256" cy="256" r="236" fill="#f2f2f2"/><circle cx="256" cy="256" r="140" fill="#5f6368"/><circle cx="256" cy="256" r="50" fill="#a0a0a0"/></svg></div><span>Câmera</span></div>
             </div>
         </div>
     </div>
 
     <div id="tela-medalha-1" class="tela">
-        <div class="conteudo-central">
-            <div class="medalha-icone">🏆</div>
-            <div class="card">
-                <h1>Mestre dos Gestos</h1>
-                <p>Você aprendeu a tocar e arrastar perfeitamente. O celular obedece a você!</p>
-            </div>
-        </div>
+        <div class="conteudo-central"><div class="medalha-icone">🏆</div><div class="card"><h1>Mestre dos Gestos</h1><p>Você aprendeu a tocar e arrastar. O celular obedece a você!</p></div></div>
         <div class="rodape"><button class="btn-destaque" onclick="iniciarModulo2()">IR PARA A CÂMERA ➔</button></div>
     </div>
 
     <div id="tela-camera-intro" class="tela">
-        <div class="conteudo-central">
-            <div class="avatar-rosa" style="width: 100px; height: 100px; margin-bottom: 30px;"></div>
-            <div class="card">
-                <h1>A Visão do Celular</h1>
-                <p>Chegou a hora de registrar momentos. Vamos aprender a usar as câmeras mágicas do aparelho.</p>
-            </div>
-        </div>
+        <div class="conteudo-central"><div class="avatar-rosa" style="width: 100px; height: 100px; margin-bottom: 30px;"></div><div class="card"><h1>A Visão do Celular</h1><p>Vamos aprender a focar, usar o flash e tirar fotos perfeitas sem o dedo na lente.</p></div></div>
         <div class="rodape"><button class="btn-destaque" onclick="iniciarSimuladorCamera()">COMEÇAR TREINO ➔</button></div>
     </div>
 
     <div id="tela-camera-simulador" class="tela">
-        <div class="cabecalho" style="padding: 10px 20px; background: var(--bg-grafite);">
-            <div class="avatar-rosa" style="width: 40px; height: 40px;"></div>
-            <p id="texto-guia-camera" style="font-size: 16px; margin-left: 15px; text-align: left; flex: 1; font-weight: bold;">A imagem está embaçada. Dê um toque no meio da tela para focar.</p>
-        </div>
-
+        <div class="cabecalho" style="padding: 10px 20px;"><div class="avatar-rosa" style="width: 40px; height: 40px;"></div><p id="texto-guia-camera" style="font-size: 16px; margin-left: 15px; flex: 1; font-weight: bold;">A imagem está embaçada. Toque no meio para focar.</p></div>
         <div class="tela-celular" style="margin-top: 0; border-radius: 0;">
             <div class="visor-camera em-desfoque" id="visor-cam" onclick="acaoFocar(event)">
-                <div class="barra-superior-camera">
-                    <span class="material-symbols-outlined btn-icone-camera">settings</span>
-                    <span class="material-symbols-outlined btn-icone-camera" id="btn-flash" onclick="acaoFlash(event)">flash_off</span>
-                </div>
+                <div class="barra-superior-camera"><span class="material-symbols-outlined btn-icone-camera">settings</span><span class="material-symbols-outlined btn-icone-camera" id="btn-flash" onclick="acaoFlash(event)">flash_off</span></div>
                 <div class="alvo-foco" id="alvo-foco"></div>
                 <div class="flash-tela" id="flash-animacao"></div>
             </div>
-
             <div class="controles-camera">
-                <div class="btn-galeria" id="btn-galeria" onclick="acaoGaleria(event)"></div>
+                <div class="btn-galeria" id="btn-galeria" onclick="acaoAbrirGaleria(event)"></div>
                 <div class="btn-disparo" id="btn-disparo" onclick="acaoDisparo(event)"></div>
-                <div class="btn-virar" id="btn-virar" onclick="acaoVirar(event)">
-                    <span class="material-symbols-outlined" style="font-size: 28px;">cameraswitch</span>
+                <div class="btn-virar" id="btn-virar" onclick="acaoVirar(event)"><span class="material-symbols-outlined" style="font-size: 28px;">cameraswitch</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-galeria" class="tela">
+        <div class="cabecalho" style="padding: 10px 20px;"><div class="avatar-rosa" style="width: 40px; height: 40px;"></div><p id="texto-guia-galeria" style="font-size: 16px; margin-left: 15px; flex: 1; font-weight: bold;">Toque no ícone de Compartilhar (triângulo de bolinhas) embaixo.</p></div>
+        <div class="tela-celular" style="margin-top: 0; border-radius: 0;">
+            <div class="tela-foto-cheia">
+                <div style="padding: 15px;"><span class="material-symbols-outlined" style="color: white; font-size: 30px; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">arrow_back</span></div>
+                
+                <div class="menu-compartilhar" id="menu-share">
+                    <h3 style="color: white; font-size: 16px;">Compartilhar com...</h3>
+                    <div class="app-share-list">
+                        <div class="share-item" onclick="acaoEscolherZap()"><div class="icon-box" style="width: 50px; height: 50px; background-image: url('icons/whatsapp.png'); background-size: cover;"></div>WhatsApp</div>
+                        <div class="share-item"><div class="icon-box" style="width: 50px; height: 50px; background: #333;"><span class="material-symbols-outlined" style="color: white;">mail</span></div>Email</div>
+                    </div>
+                </div>
+
+                <div class="barra-inferior-galeria">
+                    <div class="btn-compartilhar" onclick="acaoAbrirShare()"><span class="material-symbols-outlined" style="font-size: 28px;">share</span><span style="font-size: 12px;">Compartilhar</span></div>
+                    <div class="btn-compartilhar" style="opacity: 0.5;"><span class="material-symbols-outlined" style="font-size: 28px;">favorite_border</span></div>
+                    <div class="btn-compartilhar" style="opacity: 0.5;"><span class="material-symbols-outlined" style="font-size: 28px;">delete</span></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="tela-medalha-2" class="tela">
-        <div class="conteudo-central">
-            <div class="medalha-icone">📸</div>
-            <div class="card">
-                <h1>Fotógrafa Oficial</h1>
-                <p>Você focou, ligou a luz e tirou a foto perfeita. A Galeria é toda sua!</p>
+    <div id="tela-whatsapp-contatos" class="tela">
+        <div class="cabecalho" style="padding: 10px 20px;"><div class="avatar-rosa" style="width: 40px; height: 40px;"></div><p id="texto-guia-zap" style="font-size: 16px; margin-left: 15px; flex: 1; font-weight: bold;">Escolha para quem enviar. Toque no nome do seu Filho.</p></div>
+        <div class="tela-celular" style="margin-top: 0; border-radius: 0;">
+            <div class="tela-whatsapp">
+                <div class="zap-header"><span class="material-symbols-outlined">arrow_back</span> Enviar para...</div>
+                <div class="zap-contato" onclick="acaoEntrarChat()"><div class="zap-avatar"></div><div><p style="color: white; font-weight: bold; font-size: 16px;">Filho ❤️</p><p style="color: #8696A0; font-size: 13px;">Online</p></div></div>
+                <div class="zap-contato" style="opacity: 0.5;"><div class="zap-avatar" style="background-image: none; background-color: #555;"></div><div><p style="color: white; font-weight: bold; font-size: 16px;">Grupo da Família</p></div></div>
             </div>
         </div>
-        <div class="rodape"><button class="btn-destaque" style="background-color: var(--rosa-nair); color: white;" onclick="alert('Módulo 3: Galeria e Whatsapp em breve!')">FINALIZAR TREINO ➔</button></div>
+    </div>
+
+    <div id="tela-whatsapp-chat" class="tela">
+        <div class="cabecalho" style="padding: 10px 20px;"><div class="avatar-rosa" style="width: 40px; height: 40px;"></div><p id="texto-guia-chat" style="font-size: 16px; margin-left: 15px; flex: 1; font-weight: bold;">Toque no botão verde com aviãozinho de papel para enviar!</p></div>
+        <div class="tela-celular" style="margin-top: 0; border-radius: 0;">
+            <div class="tela-whatsapp">
+                <div class="zap-header"><span class="material-symbols-outlined">arrow_back</span><div class="zap-avatar" style="width: 35px; height: 35px;"></div> Filho ❤️</div>
+                <div class="zap-chat-area">
+                    <div class="balao-foto"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" alt="Foto tirada"></div>
+                </div>
+                <div class="zap-input-area">
+                    <div class="zap-input-falso">Adicione uma legenda...</div>
+                    <div class="zap-btn-enviar" onclick="acaoFinalizarTudo()"><span class="material-symbols-outlined">send</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-certificado" class="tela">
+        <div class="conteudo-central">
+            <div class="medalha-icone" style="font-size: 100px;">🎓</div>
+            <div class="card" style="border-color: var(--gold-accent);">
+                <h1 style="color: var(--gold-accent);">Certificado de Evolução Digital</h1>
+                <p>Parabéns! Você tirou uma foto, focou, achou na galeria e enviou no WhatsApp. O medo acabou. Você domina o celular!</p>
+            </div>
+        </div>
+        <div class="rodape"><button class="btn-destaque" style="background-color: var(--gold-accent);" onclick="alert('Apresentação pronta para o Sebrae!')">REINICIAR SISTEMA ➔</button></div>
     </div>
 
     <script>
-        // --- CONTROLE DE TELAS (SPA) ---
         function mostrarTela(idTela) {
             document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
             document.getElementById(idTela).classList.add('ativa');
         }
 
-        // --- SISTEMA DE VOZ DA ROSA ---
         let textoAtualParaRepetir = "";
         function falar(texto) {
             textoAtualParaRepetir = texto;
             window.speechSynthesis.cancel();
             let u = new SpeechSynthesisUtterance(texto);
-            u.lang = 'pt-BR';
-            u.rate = 0.85; 
+            u.lang = 'pt-BR'; u.rate = 0.85; 
             let vozes = window.speechSynthesis.getVoices();
             let vozNatural = vozes.find(v => v.lang.includes('pt-BR') && v.name.includes('Google'));
             if(vozNatural) u.voice = vozNatural;
@@ -242,156 +256,104 @@
         function repetirFala() { falar(textoAtualParaRepetir); }
         if (speechSynthesis.onvoiceschanged !== undefined) { speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices(); }
 
-        // --- MÓDULO 0: CAIXA MÁGICA ---
+        // MÓDULO 0
         const roteiroMod0 = [
             "Olá! Se não me ouvir direito, é só dar um toquinho no alto-falante lá em cima que eu repito. O vidro da frente é a janela do celular. Trate com carinho.",
             "Atrás estão as câmeras, os olhos dele. Evite colocar o dedo lá para a foto não ficar embaçada.",
             "O cabo de carregar é a comidinha dele. Conecte sempre com cuidado."
         ];
         let passoMod0 = 0;
-
         function iniciarModulo0() { mostrarTela('tela-aula'); passoMod0 = 0; atualizarAulaMod0(); }
-        function atualizarAulaMod0() {
-            document.getElementById('texto-aula').innerText = roteiroMod0[passoMod0];
-            document.getElementById('contador-passos').innerText = `Passo ${passoMod0 + 1}/3`;
-            falar(roteiroMod0[passoMod0]);
-        }
+        function atualizarAulaMod0() { document.getElementById('texto-aula').innerText = roteiroMod0[passoMod0]; document.getElementById('contador-passos').innerText = `Passo ${passoMod0 + 1}/3`; falar(roteiroMod0[passoMod0]); }
         function proximoPassoAula() {
             passoMod0++;
             if(passoMod0 < roteiroMod0.length) { atualizarAulaMod0(); } 
-            else {
-                mostrarTela('tela-medalha-0');
-                falar("Parabéns! Você ganhou a sua primeira medalha. Clique no botão verde abaixo para irmos para a aula de gestos.");
-                if (navigator.vibrate) navigator.vibrate([100, 100, 200]);
-            }
+            else { mostrarTela('tela-medalha-0'); falar("Parabéns! Você ganhou a sua primeira medalha. Clique no botão verde abaixo para irmos para a aula de gestos."); if (navigator.vibrate) navigator.vibrate([100, 100, 200]); }
         }
 
-        // --- MÓDULO 1: GESTOS BÁSICOS ---
+        // MÓDULO 1
         let licaoGestos = 1;
-        function iniciarModulo1() {
-            mostrarTela('tela-gestos'); licaoGestos = 1;
-            document.getElementById('texto-guia-gestos').innerText = "Toque rápido no ícone azul do Telefone.";
-            falar("Vamos treinar os dedos. Dê um toque bem rapidinho no ícone azul do Telefone.");
-        }
-
+        function iniciarModulo1() { mostrarTela('tela-gestos'); licaoGestos = 1; document.getElementById('texto-guia-gestos').innerText = "Toque rápido no ícone azul do Telefone."; falar("Vamos treinar os dedos. Dê um toque bem rapidinho no ícone azul do Telefone."); }
         let tempoTap = 0;
         function iniciarTap(e) { tempoTap = Date.now(); e.currentTarget.querySelector('.icon-box').style.transform = "scale(0.9)"; }
         function finalizarTap(e, nome) {
             e.currentTarget.querySelector('.icon-box').style.transform = "scale(1)";
             if(licaoGestos !== 1 || nome !== 'Telefone') return; 
-
-            let duracao = Date.now() - tempoTap;
-            if (duracao > 500) {
-                falar("Você segurou o dedo. Tente dar só um toquinho rápido e soltar.");
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
-            } else { 
-                licaoGestos = 2; 
-                document.getElementById('texto-guia-gestos').innerText = "Arraste o relógio no topo para baixo.";
-                falar("Perfeito! Esse é o toque suave. Agora, coloque o dedo lá em cima no relógio e puxe a tela para baixo, como uma cortina."); 
-                if (navigator.vibrate) navigator.vibrate(50); 
-            }
+            if ((Date.now() - tempoTap) > 500) { falar("Você segurou o dedo. Tente dar só um toquinho rápido e soltar."); if (navigator.vibrate) navigator.vibrate([100, 50, 100]); } 
+            else { licaoGestos = 2; document.getElementById('texto-guia-gestos').innerText = "Arraste o relógio no topo para baixo."; falar("Perfeito! Esse é o toque suave. Agora, coloque o dedo lá em cima no relógio e puxe a tela para baixo, como uma cortina."); if (navigator.vibrate) navigator.vibrate(50); }
         }
-
         let inicioY = 0; const barra = document.getElementById('barra-status');
         barra.ontouchstart = (e) => { inicioY = e.touches[0].clientY; };
         barra.ontouchend = (e) => {
             if(licaoGestos !== 2) return;
-            if ((e.changedTouches[0].clientY - inicioY) > 50) { 
-                document.getElementById('cortina').style.top = "0"; 
-                falar("Isso mesmo! Você abriu os avisos. Toque na tela para fechar."); 
-                if (navigator.vibrate) navigator.vibrate(50);
-            } else { falar("Tem que colocar o dedo lá em cima e arrastar para baixo sem soltar."); }
+            if ((e.changedTouches[0].clientY - inicioY) > 50) { document.getElementById('cortina').style.top = "0"; falar("Isso mesmo! Você abriu os avisos. Toque na tela preta para fechar."); if (navigator.vibrate) navigator.vibrate(50); } 
+            else { falar("Tem que colocar o dedo lá em cima e arrastar para baixo sem soltar."); }
         };
+        function fecharCortina() { document.getElementById('cortina').style.top = "-100%"; setTimeout(() => { mostrarTela('tela-medalha-1'); falar("Excelente! Você dominou os gestos e ganhou a Medalha de Mestre."); if (navigator.vibrate) navigator.vibrate([100, 100, 200, 100, 300]); }, 500); }
 
-        function fecharCortina() { 
-            document.getElementById('cortina').style.top = "-100%"; 
-            setTimeout(() => {
-                mostrarTela('tela-medalha-1');
-                falar("Excelente! Você dominou os gestos e ganhou a Medalha de Mestre. O celular obedece a você."); 
-                if (navigator.vibrate) navigator.vibrate([100, 100, 200, 100, 300]);
-            }, 500);
-        }
-
-        // --- MÓDULO 2: CÂMERA ---
+        // MÓDULO 2
         let licaoCamera = 1;
-        
         function iniciarModulo2() { mostrarTela('tela-camera-intro'); falar("Chegou a hora de registrar os momentos. Toque em começar treino."); }
-        
-        function iniciarSimuladorCamera() {
-            mostrarTela('tela-camera-simulador');
-            licaoCamera = 1;
-            document.getElementById('texto-guia-camera').innerText = "A imagem está embaçada. Dê um toque no meio da tela para focar.";
-            falar("A imagem está embaçada porque a câmera precisa dos seus óculos. Dê um toque no meio da tela para ela focar.");
-        }
-
+        function iniciarSimuladorCamera() { mostrarTela('tela-camera-simulador'); licaoCamera = 1; document.getElementById('texto-guia-camera').innerText = "A imagem está embaçada. Dê um toque no meio da tela para focar."; falar("A imagem está embaçada porque a câmera precisa dos seus óculos. Dê um toque no meio da paisagem para focar."); }
         function acaoFocar(e) {
             if (licaoCamera !== 1) return;
             const alvo = document.getElementById('alvo-foco');
-            alvo.style.left = (e.clientX - 40) + 'px'; alvo.style.top = (e.clientY - 40) + 'px';
-            alvo.style.opacity = '1'; alvo.style.transform = 'scale(1.2)';
-            
+            alvo.style.left = (e.clientX - 40) + 'px'; alvo.style.top = (e.clientY - 40) + 'px'; alvo.style.opacity = '1'; alvo.style.transform = 'scale(1.2)';
             setTimeout(() => { alvo.style.transform = 'scale(1)'; document.getElementById('visor-cam').classList.remove('em-desfoque'); if (navigator.vibrate) navigator.vibrate(50); }, 300);
             setTimeout(() => { alvo.style.opacity = '0'; }, 1000);
-
-            licaoCamera = 2;
-            document.getElementById('texto-guia-camera').innerText = "Toque no ícone do raio lá em cima para ligar o flash.";
-            falar("Ficou nítido! Mas está meio escuro. Toque no ícone do raiozinho lá no topo para ligar o flash, que é a luzinha do celular.");
+            licaoCamera = 2; document.getElementById('texto-guia-camera').innerText = "Toque no ícone do raio lá em cima para ligar o flash."; falar("Ficou nítido! Mas está escuro. Toque no ícone do raiozinho lá no topo para ligar o flash.");
         }
-
         function acaoFlash(e) {
-            e.stopPropagation(); // Evita focar sem querer
-            if (licaoCamera !== 2) { if(licaoCamera > 2) alternarFlash(); return; }
-            
-            alternarFlash();
-            licaoCamera = 3;
-            document.getElementById('texto-guia-camera').innerText = "Toque rápido no botão grande e redondo para tirar a foto.";
-            falar("Luz ligada! Agora posicione a mão com firmeza, sem o dedo na lente, e dê um toque rápido no botão branco grande lá embaixo para tirar a foto.");
+            e.stopPropagation();
+            if (licaoCamera !== 2) return;
+            const btnFlash = document.getElementById('btn-flash'); btnFlash.innerText = 'flash_on'; btnFlash.classList.add('flash-ativo'); if(navigator.vibrate) navigator.vibrate(30);
+            licaoCamera = 3; document.getElementById('texto-guia-camera').innerText = "Toque rápido no botão grande para tirar a foto."; falar("Luz ligada! Dê um toque rápido no botão branco grande lá embaixo para tirar a foto da paisagem.");
         }
-
-        function alternarFlash() {
-            const btnFlash = document.getElementById('btn-flash');
-            if(btnFlash.innerText === 'flash_off') { btnFlash.innerText = 'flash_on'; btnFlash.classList.add('flash-ativo'); if(navigator.vibrate) navigator.vibrate(30); } 
-            else { btnFlash.innerText = 'flash_off'; btnFlash.classList.remove('flash-ativo'); }
-        }
-
         function acaoDisparo(e) {
             e.stopPropagation();
-            if (licaoCamera < 3) return;
+            if (licaoCamera !== 3 && licaoCamera !== 5) return;
+            const anim = document.getElementById('flash-animacao'); anim.style.opacity = '1'; setTimeout(() => anim.style.opacity = '0', 150); if (navigator.vibrate) navigator.vibrate(100);
+            
             if (licaoCamera === 3) {
-                // Efeito do flash
-                const anim = document.getElementById('flash-animacao');
-                anim.style.opacity = '1';
-                setTimeout(() => anim.style.opacity = '0', 150);
-                if (navigator.vibrate) navigator.vibrate(100);
-
-                // Coloca a foto na galeria
                 document.getElementById('btn-galeria').style.backgroundImage = "url('https://images.unsplash.com/photo-1558522195-e1201b090344?q=80&w=100&auto=format&fit=crop')";
-                
-                licaoCamera = 4;
-                document.getElementById('texto-guia-camera').innerText = "Toque no botão de virar a câmera (setas girando).";
-                falar("Pronto, foto tirada! E para tirar uma foto sua? Toque naquele botão com as setinhas girando para ligar a câmera da frente.");
+                licaoCamera = 4; document.getElementById('texto-guia-camera').innerText = "Toque nas setinhas para virar a câmera."; falar("Pronto, foto tirada! Agora toque no botão com setinhas para virar a câmera para você.");
+            } else if (licaoCamera === 5) {
+                document.getElementById('btn-galeria').style.backgroundImage = "url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100&auto=format&fit=crop')";
+                licaoCamera = 6; document.getElementById('texto-guia-camera').innerText = "A foto foi para o quadradinho inferior. Toque para abrir a Galeria."; falar("Foto tirada! Para ver como ficou, toque naquele quadradinho no canto onde a foto foi guardada.");
             }
         }
-
         function acaoVirar(e) {
             e.stopPropagation();
             if (licaoCamera !== 4) return;
-            
-            // Simula virar a câmera trocando o fundo
-            document.getElementById('visor-cam').style.background = "url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop') center/cover";
-            if (navigator.vibrate) navigator.vibrate(50);
-
-            licaoCamera = 5;
-            document.getElementById('texto-guia-camera').innerText = "A foto foi para o quadradinho inferior. Toque nele para abrir a Galeria.";
-            falar("Olha você aí! Agora, a maior dúvida: para onde foi a foto que tiramos antes? Ela sempre fica guardada naquele quadradinho pequeno no canto inferior. Toque nele para ver a Galeria.");
+            document.getElementById('visor-cam').style.background = "url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop') center/cover"; if (navigator.vibrate) navigator.vibrate(50);
+            licaoCamera = 5; document.getElementById('texto-guia-camera').innerText = "Tire uma foto sua tocando no botão grande."; falar("Olha você aí! Tire uma foto apertando o botão redondo novamente.");
+        }
+        function acaoAbrirGaleria(e) {
+            e.stopPropagation();
+            if (licaoCamera !== 6) return;
+            mostrarTela('tela-galeria');
+            falar("Perfeito! Esta é a sua foto. Agora, para mandar para a família, toque na palavra compartilhar lá embaixo, que tem um símbolo com três bolinhas.");
         }
 
-        function acaoGaleria(e) {
-            e.stopPropagation();
-            if (licaoCamera !== 5) return;
-            mostrarTela('tela-medalha-2');
-            falar("Perfeito! Você achou a foto. Parabéns por concluir o treino de Câmera, você ganhou a medalha de Fotógrafa Oficial.");
-            if (navigator.vibrate) navigator.vibrate([100, 100, 200, 100, 300]);
+        // MÓDULO 3
+        function acaoAbrirShare() {
+            document.getElementById('menu-share').style.bottom = "0";
+            document.getElementById('texto-guia-galeria').innerText = "Escolha o WhatsApp para enviar.";
+            falar("Apareceu uma gaveta, não é? Escolha o ícone verde do WhatsApp para enviar essa foto.");
+            if (navigator.vibrate) navigator.vibrate(30);
+        }
+        function acaoEscolherZap() {
+            mostrarTela('tela-whatsapp-contatos');
+            falar("Muito bem. Agora o WhatsApp abriu. Toque no nome do seu filho para mandar a foto.");
+        }
+        function acaoEntrarChat() {
+            mostrarTela('tela-whatsapp-chat');
+            falar("Quase lá! A foto já está pronta. Toque no botão verde com um aviãozinho de papel para enviar.");
+        }
+        function acaoFinalizarTudo() {
+            mostrarTela('tela-certificado');
+            falar("Foto enviada! Você é um sucesso! Você dominou o celular e acabou de ganhar o seu certificado digital. Parabéns, Dona Nair Rosa!");
+            if (navigator.vibrate) navigator.vibrate([100, 200, 100, 200, 500, 100, 500]);
         }
     </script>
 </body>
