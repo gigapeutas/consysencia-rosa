@@ -1,0 +1,692 @@
+/* ============================================================
+   ConSySenci.a Rosa — main.css
+   Módulo 0: O Físico / Onboarding: Primeiro Contato
+   © 2026 ConSySenci.a — Todos os direitos reservados
+   ============================================================ */
+
+/* ── 1. TOKENS DE DESIGN ─────────────────────────────────── */
+:root {
+  /* Paleta core */
+  --clr-void:       #000000;        /* fundo absoluto               */
+  --clr-surface:    #0A0A0A;        /* superfície levemente elevada */
+  --clr-neon:       #39FF14;        /* acento verde neon            */
+  --clr-neon-dim:   rgba(57,255,20,0.15);
+  --clr-neon-glow:  rgba(57,255,20,0.45);
+  --clr-neon-mid:   rgba(57,255,20,0.30);
+  --clr-white:      #FFFFFF;
+  --clr-grey-hi:    #E0E0E0;
+  --clr-grey-mid:   #888888;
+  --clr-grey-lo:    #2A2A2A;
+  --clr-danger:     #FF4444;
+
+  /* Moldura do celular */
+  --phone-w:        360px;
+  --phone-h:        780px;
+  --phone-radius:   48px;
+  --phone-bezel:    #1A1A1E;
+  --phone-bezel2:   #0D0D0F;
+  --phone-btn:      #222228;
+  --phone-btn-hi:   #333340;
+
+  /* Tipografia */
+  --font-ui:        'Nunito', 'Segoe UI', system-ui, sans-serif;
+  --font-display:   'Oswald', 'Impact', sans-serif;
+  --fs-xs:          14px;
+  --fs-sm:          16px;
+  --fs-base:        20px;
+  --fs-md:          24px;
+  --fs-lg:          30px;
+  --fs-xl:          40px;
+  --fs-2xl:         56px;
+
+  /* Duração de animações — ritmo acessível para 60+ */
+  --dur-instant:    150ms;
+  --dur-fast:       300ms;
+  --dur-normal:     600ms;
+  --dur-slow:       900ms;
+  --dur-very-slow:  1500ms;
+  --dur-boot:       2800ms;
+
+  /* Easing */
+  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── 2. RESET & BASE ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  /* Impede zoom acidental em double-tap — acessibilidade motora */
+  touch-action: manipulation;
+}
+
+body {
+  height: 100%;
+  background: var(--clr-void);
+  font-family: var(--font-ui);
+  color: var(--clr-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── 3. CAMADA DE INSTRUÇÃO EXTERNA (fora do celular) ──────── */
+#instructor-layer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 32px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.instructor-bubble {
+  background: rgba(10, 10, 10, 0.92);
+  border: 1.5px solid var(--clr-neon-mid);
+  border-radius: 20px;
+  padding: 18px 24px;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 0 24px var(--clr-neon-dim), 0 8px 32px rgba(0,0,0,0.7);
+  pointer-events: none;
+  /* Transição de entrada */
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-normal) var(--ease-out),
+    transform var(--dur-normal) var(--ease-out);
+}
+
+.instructor-bubble.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.instructor-bubble p {
+  font-size: var(--fs-md);   /* ≥24px — requisito de acessibilidade */
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--clr-grey-hi);
+}
+
+.instructor-bubble p strong,
+.instructor-bubble p .highlight {
+  color: var(--clr-neon);
+}
+
+/* Seta indicadora animada */
+.instructor-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+  animation: arrowBounce 1.2s var(--ease-in-out) infinite;
+}
+
+.instructor-arrow span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-right: 3px solid var(--clr-neon);
+  border-bottom: 3px solid var(--clr-neon);
+  transform: rotate(45deg);
+  opacity: 0.9;
+}
+
+.instructor-arrow span:nth-child(2) {
+  opacity: 0.5;
+  margin-top: -4px;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ── 4. WRAPPER DO SIMULADOR ─────────────────────────────── */
+#simulator-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Escala responsiva — cabe em qualquer tela */
+  transform-origin: center center;
+}
+
+/* ── 5. MOLDURA DO SMARTPHONE (Redmi A3) ─────────────────── */
+#phone-frame {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  border-radius: var(--phone-radius);
+  background: linear-gradient(
+    160deg,
+    var(--phone-bezel)  0%,
+    #222228             40%,
+    #151518             70%,
+    var(--phone-bezel2) 100%
+  );
+  /* Sombra realista multicamada */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.07),
+    0 0 0 2px rgba(0,0,0,0.8),
+    0 20px 60px rgba(0,0,0,0.9),
+    0 4px 12px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+/* Detalhe de câmera frontal (notch/punch-hole) */
+#phone-frame::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: #0A0A0C;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,0.04),
+    inset 0 0 4px rgba(0,0,0,0.9);
+  z-index: 10;
+}
+
+/* Detalhe de speaker frontal */
+#phone-frame::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 4px;
+  margin-top: -2px;
+  margin-left: 12px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+}
+
+/* ── 6. BOTÕES FÍSICOS LATERAIS ─────────────────────────── */
+
+/* Botão de Volume (esquerda) */
+.btn-volume {
+  position: absolute;
+  left: -4px;
+  border-radius: 3px 0 0 3px;
+  background: linear-gradient(90deg, #111114, var(--phone-btn));
+  box-shadow: -2px 0 4px rgba(0,0,0,0.5);
+}
+
+.btn-volume-up {
+  top: 150px;
+  width: 4px;
+  height: 52px;
+}
+
+.btn-volume-down {
+  top: 216px;
+  width: 4px;
+  height: 52px;
+}
+
+/* Botão Power — o protagonista desta simulação */
+#btn-power {
+  position: absolute;
+  right: -5px;
+  top: 160px;
+  width: 5px;
+  height: 72px;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(
+    270deg,
+    var(--phone-btn-hi) 0%,
+    var(--phone-btn)    60%,
+    #111114             100%
+  );
+  box-shadow: 3px 0 6px rgba(0,0,0,0.6);
+  cursor: pointer;
+  /* Hitbox expandida — acessibilidade motora */
+  padding: 12px 20px 12px 8px;
+  margin: -12px -20px -12px -8px;
+  /* Transições de estado */
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+  z-index: 50;
+  touch-action: none; /* controle total do toque */
+}
+
+/* Estado: pronto para interação — pulso suave */
+#btn-power.state-idle {
+  animation: powerPulse 2s var(--ease-in-out) infinite;
+}
+
+@keyframes powerPulse {
+  0%, 100% {
+    box-shadow: 3px 0 6px rgba(0,0,0,0.6), 4px 0 0 var(--clr-neon-dim);
+  }
+  50% {
+    box-shadow: 3px 0 10px rgba(0,0,0,0.6), 6px 0 12px var(--clr-neon-glow);
+  }
+}
+
+/* Estado: sendo pressionado */
+#btn-power.state-pressing {
+  background: linear-gradient(
+    270deg,
+    #55FF40 0%,
+    #2A8A20 60%,
+    #111114 100%
+  );
+  box-shadow:
+    3px 0 8px rgba(0,0,0,0.6),
+    5px 0 16px var(--clr-neon-glow),
+    8px 0 24px var(--clr-neon-dim);
+  animation: none;
+}
+
+/* Estado: bloqueado (boot em andamento) */
+#btn-power.state-locked {
+  pointer-events: none;
+  animation: none;
+}
+
+/* ── 7. TELA DO CELULAR ──────────────────────────────────── */
+#phone-screen {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border-radius: calc(var(--phone-radius) - 12px);
+  background: var(--clr-void);
+  overflow: hidden;
+  /* Reflexo sutil na tela */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+/* ── 8. CAMADAS DA TELA (State Screens) ──────────────────── */
+
+/* Base: todas as camadas de estado */
+.screen-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.screen-layer.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── 8a. Tela OFF ── */
+#screen-off {
+  background: var(--clr-void);
+  /* Reflexo ambiente simulado */
+}
+
+#screen-off::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 40% at 30% 20%,
+    rgba(255,255,255,0.012) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* ── 8b. Tela de BOOT ── */
+#screen-boot {
+  background: var(--clr-void);
+  gap: 0;
+}
+
+/* Logo de boot */
+.boot-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: scale(0.92);
+  transition:
+    opacity var(--dur-very-slow) var(--ease-out),
+    transform var(--dur-very-slow) var(--ease-out);
+}
+
+.boot-logo-wrap.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.boot-logo-icon {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px var(--clr-neon-glow));
+  animation: iconFloat 3s var(--ease-in-out) infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+.boot-logo-text {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: var(--clr-neon);
+  text-shadow:
+    0 0 10px var(--clr-neon-glow),
+    0 0 30px var(--clr-neon-dim);
+}
+
+.boot-logo-sub {
+  font-size: var(--fs-xs);
+  color: var(--clr-grey-mid);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: -6px;
+}
+
+/* Barra de progresso de boot */
+.boot-progress-wrap {
+  position: absolute;
+  bottom: 80px;
+  left: 48px;
+  right: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity var(--dur-normal) var(--ease-out);
+}
+
+.boot-progress-wrap.visible {
+  opacity: 1;
+}
+
+.boot-progress-track {
+  width: 100%;
+  height: 3px;
+  background: var(--clr-grey-lo);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.boot-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--clr-neon), #80FF60);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--clr-neon-glow);
+  transition: width var(--dur-normal) linear;
+}
+
+.boot-progress-label {
+  font-size: var(--fs-xs);
+  color: var(--clr-grey-mid);
+  letter-spacing: 1px;
+}
+
+/* ── 8c. Tela de BEM-VINDO ── */
+#screen-welcome {
+  background: var(--clr-void);
+  padding: 40px 32px;
+  gap: 32px;
+  text-align: center;
+}
+
+.welcome-icon {
+  font-size: 72px;
+  line-height: 1;
+  filter: drop-shadow(0 0 16px var(--clr-neon-glow));
+  animation: iconFloat 4s var(--ease-in-out) infinite;
+}
+
+.welcome-heading {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--clr-neon);
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px var(--clr-neon-glow);
+  line-height: 1.15;
+}
+
+.welcome-body {
+  font-size: var(--fs-md);   /* ≥24px — requisito */
+  font-weight: 600;
+  color: var(--clr-grey-hi);
+  line-height: 1.65;
+  max-width: 280px;
+}
+
+.welcome-body strong {
+  color: var(--clr-neon);
+}
+
+/* Botão Próximo — área de toque grande */
+#btn-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;          /* ≥48px — requisito motor */
+  background: var(--clr-neon);
+  color: var(--clr-void);
+  font-family: var(--font-ui);
+  font-size: var(--fs-lg);
+  font-weight: 900;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow:
+    0 0 0 0 var(--clr-neon-glow),
+    0 6px 24px rgba(57,255,20,0.4);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+  /* Evita double-tap zoom */
+  touch-action: manipulation;
+  animation: btnPulse 2.5s var(--ease-in-out) infinite;
+}
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--clr-neon-glow), 0 6px 24px rgba(57,255,20,0.4); }
+  50%       { box-shadow: 0 0 0 8px transparent, 0 6px 32px rgba(57,255,20,0.55); }
+}
+
+#btn-next:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 12px rgba(57,255,20,0.3);
+  animation: none;
+}
+
+.btn-next-arrow {
+  font-size: var(--fs-lg);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+#btn-next:active .btn-next-arrow {
+  transform: translateX(4px);
+}
+
+/* ── 9. OVERLAY DE FEEDBACK PREMATURO ────────────────────── */
+#feedback-overlay {
+  position: absolute;
+  bottom: 32px;
+  left: 16px;
+  right: 16px;
+  background: rgba(255, 68, 68, 0.12);
+  border: 1.5px solid rgba(255, 68, 68, 0.4);
+  border-radius: 14px;
+  padding: 14px 18px;
+  text-align: center;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: #FF8080;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+  pointer-events: none;
+  z-index: 20;
+}
+
+#feedback-overlay.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── 10. INDICADOR DE PROGRESSO DO LONG-PRESS ───────────── */
+#longpress-indicator {
+  position: absolute;
+  right: 18px;
+  top: 135px;
+  width: 24px;
+  height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+  z-index: 15;
+  pointer-events: none;
+}
+
+#longpress-indicator.visible {
+  opacity: 1;
+}
+
+.lp-track {
+  width: 4px;
+  height: 72px;
+  background: var(--clr-grey-lo);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.lp-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: linear-gradient(0deg, var(--clr-neon), #60FF40);
+  border-radius: 2px;
+  box-shadow: 0 0 6px var(--clr-neon-glow);
+  transition: height 0.1s linear;
+}
+
+.lp-label {
+  font-size: 9px;
+  color: var(--clr-grey-mid);
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  text-transform: uppercase;
+  writing-mode: horizontal-tb;
+}
+
+/* ── 11. VIBRAÇÃO HÁPTICA VISUAL ─────────────────────────── */
+@keyframes hapticShake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-3px); }
+  40%  { transform: translateX(3px); }
+  60%  { transform: translateX(-2px); }
+  80%  { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+
+.haptic {
+  animation: hapticShake 0.35s var(--ease-out);
+}
+
+/* ── 12. RESPONSIVIDADE ──────────────────────────────────── */
+@media (max-height: 820px) {
+  #simulator-wrapper {
+    transform: scale(0.88);
+  }
+}
+
+@media (max-height: 700px) {
+  #simulator-wrapper {
+    transform: scale(0.75);
+  }
+}
+
+@media (max-height: 600px) {
+  #simulator-wrapper {
+    transform: scale(0.65);
+  }
+}
+
+@media (max-width: 400px) {
+  #simulator-wrapper {
+    transform: scale(0.94);
+  }
+}
+
+@media (max-width: 370px) {
+  #simulator-wrapper {
+    transform: scale(0.85);
+  }
+}
+
+/* Mobile landscape — previne layout quebrado */
+@media (max-height: 480px) and (orientation: landscape) {
+  #simulator-wrapper {
+    transform: scale(0.55);
+  }
+  #instructor-layer {
+    padding-bottom: 8px;
+  }
+  .instructor-bubble p {
+    font-size: var(--fs-base);
+  }
+}
+
+/* ── 13. ACESSIBILIDADE: FOCO VISÍVEL ───────────────────── */
+#btn-power:focus-visible,
+#btn-next:focus-visible {
+  outline: 3px solid var(--clr-neon);
+  outline-offset: 4px;
+}
+
+/* ── 14. ELIMINAR ANIMAÇÕES SE PREFERÊNCIA DO SO ────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 300ms !important;
+  }
+}
