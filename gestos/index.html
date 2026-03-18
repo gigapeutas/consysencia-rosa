@@ -4,191 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rosa - Escola de Gestos</title>
-    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
 
     <style>
-        :root {
-            --android-bg: #E3F2FD; /* Cor de fundo típica do Android 14 */
-            --barra-topo: rgba(0,0,0,0.1);
-        }
+        :root { --android-bg: #E3F2FD; --rosa-forte: #D81B60; }
+        * { box-sizing: border-box; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: Arial, sans-serif; background: #000; overflow: hidden; }
 
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
-            font-family: 'Roboto', sans-serif;
-            background-color: black; /* Moldura do celular */
-        }
+        #bloqueio-pc { display: none; height: 100vh; background: #FCE4EC; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; color: #333; }
+        .icone-rosa-pc { width: 80px; height: 80px; background: var(--rosa-forte); border-radius: 50% 50% 0 50%; margin-bottom: 20px; }
 
-        /* O Simulador que imita o tamanho do celular */
-        .tela-celular {
-            background-color: var(--android-bg);
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+        .tela-celular { display: flex; flex-direction: column; width: 100%; height: 100%; background-color: var(--android-bg); position: relative; overflow: hidden; }
+        
+        .notch { width: 100px; height: 30px; background: #000; position: absolute; top: 0; left: 50%; transform: translateX(-50%); border-radius: 0 0 15px 15px; z-index: 50; }
+        
+        /* BARRA DE STATUS (Onde o idoso vai puxar a cortina) */
+        .status-bar { height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 14px; font-weight: bold; background: rgba(227, 242, 253, 0.9); z-index: 40; position: relative; }
+        
+        /* A CORTINA DE NOTIFICAÇÕES (Inicia escondida para cima) */
+        #cortina { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 30; transition: top 0.4s ease-out; display: flex; flex-direction: column; padding-top: 50px; }
+        .painel-notificacao { background: white; margin: 10px 15px; padding: 15px; border-radius: 15px; }
 
-        /* Barra de Status (Bateria, Wi-fi) */
-        .status-bar {
-            height: 30px;
-            background: var(--barra-topo);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            font-size: 14px;
-            font-weight: bold;
-        }
+        .desktop { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 50px 20px; align-content: start; }
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 8px; color: #333; font-size: 13px; font-weight: bold; }
+        
+        .icon-box { width: 68px; height: 68px; display: flex; align-items: center; justify-content: center; border-radius: 22%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.1s; background-color: #fff; overflow: hidden; }
+        .bg-telefone { background-color: #4285F4; } .bg-camera { background-color: #F2F2F2; }
 
-        .icones-status {
-            display: flex;
-            gap: 5px;
-        }
-
-        /* Área onde os Apps ficam */
-        .desktop {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(5, 1fr);
-            gap: 20px;
-            padding: 40px 20px;
-        }
-
-        .app-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .app-item img {
-            width: 60px;
-            height: 60px;
-            /* Se você ainda não subiu as fotos, este placeholder ajuda a ver o layout */
-            background-color: white;
-            border-radius: 15px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .app-item span {
-            font-size: 12px;
-            color: #333;
-            font-weight: 500;
-        }
-
-        /* Barra de Navegação de Baixo (◀️ ⚪ ⬛) */
-        .nav-bar {
-            height: 60px;
-            background: rgba(255,255,255,0.8);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #ccc;
-        }
-
-        .nav-btn {
-            color: #555;
-            font-size: 30px;
-        }
-
-        /* A Assistente Rosa flutuando */
-        .balao-rosa {
-            position: absolute;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            width: 80%;
-            border: 3px solid #D81B60;
-            z-index: 100;
-        }
-
-        .balao-rosa::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 15px solid #D81B60;
-            transform: translateX(-50%);
-        }
-
-        .btn-audio-gestos {
-            position: absolute;
-            top: 40px;
-            right: 20px;
-            background: #D81B60;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px; height: 50px;
-            font-size: 24px;
-        }
+        .balao-rosa { position: absolute; bottom: 80px; left: 5%; width: 90%; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 3px solid var(--rosa-forte); z-index: 20;}
+        .nav-bar { height: 60px; background: rgba(255,255,255,0.9); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ccc; position: absolute; bottom: 0; width: 100%; z-index: 40;}
     </style>
 </head>
 <body>
 
-    <div class="tela-celular">
-        <div class="status-bar">
+    <div id="bloqueio-pc">
+        <div class="icone-rosa-pc"></div>
+        <h2>Oi! Sou a Rosa.</h2>
+        <p>Para o nosso treino funcionar, abra este site no seu <b>celular</b>.</p>
+    </div>
+
+    <div id="simulador" class="tela-celular">
+        <div class="notch"></div>
+        
+        <div class="status-bar" id="barra-status">
             <span>10:30</span>
-            <div class="icones-status">
-                <span class="material-symbols-outlined" style="font-size: 18px;">network_cell</span>
-                <span class="material-symbols-outlined" style="font-size: 18px;">wifi</span>
-                <span class="material-symbols-outlined" style="font-size: 18px;">battery_full</span>
+            <div style="display: flex; gap: 5px;"><span class="material-symbols-outlined" style="font-size: 18px;">wifi</span><span class="material-symbols-outlined" style="font-size: 18px;">battery_full</span></div>
+        </div>
+
+        <div id="cortina" onclick="fecharCortina()">
+            <div class="painel-notificacao">
+                <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #25D366;">WhatsApp</h3>
+                <p style="margin: 0; color: #555; font-size: 14px;">Filho: "Oi mãe, a senhora já aprendeu a usar o celular com a Rosa?"</p>
+            </div>
+            <p style="color: white; text-align: center; margin-top: 20px; font-size: 14px;">(Toque em qualquer lugar para fechar)</p>
+        </div>
+
+        <div class="desktop">
+            <div class="app-item" onpointerdown="iniciarToque(event)" onpointerup="finalizarToque(event, 'Telefone')">
+                <div class="icon-box bg-telefone"><svg viewBox="0 0 24 24" fill="white" width="36" height="36"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+                <span>Telefone</span>
+            </div>
+
+            <div class="app-item" onpointerdown="iniciarToque(event)" onpointerup="finalizarToque(event, 'WhatsApp')">
+                <div class="icon-box" style="background-image: url('icons/whatsapp.png'); background-size: cover;"></div>
+                <span>WhatsApp</span>
+            </div>
+
+            <div class="app-item" onpointerdown="iniciarToque(event)" onpointerup="finalizarToque(event, 'Chrome')">
+                <div class="icon-box" style="background-image: url('icons/chrome.png'); background-size: cover;"></div>
+                <span>Chrome</span>
+            </div>
+
+            <div class="app-item" onpointerdown="iniciarToque(event)" onpointerup="finalizarToque(event, 'Câmera')">
+                <div class="icon-box bg-camera"><svg viewBox="0 0 24 24" fill="#5F6368" width="38" height="38"><path d="M12 12m-3.2 0a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9z"/></svg></div>
+                <span>Câmera</span>
             </div>
         </div>
 
-        <button class="btn-audio-gestos" onclick="repetir()">🔊</button>
-
-        <div class="desktop">
-            <div class="app-item" onclick="validarToque('Telefone')">
-                <img src="/gestos/icone-telefone.png" alt="Telefone">
-                <span>Telefone</span>
-            </div>
-            </div>
-
-        <div id="instrucao" class="balao-rosa">
-            <p id="texto-guia" style="font-size: 22px; margin: 0;">Olá! Vamos treinar o <b>Toque de Pluma</b>. Tente tocar no ícone do Telefone bem devagar, como se fosse uma bolha de sabão.</p>
+        <div class="balao-rosa">
+            <p id="texto-guia" style="font-size: 20px; margin: 0;"><b>Lição 1: Toque de Pluma.</b><br>Dê um toque bem rápido no ícone do WhatsApp!</p>
         </div>
 
         <div class="nav-bar">
             <span class="material-symbols-outlined nav-btn">arrow_back_ios</span>
             <span class="material-symbols-outlined nav-btn">circle</span>
-            <span class="material-symbols-outlined nav-btn" onclick="ajudaAbas()">check_box_outline_blank</span>
+            <span class="material-symbols-outlined nav-btn">check_box_outline_blank</span>
         </div>
     </div>
 
     <script>
+        let bloqueioAudio = false;
+        let licaoAtual = 1;
+
+        // VERIFICA SE ESTÁ NO CELULAR
+        if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            document.getElementById('simulador').style.display = 'none';
+            document.getElementById('bloqueio-pc').style.display = 'flex';
+        }
+
         function falar(t) {
+            if (bloqueioAudio) return;
             window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(t);
-            u.lang = 'pt-BR';
-            u.rate = 0.9;
+            const u = new SpeechSynthesisUtterance(t); u.lang = 'pt-BR'; u.rate = 0.95;
             window.speechSynthesis.speak(u);
         }
 
-        function validarToque(app) {
-            if(app === 'Telefone') {
-                document.getElementById('texto-guia').innerHTML = "<b>Excelente!</b> Você tocou com leveza. Agora vamos tentar o toque longo?";
-                falar("Excelente! Você tocou com leveza. Agora vamos tentar o toque longo?");
+        window.onload = () => { setTimeout(() => { falar("Vamos treinar. Dê um toque rápido no WhatsApp!"); }, 500); };
+
+        // === FÍSICA DO TOQUE (TAP) ===
+        let tempoInicio = 0;
+        function iniciarToque(e) { 
+            tempoInicio = Date.now(); 
+            e.currentTarget.querySelector('.icon-box').style.transform = "scale(0.9)";
+        }
+
+        function finalizarToque(e, nomeApp) {
+            e.currentTarget.querySelector('.icon-box').style.transform = "scale(1)";
+            if(licaoAtual !== 1) return; // Só avalia o clique na lição 1
+
+            const duracao = Date.now() - tempoInicio;
+            if (duracao > 500) {
+                falar("Quase! Você segurou o dedo por muito tempo. Tem que ser bem rápido!");
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            } else {
+                if (navigator.vibrate) navigator.vibrate(50);
+                licaoAtual = 2; // Passa para a lição de arrastar
+                document.getElementById('texto-guia').innerHTML = "<b>Lição 2: Puxar a Cortina.</b><br>Muito bem! Agora coloque o dedo no relógio lá em cima e arraste para baixo.";
+                falar("Perfeito! Esse é o toque. Agora, coloque o dedo lá em cima no relógio e puxe a tela para baixo, como uma cortina.");
             }
         }
 
-        function ajudaAbas() {
-            falar("Esse quadradinho serve para ver todas as janelas abertas. No final desta aula, vou te ensinar a fechar todas para o seu celular não ficar cansado.");
-        }
+        // === FÍSICA DO ARRASTO (SWIPE) ===
+        let inicioY = 0;
+        const barra = document.getElementById('barra-status');
+        
+        barra.ontouchstart = (e) => { inicioY = e.touches[0].clientY; };
+        
+        barra.ontouchend = (e) => {
+            if(licaoAtual !== 2) return;
+            let fimY = e.changedTouches[0].clientY;
+            let distancia = fimY - inicioY;
 
-        window.onload = () => {
-            falar(document.getElementById('texto-guia').innerText);
+            if (distancia > 50) { // Se arrastou para baixo
+                document.getElementById('cortina').style.top = "0";
+                falar("Isso! Você abriu a cortina de avisos. Viu como é fácil? Toque em qualquer lugar para fechar.");
+            } else { // Se apenas tocou
+                falar("Não é só apertar. Tem que colocar o dedo lá em cima e arrastar para baixo sem soltar.");
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            }
+        };
+
+        function fecharCortina() {
+            document.getElementById('cortina').style.top = "-100%";
+            document.getElementById('texto-guia').innerHTML = "<b>Você concluiu os gestos básicos!</b> Você é incrível.";
+            falar("Muito bem. Você já sabe tocar e arrastar. O medo já foi embora!");
         }
     </script>
 </body>
