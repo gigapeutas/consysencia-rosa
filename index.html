@@ -4,173 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ConSySenci.a Rosa - A Caixa Mágica</title>
-
     <style>
-        :root { --rosa-forte: #D81B60; --rosa-fundo: #FCE4EC; --botao-verde: #2ECC71; --botao-vermelho: #E74C3C; }
+        :root { --rosa-forte: #D81B60; --rosa-fundo: #FCE4EC; --texto-escuro: #1C2833; --botao-verde: #2ECC71; --whatsapp-cor: #25D366; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { background-color: var(--rosa-fundo); color: var(--texto-escuro); display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
         
-        /* BLINDAGEM 2: Impede seleção de texto e toque duplo azul no Android */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-
-        body { background-color: var(--rosa-fundo); display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
-
         .cabecalho { display: flex; align-items: center; justify-content: space-between; width: 90%; margin-top: 20px; display: none; }
-        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, #FF80AB, var(--rosa-forte)); border-radius: 50% 50% 10% 50%; animation: respirar 3.5s infinite ease-in-out; }
-        @keyframes respirar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-
-        .btn-repetir { background: white; border: 2px solid var(--rosa-forte); border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; }
+        .rosa-guia { width: 60px; height: 60px; background: radial-gradient(circle, #FF80AB, var(--rosa-forte)); border-radius: 50% 50% 10% 50%; }
         
         .area-central { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 90%; max-width: 600px; padding-bottom: 80px; }
         .caixa-texto { background-color: white; padding: 30px 20px; border-radius: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-left: 12px solid var(--rosa-forte); text-align: center; }
 
-        p { font-size: 24px; line-height: 1.4; color: #333; }
-        h1 { font-size: 30px; color: var(--rosa-forte); margin-bottom: 20px; }
-        
-        .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px 20px; display: none; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
+        button.btn-principal { background-color: var(--botao-verde); color: white; border: none; padding: 20px; font-size: 24px; font-weight: bold; border-radius: 50px; width: 100%; cursor: pointer; }
+        button.btn-whatsapp { background-color: var(--whatsapp-cor) !important; font-size: 20px; }
 
-        button.btn-principal { background-color: var(--botao-verde); color: white; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 50px; width: 100%; cursor: pointer; transition: transform 0.1s; }
-        button.btn-principal:active { transform: scale(0.96); }
-
-        .area-botoes-quiz { display: flex; gap: 15px; margin-top: 20px; }
-        .btn-sim, .btn-nao { flex: 1; padding: 20px; border-radius: 20px; color: white; font-size: 24px; font-weight: bold; border: none; }
-        .btn-sim { background-color: var(--botao-verde); }
-        .btn-nao { background-color: var(--botao-vermelho); }
-
+        .medalha { font-size: 100px; text-align: center; margin: 20px 0; }
         .escondido { display: none !important; }
-        .bloqueado { pointer-events: none; opacity: 0.6; }
     </style>
 </head>
 <body>
 
     <div id="tela-inicio" class="area-central">
-        <div class="caixa-texto" style="border-left: none;">
-            <h1 id="titulo-inicio">Bem-vindo(a)!</h1>
-            <p id="msg-inicio">Toque no botão verde abaixo para ligar a minha voz e começarmos.</p>
-            <br>
-            <button id="btn-start" class="btn-principal" onclick="iniciarAula()">COMEÇAR AULA</button>
+        <div class="caixa-texto">
+            <h1 style="color:var(--rosa-forte); margin-bottom: 20px;">Bem-vindo(a)!</h1>
+            <p style="font-size:24px; line-height:1.4;">Toque no botão verde abaixo para ligar a minha voz e começarmos.</p><br>
+            <button class="btn-principal" onclick="iniciarAula()">COMEÇAR AULA</button>
         </div>
     </div>
 
-    <div id="cabecalho" class="cabecalho">
-        <div class="rosa-guia"></div>
-        <div id="indicador" style="font-weight: bold; color: #666;">Passo 1/5</div>
-        <button id="btn-audio" class="btn-repetir" onclick="repetirAudio()">🔊</button>
-    </div>
+    <div id="cabecalho" class="cabecalho"><div class="rosa-guia"></div><div id="indicador" style="font-weight:bold;">Passo 1/5</div><button class="btn-repetir" onclick="repetirAudio()">🔊</button></div>
 
-    <div id="area-aula" class="area-central escondido">
-        <div class="caixa-texto"><p id="texto-aula">Carregando...</p></div>
-    </div>
+    <div id="area-aula" class="area-central escondido"><div class="caixa-texto"><p id="texto-aula" style="font-size:24px;">Olá...</p></div></div>
 
     <div id="area-quiz" class="area-central escondido">
         <div class="caixa-texto" style="border-left-color: #3498DB;">
-            <h2 style="font-size: 26px; color: #D81B60; margin-bottom: 20px;">Jogo da Memória</h2>
-            <p id="texto-pergunta">Pergunta...</p>
-            <div id="botoes-sim-nao" class="area-botoes-quiz">
-                <button class="btn-sim" onclick="responder(true)">SIM</button>
-                <button class="btn-nao" onclick="responder(false)">NÃO</button>
-            </div>
+            <p id="texto-pergunta" style="font-size:24px; margin-bottom:20px;">Você abriu a janela da Caixa Mágica?</p>
+            <div id="botoes-sim-nao" class="area-botoes-quiz"><button class="btn-sim" onclick="responder(true)">SIM</button><button class="btn-nao" onclick="responder(false)">NÃO</button></div>
+            
             <div id="area-medalha" class="escondido">
-                <div style="font-size: 80px; margin: 10px 0;">🥇</div>
+                <div class="medalha">🥇</div>
                 <p><b>Você é Campeão(ã)!</b><br>Ganhou a Medalha da Caixa Mágica!</p><br>
-                <button class="btn-principal" style="background-color: #25D366;" onclick="irParaGestos()">IR PARA ESCOLA DE GESTOS</button>
+                <button class="btn-principal btn-whatsapp" onclick="compartilharVitoriaWhatsApp()">Enviar família no WhatsApp</button>
             </div>
         </div>
     </div>
 
-    <div id="rodape" class="rodape-fixo">
-        <button id="btn-proximo" class="btn-principal" onclick="proximoPasso()">ENTENDI, PRÓXIMO ➔</button>
-    </div>
+    <div id="rodape" class="rodape-fixo" style="display:none; position:fixed; bottom:0; left:0; width:100%; padding:15px; background:white;"><button class="btn-principal" onclick="proximoPasso()">PRÓXIMO ➔</button></div>
 
     <script>
-        const roteiro = [
-            "Olá! Eu sou a Rosa. Não tenha medo, nada do que você apertar aqui vai quebrar o aparelho.",
-            "O seu aparelho é de vidro e plástico. O vidro que acende é a janela por onde vemos o mundo.",
-            "A parte de trás tem as câmeras, que são os olhos dele. Evite colocar o dedo lá para não sujar a visão.",
-            "É normal ele esquentar um pouquinho quando trabalha. Igual a gente! Só não abafe ele na coberta.",
-            "O cabo de carregar é a comida dele. Use sempre o original para a bateria não viciar."
-        ];
-        const perguntas = [
-            { texto: "O vidro da frente é como se fosse a janela do celular?", correta: true },
-            { texto: "É perigoso o celular esquentar um pouquinho?", correta: false },
-            { texto: "Podemos usar qualquer cabo baratinho para dar energia?", correta: false }
-        ];
+        const roteiro = ["Olá! Nada do que você apertar aqui vai quebrar o aparelho.", "O vidro da frente é a janela do celular.", "A parte de trás tem as câmeras, evite pôr o dedo lá.", "É normal ele esquentar, igual a gente!", "O cabo de carregar é a comida dele."];
+        const perguntas = [{texto: "O vidro da frente é a janela do celular?", correta: true}];
+        let passoAtual = 0; let pergunAtual = 0; let voz = null;
 
-        let passoAtual = 0; let perguntaAtual = 0; let modoQuiz = false;
-
-        window.onload = function() {
-            // BLINDAGEM 3: Memória de progresso. Se já fez, pula para a Escola de Gestos.
-            if (localStorage.getItem('progressoRosa') === '1') {
-                document.getElementById('titulo-inicio').innerText = "Você voltou!";
-                document.getElementById('msg-inicio').innerText = "Você já ganhou a primeira medalha. Vamos continuar os treinos?";
-                document.getElementById('btn-start').innerText = "IR PARA OS GESTOS";
-                document.getElementById('btn-start').onclick = irParaGestos;
-            }
-        };
-
-        function falar(texto, callback) {
-            window.speechSynthesis.cancel(); 
-            const u = new SpeechSynthesisUtterance(texto);
-            u.lang = 'pt-BR'; u.rate = 0.95; 
-            u.onend = () => { if(callback) callback(); };
-            window.speechSynthesis.speak(u);
-        }
-
-        function iniciarAula() {
-            document.getElementById('tela-inicio').classList.add('escondido');
-            document.getElementById('cabecalho').style.display = 'flex';
-            document.getElementById('area-aula').classList.remove('escondido');
-            document.getElementById('rodape').style.display = 'block';
-            atualizarTela();
-        }
-
-        function repetirAudio() { modoQuiz ? falar(perguntas[perguntaAtual].texto) : falar(roteiro[passoAtual]); }
-
-        function proximoPasso() {
-            passoAtual++;
-            if (passoAtual < roteiro.length) atualizarTela(); else iniciarQuiz();
-        }
-
-        function atualizarTela() {
-            document.getElementById('texto-aula').innerText = roteiro[passoAtual];
-            document.getElementById('indicador').innerText = `Passo ${passoAtual + 1}/${roteiro.length}`;
-            falar(roteiro[passoAtual]);
-        }
-
-        function iniciarQuiz() {
-            modoQuiz = true;
-            document.getElementById('area-aula').classList.add('escondido');
-            document.getElementById('rodape').style.display = 'none'; 
-            document.getElementById('area-quiz').classList.remove('escondido');
-            mostrarPergunta();
-        }
-
-        function mostrarPergunta() {
-            document.getElementById('indicador').innerText = `Jogo ${perguntaAtual + 1}/3`;
-            document.getElementById('texto-pergunta').innerText = perguntas[perguntaAtual].texto;
-            document.getElementById('botoes-sim-nao').classList.remove('bloqueado');
-            falar(perguntas[perguntaAtual].texto);
-        }
-
-        function responder(respostaUsuario) {
-            document.getElementById('botoes-sim-nao').classList.add('bloqueado');
-            if (respostaUsuario === perguntas[perguntaAtual].correta) {
-                perguntaAtual++;
-                if (perguntaAtual < perguntas.length) falar("Muito bem! Vamos para a próxima.", mostrarPergunta);
-                else mostrarMedalha();
-            } else {
-                falar("Ops! Não é bem assim. Vamos tentar de novo?", () => document.getElementById('botoes-sim-nao').classList.remove('bloqueado'));
-            }
-        }
-
-        function mostrarMedalha() {
-            localStorage.setItem('progressoRosa', '1'); // Salva o progresso
-            document.getElementById('indicador').innerText = "Vitória!";
-            document.getElementById('botoes-sim-nao').classList.add('escondido');
-            document.getElementById('texto-pergunta').classList.add('escondido');
-            document.getElementById('area-medalha').classList.remove('escondido');
-            falar("Parabéns! Você ganhou a medalha da caixa mágica. Agora, aperte o botão verde para irmos para a Escola de Gestos.");
-        }
-
-        function irParaGestos() { window.location.href = '/gestos/'; }
+        function falar(t, c) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'pt-BR'; u.rate = 0.95; u.onend = () => { if(c) c(); }; window.speechSynthesis.speak(u); }
+        function iniciarAula() { document.getElementById('tela-inicio').classList.add('escondido'); document.getElementById('cabecalho').style.display = 'flex'; document.getElementById('area-aula').classList.remove('escondido'); document.getElementById('rodape').style.display = 'block'; atualizarTela(); }
+        function proximoPasso() { passoAtual++; if(passoAtual < roteiro.length) atualizarTela(); else iniciarQuiz(); }
+        function atualizarTela() { const t = roteiro[passoAtual]; document.getElementById('texto-aula').innerText = t; document.getElementById('indicador').innerText = `Passo ${passoAtual+1}/${roteiro.length}`; falar(t); }
+        function iniciarQuiz() { document.getElementById('area-aula').classList.add('escondido'); document.getElementById('rodape').style.display = 'none'; document.getElementById('area-quiz').classList.remove('escondido'); falar(perguntas[0].texto); }
+        function responder(r) { if(r === perguntas[0].correta) { document.getElementById('botoes-sim-nao').classList.add('escondido'); document.getElementById('area-medalha').classList.remove('escondido'); falar("Parabéns! Você ganhou a medalha. Clique no botão verde para irmos para a Escola de Gestos."); localStorage.setItem('progressoRosa', '1'); } else { falar("Tente de novo!"); } }
+        function compartilharVitoriaWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent('Ganhei a Medalha da Caixa Mágica! 🥇 Já perdi o medo do celular com a ajuda da Rosa.')}`, '_blank'); setTimeout(() => window.location.href='/gestos/', 3000); }
     </script>
 </body>
 </html>
