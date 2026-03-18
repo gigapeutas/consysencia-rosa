@@ -143,9 +143,9 @@ body{height:100%;background:var(--void);font-family:var(--fn);color:#fff;overflo
 .nb-btn:active{color:#fff;}
 .ensin{box-shadow:0 0 0 3px var(--neon),0 0 12px var(--neon-g)!important;animation:pe 1s ease-in-out infinite alternate;}
 @keyframes pe{from{box-shadow:0 0 0 2px var(--neon),0 0 9px var(--neon-g);}to{box-shadow:0 0 0 5px #80FF60,0 0 20px var(--neon-g);}}
-.cortina{position:absolute;top:-100%;left:0;width:100%;background:rgba(8,8,16,.96);backdrop-filter:blur(12px);z-index:60;transition:top .26s ease;display:flex;flex-direction:column;border-bottom:1px solid rgba(255,255,255,.07);}
-.cortina.meia{top:26px;}
-.cortina.total{top:26px;}
+.cortina{position:absolute;top:26px;left:0;width:100%;background:rgba(8,8,16,.96);backdrop-filter:blur(12px);z-index:60;display:flex;flex-direction:column;border-bottom:1px solid rgba(255,255,255,.07);clip-path:inset(0 0 100% 0);transition:clip-path .26s ease;}
+.cortina.meia{clip-path:inset(0 0 50% 0);}
+.cortina.total{clip-path:inset(0 0 0% 0);}
 .cortina-cab{padding:13px 13px 7px;flex-shrink:0;}
 .qs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
 .qs-pill{background:#3C4043;border-radius:9px;padding:8px 10px;display:flex;align-items:center;gap:7px;cursor:pointer;border:none;color:#fff;font-family:var(--fn);font-size:11px;font-weight:700;transition:background .18s;width:100%;text-align:left;}
@@ -323,7 +323,7 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
       <div class="vb vb-u"></div><div class="vb vb-d"></div>
       <div class="pbtn locked"></div>
       <div class="ps" id="ps1" style="display:flex;flex-direction:column;">
-        <div class="sb" id="m1-sb" onpointerdown="m1SbDown(event)" onpointermove="m1SbMove(event)" onpointerup="m1SbUp(event)" onpointercancel="m1SbUp(event)">
+        <div class="sb" id="m1-sb">
           <span id="m1-hora">10:30</span>
           <div class="sb-icons"><span class="sb-ico">📶</span><span class="sb-ico">🔋</span></div>
         </div>
@@ -375,7 +375,7 @@ input[type=range].sl-bri::-webkit-slider-thumb{-webkit-appearance:none;width:18p
   </div>
   <div class="instructor" id="instr1">
     <div class="iarrow" id="ia1" style="display:none;"><span></span><span></span></div>
-    <p id="it1">Arraste o dedo de <strong>cima para baixo</strong> na barra preta do topo!</p>
+    <p id="it1">Arraste o dedo de <strong>cima para baixo</strong> em qualquer lugar da tela!</p>
   </div>
 </div>
 
@@ -580,27 +580,124 @@ const M0=(()=>{
 
 /* ══ MÓDULO 1 ══ */
 const M1=(()=>{
-  let etapa=0,cortinaState='f',sbDY=null;
-  const MSGS={'arrastar-meia':{arrow:true,html:'Coloque o dedo na <strong>barra preta do topo</strong> e arraste para baixo!'},'arrastar-total':{arrow:false,html:'Ótimo! Arraste <strong>mais para baixo</strong> para ver tudo!'},'fechar':{arrow:false,html:'Perfeito! Agora deslize <strong>para cima</strong> para fechar a cortina.'},'tocar-app':{arrow:false,html:'Excelente! Agora toque no ícone do <strong>Telefone</strong> que está piscando!'},'concluido':{arrow:false,html:'🎉 Você abriu o Telefone! <strong>Módulo concluído!</strong>'}};
+  let etapa=0,cortinaState='f';
+  // swipe state
+  let swipeActive=false,swipeStartY=0,swipeStartX=0,swipePtrId=null,swipeLiveY=0;
+  // Cortina height refs (px inside the scaled phone screen)
+  const MEIA_TOP=26, SCREEN_H=710;
+
+  const MSGS={
+    'arrastar-meia':{arrow:true, html:'Arraste o dedo de <strong>cima para baixo</strong> em qualquer lugar da tela!'},
+    'arrastar-total':{arrow:false,html:'Ótimo! Arraste <strong>mais para baixo</strong> para ver tudo!'},
+    'fechar':        {arrow:false,html:'Perfeito! Agora deslize <strong>para cima</strong> para fechar a cortina.'},
+    'tocar-app':     {arrow:false,html:'Excelente! Agora toque no ícone do <strong>Telefone</strong> que está piscando!'},
+    'concluido':     {arrow:false,html:'🎉 Você abriu o Telefone! <strong>Módulo concluído!</strong>'},
+  };
   let D=null,msgT=null;
-  const show=el=>el?.classList.add('vis');const hide=el=>el?.classList.remove('vis');
+  const show=el=>el?.classList.add('vis');
   const setMsg=(key,delay=0)=>{clearTimeout(msgT);const apply=()=>{const m=MSGS[key];if(!m)return;D.itxt.innerHTML=m.html;D.iarr.style.display=m.arrow?'flex':'none';show(D.instr);};delay>0?(msgT=setTimeout(apply,delay)):apply();};
-  const abrirC=s=>{const c=document.getElementById('m1-cortina');c.classList.remove('meia','total');c.classList.add(s);cortinaState=s;document.getElementById('m1-btnlim').style.display='block';if(s==='meia'&&etapa===0){etapa=1;document.getElementById('m1-dicasub').style.display='none';setMsg('arrastar-total');}else if(s==='total'&&etapa===1){etapa=2;document.getElementById('m1-dicasub').style.display='block';setMsg('fechar');}};
-  const fecharC=()=>{const c=document.getElementById('m1-cortina');c.classList.remove('meia','total');cortinaState='f';if(etapa===2){etapa=3;setMsg('tocar-app');document.getElementById('m1-tel').querySelector('.app-img').classList.add('ensin');}};
+
+  // Cortina live drag — segue o dedo em tempo real
+  const getCortina=()=>document.getElementById('m1-cortina');
+  const setCortinaPx=(dy)=>{
+    const c=getCortina();
+    const cortinaH=c.offsetHeight||260;
+    // dy = quanto o dedo se moveu para baixo desde o início
+    // clipPath inset bottom: começa em 100% (fechado) e vai para 0% (aberto)
+    const reveal=Math.max(0,Math.min(dy, cortinaH));
+    const pct=Math.round((1 - reveal/cortinaH)*100);
+    c.style.transition='none';
+    c.style.clipPath=`inset(0 0 ${pct}% 0)`;
+  };
+  const snapCortina=(finalDY)=>{
+    const c=getCortina();
+    c.style.transition='clip-path .26s ease'; // restore transition for snap
+    c.style.clipPath=''; // clear inline, let class take over
+    if(cortinaState==='f'){
+      if(finalDY>40){ c.classList.remove('meia','total');c.classList.add('meia');cortinaState='meia';document.getElementById('m1-btnlim').style.display='block';if(etapa===0){etapa=1;setMsg('arrastar-total');} }
+      else{ c.classList.remove('meia','total'); } // snaps back closed
+    } else if(cortinaState==='meia'){
+      if(finalDY>30){  c.classList.remove('meia','total');c.classList.add('total');cortinaState='total';document.getElementById('m1-dicasub').style.display='block';if(etapa===1){etapa=2;setMsg('fechar');} }
+      else if(finalDY<-30){ c.classList.remove('meia','total');cortinaState='f';document.getElementById('m1-btnlim').style.display='none'; }
+      else{ c.classList.add('meia'); } // no change
+    } else if(cortinaState==='total'){
+      if(finalDY<-30){ c.classList.remove('meia','total');cortinaState='f';document.getElementById('m1-btnlim').style.display='none';document.getElementById('m1-dicasub').style.display='none';if(etapa===2){etapa=3;setMsg('tocar-app');document.getElementById('m1-tel').querySelector('.app-img').classList.add('ensin');} }
+      else{ c.classList.add('total'); } // bounce back to open
+    }
+  };
+
+  // Detecta se o elemento tocado pertence a um botão/input interativo (não deve iniciar swipe)
+  const isInteractive=el=>{
+    if(!el)return false;
+    const tags=['BUTTON','INPUT','A','SELECT','TEXTAREA'];
+    let cur=el;
+    while(cur&&cur!==document.body){if(tags.includes(cur.tagName))return true;cur=cur.parentElement;}
+    return false;
+  };
+
+  const onDown=e=>{
+    if(swipeActive)return;
+    if(isInteractive(e.target))return;
+    swipeActive=true;
+    swipeStartY=e.clientY;
+    swipeStartX=e.clientX;
+    swipeLiveY=e.clientY;
+    swipePtrId=e.pointerId??null;
+    try{e.currentTarget.setPointerCapture(e.pointerId);}catch(_){}
+  };
+  const onMove=e=>{
+    if(!swipeActive)return;
+    if(swipePtrId!==null&&e.pointerId!==swipePtrId)return;
+    const dy=e.clientY-swipeStartY;
+    const dx=e.clientX-swipeStartX;
+    if(Math.abs(dy)<6&&Math.abs(dx)>Math.abs(dy))return;
+    e.preventDefault();
+    swipeLiveY=e.clientY;
+    // Live drag feedback only when opening (cortina fechada, dedo indo para baixo)
+    if(cortinaState==='f'&&dy>0){
+      setCortinaPx(dy);
+    }
+    // Live drag for closing: when cortina open and dragging up
+    if(cortinaState==='total'&&dy<0){
+      const c=getCortina();
+      const cortinaH=c.offsetHeight||260;
+      const reveal=cortinaH+dy; // dy is negative
+      const pct=Math.round(Math.max(0,Math.min((1-reveal/cortinaH)*100,100)));
+      c.style.transition='none';
+      c.style.clipPath=`inset(0 0 ${pct}% 0)`;
+    }
+  };
+  const onUp=e=>{
+    if(!swipeActive)return;
+    if(swipePtrId!==null&&e.pointerId!==undefined&&e.pointerId!==swipePtrId)return;
+    const dy=e.clientY-swipeStartY;
+    swipeActive=false;swipePtrId=null;
+    snapCortina(dy);
+  };
+
+  const bindSwipe=()=>{
+    const ps=document.getElementById('ps1');
+    ps.addEventListener('pointerdown',onDown,{passive:true});
+    ps.addEventListener('pointermove',onMove,{passive:false});
+    ps.addEventListener('pointerup',onUp,{passive:true});
+    ps.addEventListener('pointercancel',onUp,{passive:true});
+  };
+
   const init=()=>{
-    etapa=0;cortinaState='f';sbDY=null;
+    etapa=0;cortinaState='f';swipeActive=false;swipePtrId=null;
     D={pf:document.getElementById('pf1'),instr:document.getElementById('instr1'),iarr:document.getElementById('ia1'),itxt:document.getElementById('it1')};
-    const c=document.getElementById('m1-cortina');c.classList.remove('meia','total');
-    document.getElementById('m1-btnlim').style.display='none';document.getElementById('m1-dicasub').style.display='none';
+    const c=getCortina();
+    c.classList.remove('meia','total');c.style.clipPath='';c.style.transition='';
+    document.getElementById('m1-btnlim').style.display='none';
+    document.getElementById('m1-dicasub').style.display='none';
     document.getElementById('m1-tel')?.querySelector('.app-img')?.classList.remove('ensin');
     const n=new Date();const hm=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
     const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
     document.getElementById('m1-relh').textContent=hm;document.getElementById('m1-hora').textContent=hm;document.getElementById('m1-reld').textContent=dias[n.getDay()]+', '+n.getDate()+' de '+meses[n.getMonth()];
+    bindSwipe();
     setTimeout(()=>setMsg('arrastar-meia'),500);
   };
-  window.m1SbDown=e=>{sbDY=e.clientY;};
-  window.m1SbMove=e=>{if(sbDY!==null)e.preventDefault();};
-  window.m1SbUp=e=>{if(sbDY===null)return;const dy=e.clientY-sbDY;sbDY=null;if(dy>28&&cortinaState==='f')abrirC('meia');else if(dy>16&&cortinaState==='meia')abrirC('total');else if(dy<-22&&cortinaState!=='f')fecharC();};
+
   window.togQS=id=>document.getElementById(id)?.classList.toggle('on');
   window.m1LimNotifs=()=>{['m1-n1','m1-n2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='0';el.style.transform='translateX(110%)';setTimeout(()=>el.remove(),300);}});document.getElementById('m1-btnlim').style.display='none';setTimeout(()=>setMsg('fechar'),400);};
   window.m1ClicarApp=nome=>{if(nome==='Telefone'&&etapa===3){document.getElementById('m1-tel')?.querySelector('.app-img')?.classList.remove('ensin');setMsg('concluido');setTimeout(()=>{Prog.concluir(1);document.getElementById('cert-ico').textContent='👆';document.getElementById('cert-tit').textContent='Módulo 1 Concluído!';document.getElementById('cert-sub').innerHTML='Você aprendeu os <strong>gestos do celular</strong>! Abriu a cortina e tocou nos ícones como um expert.';Router.go('pg-cert');},1400);}};
